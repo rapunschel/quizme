@@ -17,7 +17,7 @@ class Play extends StatelessWidget {
       child: MaterialApp(
         title: 'quiz run test',
         theme: ThemeData(
-          primaryColor: Colors.green,
+          primaryColor: const Color.fromARGB(255, 192, 241, 251),
           primaryColorLight: Colors.green,
           useMaterial3: true,
         ),
