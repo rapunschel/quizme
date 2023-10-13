@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/quiz_model.dart';
+import '../pages/quiz_result_page.dart';
 
 class PlayQuizPage extends StatelessWidget {
   const PlayQuizPage({super.key});
@@ -16,7 +17,8 @@ class PlayQuizPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Center(child: Text(quiz.title)),
+        title: Text(quiz.title),
+        centerTitle: true,
       ),
       body: ListView.builder(
         itemCount: quiz.isAnswered ? answers.length + 1 : answers.length,
@@ -46,7 +48,14 @@ class PlayQuizPage extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const QuizResultPage(),
+                      ),
+                    );
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Theme.of(context).primaryColor),
@@ -169,6 +178,8 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
         } else {
           quiz.incrementNoIncorrect();
         }
+        // addDoneQuestion() must be called before update.
+        quiz.addDoneQuestion(widget.answer);
         quiz.updateIsAnswered();
       },
 

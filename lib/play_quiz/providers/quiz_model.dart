@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 
 class QuizModel extends ChangeNotifier {
@@ -13,7 +15,17 @@ class QuizModel extends ChangeNotifier {
   // Flag to check if current question has been answered
   bool isAnswered = false;
 
+  // hashmap for storing answered question
+  final Map<Question, Answer> _doneQuestions = HashMap();
+  // Save question
   QuizModel();
+
+  void addDoneQuestion(Answer answer) {
+    if (!isAnswered) {
+      _doneQuestions[getCurrentQuestion()] = answer;
+    }
+    print(_doneQuestions);
+  }
 
   void updateIsAnswered() {
     // If user tap multiple times on listtile, only notify once
@@ -25,7 +37,7 @@ class QuizModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Update counters
+  // Update counters and store question
   void incrementNoCorrect() {
     if (noCorrect + noIncorrect <= currentQuestionIndex) {
       noCorrect++;
