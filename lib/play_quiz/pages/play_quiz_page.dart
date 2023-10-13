@@ -156,7 +156,7 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
         if (widget.answer.isCorrect) {
           color = Colors.greenAccent;
         } else {
-          color = Colors.redAccent;
+          color = const Color.fromARGB(255, 252, 105, 105);
         }
       }
       // If it wasnt tapped but was also a correct answer, set to green.
