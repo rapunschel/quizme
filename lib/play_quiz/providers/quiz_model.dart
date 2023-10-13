@@ -11,9 +11,19 @@ class QuizModel extends ChangeNotifier {
   int noIncorrect = 0;
 
   // Flag to check if current question has been answered
-  bool isCurrQuestionAnswered = false;
+  bool isAnswered = false;
 
   QuizModel();
+
+  void updateIsAnswered() {
+    // If user tap multiple times on listtile, only notify once
+    if (isAnswered) {
+      return;
+    }
+    // Else set to true and notify listeners.
+    isAnswered = true;
+    notifyListeners();
+  }
 
   // Update counters
   void incrementNoCorrect() {
@@ -46,6 +56,8 @@ class QuizModel extends ChangeNotifier {
   get title => quiz!.title;
 
   void getNextQuestion() {
+    // Reset isAnswered
+    isAnswered = false;
     // Only increment if we are in range.
     if (currentQuestionIndex < quiz!.questions.length - 1) {
       currentQuestionIndex++;
@@ -73,11 +85,17 @@ Quiz initiateQuiz() {
   question3.addAnswer("Tokyo", true);
   question3.addAnswer("Kyoto", false);
   question3.addAnswer("Osaka", false);
-  question3.addAnswer("Fukouka", false);
+  question3.addAnswer("Fukuoka", false);
 
+  Question question4 = Question("Trick question?");
+  question4.addAnswer("yes", false);
+  question4.addAnswer("no", true);
+  question4.addAnswer("maybe", false);
+  question4.addAnswer("nope", true);
   quiz.addQuestion(question1);
   quiz.addQuestion(question2);
   quiz.addQuestion(question3);
+  quiz.addQuestion(question4);
 
   return quiz;
 }

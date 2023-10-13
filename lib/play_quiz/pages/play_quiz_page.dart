@@ -9,36 +9,74 @@ class PlayQuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Listen to the currentIndex.
     context.watch<QuizModel>().currentQuestionIndex;
-    // Retrieve the QuizModel
     QuizModel quiz = context.read<QuizModel>();
-
-    // Get current question & the answers
     Question question = quiz.getCurrentQuestion();
     List answers = quiz.getCurrentAnswers();
-
-    // Build contents
-    List<Widget> quizContents = [
-          Center(child: questionCounter(quiz, 30)),
-          resultCounter(context, 10),
-          // Question title
-          Center(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 75),
-                  child: Text(question.title))),
-        ] +
-        answers
-            .map((answer) => Padding(
-                padding: const EdgeInsets.only(
-                    top: 12.5, bottom: 12.5, left: 25, right: 25),
-                child: AnswerTileWidget(answer: answer)))
-            .toList();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Center(child: Text(quiz.title)),
       ),
-      body: ListView(children: quizContents),
+      body: ListView.builder(
+        itemCount: quiz.isAnswered ? answers.length + 1 : answers.length,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Wrap(
+              children: [
+                Center(child: questionCounter(quiz, 30)),
+                resultCounter(context, 10),
+                Center(
+                    child: Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 75),
+                        child: Text(question.title))),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 12.5, bottom: 12.5, left: 25, right: 25),
+                  child: AnswerTileWidget(answer: answers[index]),
+                ),
+              ],
+            );
+          }
+
+          // If quiz is answered, add button
+          if (quiz.isAnswered && index == answers.length) {
+            // If on last question, add "Quiz Result" button
+            if (quiz.currentQuestionIndex + 1 == quiz.getNumberOfQuestions()) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+                child: TextButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).primaryColor),
+                  ),
+                  child: const Text("Quiz Result"),
+                ),
+              );
+            }
+            return Padding(
+              padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+              child: TextButton(
+                onPressed: () {
+                  quiz.getNextQuestion();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).primaryColor),
+                ),
+                child: const Text("Next question"),
+              ),
+            );
+          }
+
+          return Padding(
+            padding: const EdgeInsets.only(
+                top: 12.5, bottom: 12.5, left: 25, right: 25),
+            child: AnswerTileWidget(answer: answers[index]),
+          );
+        },
+      ),
     );
   }
 
@@ -81,34 +119,69 @@ class PlayQuizPage extends StatelessWidget {
   }
 }
 
-class AnswerTileWidget extends StatelessWidget {
+class AnswerTileWidget extends StatefulWidget {
   const AnswerTileWidget({
     super.key,
     required this.answer,
   });
   final Answer answer;
+
+  @override
+  State<AnswerTileWidget> createState() => _AnswerTileWidgetState();
+}
+
+class _AnswerTileWidgetState extends State<AnswerTileWidget> {
+  // Keep track of which listTile was tapped.
+  bool wasTapped = false;
   @override
   Widget build(BuildContext context) {
+    // Be notified on changes to the variable.
+    context.watch<QuizModel>().isAnswered;
+    // Get reference but don't listen to changes
+    QuizModel quiz = context.read<QuizModel>();
+    Color color = Theme.of(context).primaryColor;
+
+    if (quiz.isAnswered) {
+      // Check if the tile wasTapped and set correct color
+      if (wasTapped) {
+        if (widget.answer.isCorrect) {
+          color = Colors.greenAccent;
+        } else {
+          color = Colors.redAccent;
+        }
+      }
+      // If it wasnt tapped but was also a correct answer, set to green.
+      else if (widget.answer.isCorrect) {
+        // Update color
+        color = Colors.greenAccent;
+      }
+    }
+    // IF quiz is not answered reset wasTapped to false.
+    else {
+      wasTapped = false;
+    }
     return ListTile(
-      title: Center(child: Text(answer.text)),
-
+      title: Center(child: Text(widget.answer.text)),
       onTap: () {
-        // Get reference but don't listen to changes
-        QuizModel quiz = context.read<QuizModel>();
-
-        if (answer.isCorrect) {
+        wasTapped = true;
+        if (widget.answer.isCorrect) {
           quiz.incrementNoCorrect();
         } else {
           quiz.incrementNoIncorrect();
         }
-        quiz.getNextQuestion();
+        quiz.updateIsAnswered();
       },
 
       // Styling
-      tileColor: Theme.of(context).primaryColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
-      ),
+      tileColor: color,
+      // Highlight tapped listTile.
+      shape: wasTapped
+          ? RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+              side: const BorderSide(color: Colors.black, width: 2))
+          : RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
     );
   }
 }
