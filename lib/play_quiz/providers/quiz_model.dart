@@ -20,6 +20,26 @@ class QuizModel extends ChangeNotifier {
   // Save question
   QuizModel();
 
+  // Set quiz and reset all variables
+  void setQuiz(Quiz quiz) {
+    _quiz = quiz;
+    currentQuestionIndex = 0;
+    noCorrect = 0;
+    noIncorrect = 0;
+    isAnswered = false;
+    _doneQuestions = [];
+    notifyListeners();
+  }
+
+  void resetQuiz() {
+    currentQuestionIndex = 0;
+    noCorrect = 0;
+    noIncorrect = 0;
+    isAnswered = false;
+    _doneQuestions = [];
+    notifyListeners();
+  }
+
   void addDoneQuestion(Answer answer) {
     if (!isAnswered) {
       if (_doneQuestions.isEmpty) {
