@@ -27,7 +27,7 @@ class QuestionResultPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView.builder(
-        itemCount: noCorrectAnswers,
+        itemCount: noCorrectAnswers + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             buildList.addAll(
@@ -44,6 +44,20 @@ class QuestionResultPage extends StatelessWidget {
           if (index < noCorrectAnswers) {
             return AnswerCardTile(answer: correctAnswers[index]);
           }
+
+          return Padding(
+            padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+            child: TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).primaryColor),
+              ),
+              child: const Text("Back"),
+            ),
+          );
         },
       ),
     );
