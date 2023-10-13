@@ -28,30 +28,11 @@ class PlayQuizPage extends StatelessWidget {
                 // If index 0, put the question
                 children: index == 0
                     ? <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Text(
-                              "Question : ${quiz.currentQuestionIndex + 1} / ${quiz.getNumberOfQuestions()}"),
-                        ),
-                        // Counter for correct / incorrent answers
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            iconText(
-                                10,
-                                "${context.watch<QuizModel>().noCorrect}",
-                                Icons.check_circle_rounded,
-                                Colors.green),
-                            iconText(
-                                10,
-                                "${context.watch<QuizModel>().noIncorrect}",
-                                Icons.cancel,
-                                Colors.red),
-                          ],
-                        ),
-
+                        questionCounter(quiz, 20),
+                        resultCounter(context),
                         // Question title
                         Text(question.title),
+
                         Padding(
                           padding: const EdgeInsets.only(top: 150),
                           child: AnswerTileWidget(answer: answers[index]),
@@ -66,6 +47,26 @@ class PlayQuizPage extends StatelessWidget {
               );
             }),
       ),
+    );
+  }
+
+  Row resultCounter(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        iconText(10, "${context.watch<QuizModel>().noCorrect}",
+            Icons.check_circle_rounded, Colors.green),
+        iconText(10, "${context.watch<QuizModel>().noIncorrect}", Icons.cancel,
+            Colors.red),
+      ],
+    );
+  }
+
+  Padding questionCounter(QuizModel quiz, double topPadding) {
+    return Padding(
+      padding: EdgeInsets.only(top: topPadding),
+      child: Text(
+          "Question : ${quiz.currentQuestionIndex + 1} / ${quiz.getNumberOfQuestions()}"),
     );
   }
 
