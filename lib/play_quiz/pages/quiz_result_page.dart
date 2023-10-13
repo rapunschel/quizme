@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/quiz_model.dart';
+import 'question_result_page.dart';
 
 class QuizResultPage extends StatelessWidget {
   const QuizResultPage({super.key});
@@ -31,7 +32,7 @@ class QuizResultPage extends StatelessWidget {
               if (correctQuestions.isNotEmpty) {
                 buildList.addAll([
                   const Text("Questions you got right"),
-                  QuestionTileWidget(question: correctQuestions[index].$1),
+                  QuestionTileWidget(questionRecord: correctQuestions[index]),
                 ]);
                 return Column(children: buildList);
               }
@@ -42,16 +43,16 @@ class QuizResultPage extends StatelessWidget {
               // Keep returning correct questions
 
               if (index < correctQuestions.length) {
-                return QuestionTileWidget(question: correctQuestions[index].$1);
+                return QuestionTileWidget(
+                    questionRecord: correctQuestions[index]);
               }
 
               if (index == numberOfQuestions - incorrectQuestions.length) {
                 buildList.addAll([
                   const Text("Questions you got wrong"),
                   QuestionTileWidget(
-                    question:
-                        incorrectQuestions[index % incorrectQuestions.length]
-                            .$1,
+                    questionRecord:
+                        incorrectQuestions[index % incorrectQuestions.length],
                   )
                 ]);
                 return Column(
@@ -60,8 +61,8 @@ class QuizResultPage extends StatelessWidget {
               }
 
               return QuestionTileWidget(
-                question:
-                    incorrectQuestions[index % incorrectQuestions.length].$1,
+                questionRecord:
+                    incorrectQuestions[index % incorrectQuestions.length],
               );
             }
 
@@ -90,10 +91,10 @@ class QuizResultPage extends StatelessWidget {
 class QuestionTileWidget extends StatelessWidget {
   const QuestionTileWidget({
     super.key,
-    required this.question,
+    required this.questionRecord,
   });
 
-  final Question question;
+  final (Question, Answer) questionRecord;
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +103,15 @@ class QuestionTileWidget extends StatelessWidget {
           const EdgeInsets.only(top: 12.5, bottom: 12.5, left: 25, right: 25),
       child: ListTile(
         onTap: () {
-          //TODO Go to question page
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    QuestionResultPage(question: questionRecord),
+              ));
         },
         title: Text(
-          question.title,
+          questionRecord.$1.title,
           textAlign: TextAlign.center,
         ),
         tileColor: Theme.of(context).primaryColor,
