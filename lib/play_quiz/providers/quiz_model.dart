@@ -6,12 +6,31 @@ class QuizModel extends ChangeNotifier {
   // Index for current question
   int currentQuestionIndex = 0;
 
-  // Counters for guesses
+  // Counters for answered questions
   int noCorrect = 0;
   int noIncorrect = 0;
 
+  // Flag to check if current question has been answered
+  bool isCurrQuestionAnswered = false;
+
   QuizModel();
 
+  // Update counters
+  void incrementNoCorrect() {
+    if (noCorrect + noIncorrect <= currentQuestionIndex) {
+      noCorrect++;
+      notifyListeners();
+    }
+  }
+
+  void incrementNoIncorrect() {
+    if (noCorrect + noIncorrect <= currentQuestionIndex) {
+      noIncorrect++;
+      notifyListeners();
+    }
+  }
+
+  // Getters
   int getNumberOfQuestions() {
     return quiz!.questions.length;
   }
@@ -23,6 +42,8 @@ class QuizModel extends ChangeNotifier {
   Question getCurrentQuestion() {
     return quiz!.questions[currentQuestionIndex];
   }
+
+  get title => quiz!.title;
 
   void getNextQuestion() {
     // Only increment if we are in range.

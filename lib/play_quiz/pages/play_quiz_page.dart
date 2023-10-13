@@ -9,18 +9,16 @@ class PlayQuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Listen to the currentIndex.
     context.watch<QuizModel>().currentQuestionIndex;
-
     // Retrieve the QuizModel
     QuizModel quiz = context.read<QuizModel>();
 
     // Get current question & the answers
     Question question = quiz.getCurrentQuestion();
     List answers = quiz.getCurrentAnswers();
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        //  title: Center(child: Text(quiz.title)),
+        title: Center(child: Text(quiz.title)),
       ),
       body: Center(
         child: ListView.builder(
@@ -30,22 +28,58 @@ class PlayQuizPage extends StatelessWidget {
                 // If index 0, put the question
                 children: index == 0
                     ? <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Text(
+                              "Question : ${quiz.currentQuestionIndex + 1} / ${quiz.getNumberOfQuestions()}"),
+                        ),
+                        // Counter for correct / incorrent answers
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            iconText(
+                                10,
+                                "${context.watch<QuizModel>().noCorrect}",
+                                Icons.check_circle_rounded,
+                                Colors.green),
+                            iconText(
+                                10,
+                                "${context.watch<QuizModel>().noIncorrect}",
+                                Icons.cancel,
+                                Colors.red),
+                          ],
+                        ),
+
                         // Question title
                         Text(question.title),
-                        // Put space between
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 150),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 150),
+                          child: AnswerTileWidget(answer: answers[index]),
                         ),
-                        AnswerTileWidget(answer: answers[index]),
                       ]
                     : <Widget>[
-                        const Padding(padding: EdgeInsets.only(top: 25)),
-                        AnswerTileWidget(
-                          answer: answers[index],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25),
+                          child: AnswerTileWidget(answer: answers[index]),
                         ),
                       ],
               );
             }),
+      ),
+    );
+  }
+
+  Padding iconText(double rightPadding, String text, var icon, var color) {
+    return Padding(
+      padding: EdgeInsets.only(right: rightPadding),
+      child: Wrap(
+        children: [
+          Icon(
+            icon,
+            color: color,
+          ),
+          Text(text),
+        ],
       ),
     );
   }
@@ -63,11 +97,15 @@ class AnswerTileWidget extends StatelessWidget {
       title: Center(child: Text(answer.text)),
 
       onTap: () {
-        // TODO Listen if an answer been pressed,
-        // update listTile color based on correct / wrong
+        // Get reference but don't listen to changes
+        QuizModel quiz = context.read<QuizModel>();
+
         if (answer.isCorrect) {
-          context.read<QuizModel>().getNextQuestion();
+          quiz.incrementNoCorrect();
+        } else {
+          quiz.incrementNoIncorrect();
         }
+        quiz.getNextQuestion();
       },
 
       // Styling
