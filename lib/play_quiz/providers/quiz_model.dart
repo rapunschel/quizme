@@ -1,9 +1,7 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 
 class QuizModel extends ChangeNotifier {
-  Quiz? quiz = initiateQuiz();
+  Quiz _quiz = initiateQuiz();
 
   // Index for current question
   int currentQuestionIndex = 0;
@@ -15,15 +13,35 @@ class QuizModel extends ChangeNotifier {
   // Flag to check if current question has been answered
   bool isAnswered = false;
 
-  // hashmap for storing answered question
-  final Map<Question, Answer> _doneQuestions = HashMap();
+  // List of lists to keep track of correct /incorrect answered questions
+  int correctQuestionsIndex = 0;
+  int incorrectQuestionsIndex = 1;
+  List<List<(Question, Answer)>> _doneQuestions = [];
   // Save question
   QuizModel();
 
   void addDoneQuestion(Answer answer) {
     if (!isAnswered) {
-      _doneQuestions[getCurrentQuestion()] = answer;
+      if (_doneQuestions.isEmpty) {
+        // Initialize with 2 empty lists
+        _doneQuestions = [[], []];
+      }
+      if (answer.isCorrect) {
+        _doneQuestions[correctQuestionsIndex]
+            .add((getCurrentQuestion(), answer));
+        return;
+      }
+      _doneQuestions[incorrectQuestionsIndex]
+          .add((getCurrentQuestion(), answer));
     }
+  }
+
+  List<(Question, Answer)> getCorrectQuestions() {
+    return _doneQuestions[correctQuestionsIndex];
+  }
+
+  List<(Question, Answer)> getIncorrectQuestions() {
+    return _doneQuestions[incorrectQuestionsIndex];
   }
 
   void updateIsAnswered() {
@@ -53,24 +71,24 @@ class QuizModel extends ChangeNotifier {
 
   // Getters
   int getNumberOfQuestions() {
-    return quiz!.questions.length;
+    return _quiz!.questions.length;
   }
 
   List getCurrentAnswers() {
-    return quiz!.questions[currentQuestionIndex].answers;
+    return _quiz!.questions[currentQuestionIndex].answers;
   }
 
   Question getCurrentQuestion() {
-    return quiz!.questions[currentQuestionIndex];
+    return _quiz!.questions[currentQuestionIndex];
   }
 
-  get title => quiz!.title;
+  get title => _quiz!.title;
 
   void getNextQuestion() {
     // Reset isAnswered
     isAnswered = false;
     // Only increment if we are in range.
-    if (currentQuestionIndex < quiz!.questions.length - 1) {
+    if (currentQuestionIndex < _quiz!.questions.length - 1) {
       currentQuestionIndex++;
       notifyListeners();
     }
@@ -114,7 +132,7 @@ Quiz initiateQuiz() {
 // Classes to model a quiz
 class Quiz {
   String title;
-  List questions = [];
+  List<Question> questions = [];
 
   Quiz(this.title);
 
