@@ -91,24 +91,24 @@ class QuizModel extends ChangeNotifier {
 
   // Getters
   int getNumberOfQuestions() {
-    return _quiz!.questions.length;
+    return _quiz.questions.length;
   }
 
   List getCurrentAnswers() {
-    return _quiz!.questions[currentQuestionIndex].answers;
+    return _quiz.questions[currentQuestionIndex].answers;
   }
 
   Question getCurrentQuestion() {
-    return _quiz!.questions[currentQuestionIndex];
+    return _quiz.questions[currentQuestionIndex];
   }
 
-  get title => _quiz!.title;
+  get title => _quiz.title;
 
   void getNextQuestion() {
     // Reset isAnswered
     isAnswered = false;
     // Only increment if we are in range.
-    if (currentQuestionIndex < _quiz!.questions.length - 1) {
+    if (currentQuestionIndex < _quiz.questions.length - 1) {
       currentQuestionIndex++;
       notifyListeners();
     }
