@@ -15,50 +15,60 @@ class PlayQuizPage extends StatelessWidget {
     // Get current question & the answers
     Question question = quiz.getCurrentQuestion();
     List answers = quiz.getCurrentAnswers();
+
+    // Build contents
+    List<Widget> quizContents = [
+          Center(child: questionCounter(quiz, 30)),
+          resultCounter(context, 10),
+          // Question title
+          Center(
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 75),
+                  child: Text(question.title))),
+        ] +
+        answers
+            .map((answer) => Padding(
+                padding: const EdgeInsets.only(
+                    top: 12.5, bottom: 12.5, left: 25, right: 25),
+                child: AnswerTileWidget(answer: answer)))
+            .toList();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Center(child: Text(quiz.title)),
       ),
-      body: Center(
-        child: ListView.builder(
-            itemCount: answers.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                // If index 0, put the question
-                children: index == 0
-                    ? <Widget>[
-                        questionCounter(quiz, 20),
-                        resultCounter(context),
-                        // Question title
-                        Text(question.title),
-
-                        Padding(
-                          padding: const EdgeInsets.only(top: 150),
-                          child: AnswerTileWidget(answer: answers[index]),
-                        ),
-                      ]
-                    : <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 25),
-                          child: AnswerTileWidget(answer: answers[index]),
-                        ),
-                      ],
-              );
-            }),
-      ),
+      body: ListView(children: quizContents),
     );
   }
 
-  Row resultCounter(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        iconText(10, "${context.watch<QuizModel>().noCorrect}",
-            Icons.check_circle_rounded, Colors.green),
-        iconText(10, "${context.watch<QuizModel>().noIncorrect}", Icons.cancel,
-            Colors.red),
-      ],
+  Padding resultCounter(BuildContext context, double topPadding) {
+    Padding iconText(double rightPadding, String text, var icon, var color) {
+      return Padding(
+        padding: EdgeInsets.only(right: rightPadding),
+        child: Wrap(
+          children: [
+            Icon(
+              icon,
+              color: color,
+            ),
+            Text(text),
+          ],
+        ),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(top: topPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          iconText(10, "${context.watch<QuizModel>().noCorrect}",
+              Icons.check_circle_rounded, Colors.green),
+          iconText(10, "${context.watch<QuizModel>().noIncorrect}",
+              Icons.cancel, Colors.red),
+        ],
+      ),
     );
   }
 
@@ -67,21 +77,6 @@ class PlayQuizPage extends StatelessWidget {
       padding: EdgeInsets.only(top: topPadding),
       child: Text(
           "Question : ${quiz.currentQuestionIndex + 1} / ${quiz.getNumberOfQuestions()}"),
-    );
-  }
-
-  Padding iconText(double rightPadding, String text, var icon, var color) {
-    return Padding(
-      padding: EdgeInsets.only(right: rightPadding),
-      child: Wrap(
-        children: [
-          Icon(
-            icon,
-            color: color,
-          ),
-          Text(text),
-        ],
-      ),
     );
   }
 }
