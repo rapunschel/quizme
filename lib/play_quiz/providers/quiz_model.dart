@@ -24,7 +24,6 @@ class QuizModel extends ChangeNotifier {
     if (!isAnswered) {
       _doneQuestions[getCurrentQuestion()] = answer;
     }
-    print(_doneQuestions);
   }
 
   void updateIsAnswered() {
