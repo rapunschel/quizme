@@ -21,72 +21,78 @@ class PlayQuizPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView.builder(
+        // If quiz is answered, add +1 to account for button
         itemCount: quiz.isAnswered ? answers.length + 1 : answers.length,
         itemBuilder: (context, index) {
+          // Add the counters and question and first answer option.
           if (index == 0) {
             return Wrap(
               children: [
-                Center(child: questionCounter(quiz, 30)),
+                Center(child: questionCounter(quiz, 20)),
                 resultCounter(context, 10),
-                Center(
-                    child: Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 75),
-                        child: Text(question.title))),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 12.5, bottom: 12.5, left: 25, right: 25),
-                  child: AnswerTileWidget(answer: answers[index]),
-                ),
+                Center(child: questionTitleWidget(question)),
+                AnswerTileWidget(answer: answers[index]),
               ],
             );
           }
 
-          // If quiz is answered, add button
+          // Finished adding all answers, add the correct button
           if (quiz.isAnswered && index == answers.length) {
             // If on last question, add "Quiz Result" button
             if (quiz.currentQuestionIndex + 1 == quiz.getNumberOfQuestions()) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const QuizResultPage(),
-                      ),
-                    );
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Theme.of(context).primaryColor),
-                  ),
-                  child: const Text("Quiz Result"),
-                ),
-              );
+              return quizResultButton(context);
             }
-            return Padding(
-              padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
-              child: TextButton(
-                onPressed: () {
-                  quiz.getNextQuestion();
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).primaryColor),
-                ),
-                child: const Text("Next question"),
-              ),
-            );
+            // Not on last question, put "next question "button"
+            return nextQuestionButton(quiz, context);
           }
 
-          return Padding(
-            padding: const EdgeInsets.only(
-                top: 12.5, bottom: 12.5, left: 25, right: 25),
-            child: AnswerTileWidget(answer: answers[index]),
-          );
+          return AnswerTileWidget(answer: answers[index]);
         },
       ),
     );
+  }
+
+  Padding nextQuestionButton(QuizModel quiz, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+      child: TextButton(
+        onPressed: () {
+          quiz.getNextQuestion();
+        },
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+        ),
+        child: const Text("Next question"),
+      ),
+    );
+  }
+
+  Padding quizResultButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+      child: TextButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const QuizResultPage(),
+            ),
+          );
+        },
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+        ),
+        child: const Text("Quiz Result"),
+      ),
+    );
+  }
+
+  Padding questionTitleWidget(Question question) {
+    return Padding(
+        padding: const EdgeInsets.only(top: 45, bottom: 75),
+        child: Text(question.title));
   }
 
   Padding resultCounter(BuildContext context, double topPadding) {
@@ -161,38 +167,41 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
       }
       // If it wasnt tapped but was also a correct answer, set to green.
       else if (widget.answer.isCorrect) {
-        // Update color
         color = Colors.greenAccent;
       }
     }
-    // IF quiz is not answered reset wasTapped to false.
+    // If quiz is not answered reset wasTapped to false.
     else {
       wasTapped = false;
     }
-    return ListTile(
-      title: Center(child: Text(widget.answer.text)),
-      onTap: () {
-        wasTapped = true;
-        if (widget.answer.isCorrect) {
-          quiz.incrementNoCorrect();
-        } else {
-          quiz.incrementNoIncorrect();
-        }
-        // addDoneQuestion() must be called before update.
-        quiz.addDoneQuestion(widget.answer);
-        quiz.updateIsAnswered();
-      },
+    return Padding(
+      padding:
+          const EdgeInsets.only(top: 12.5, bottom: 12.5, left: 25, right: 25),
+      child: ListTile(
+        title: Center(child: Text(widget.answer.text)),
+        onTap: () {
+          wasTapped = true;
+          if (widget.answer.isCorrect) {
+            quiz.incrementNoCorrect();
+          } else {
+            quiz.incrementNoIncorrect();
+          }
+          // addDoneQuestion() must be called before update.
+          quiz.addDoneQuestion(widget.answer);
+          quiz.updateIsAnswered();
+        },
 
-      // Styling
-      tileColor: color,
-      // Highlight tapped listTile.
-      shape: wasTapped
-          ? RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-              side: const BorderSide(color: Colors.black, width: 2))
-          : RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
+        // Styling
+        tileColor: color,
+        // Highlight tapped listTile.
+        shape: wasTapped
+            ? RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+                side: const BorderSide(color: Colors.black, width: 2))
+            : RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+      ),
     );
   }
 }
