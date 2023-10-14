@@ -25,16 +25,23 @@ class QuizResultPage extends StatelessWidget {
 
             // If index is 0, add Score title & counter for correct questions.
             if (index == 0) {
-              buildList.add(const Padding(
-                  padding: EdgeInsets.only(top: 20), child: Text("Score")));
-              buildList.add(Text(
-                  "You answered ${quiz.noCorrect} out of $numberOfQuestions questions correctly!"));
+              buildList.add(Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 10),
+                child: Text("Score",
+                    style: Theme.of(context).textTheme.titleLarge),
+              ));
+              buildList.add(
+                Text(
+                    "You answered ${quiz.noCorrect} out of $numberOfQuestions questions correctly!",
+                    style: Theme.of(context).textTheme.bodyLarge),
+              );
               // Append first question tile if not empty.
               if (correctQuestions.isNotEmpty) {
                 buildList.addAll([
-                  const Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: Text("Questions you got right")),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Text("Questions you got right",
+                          style: Theme.of(context).textTheme.titleMedium)),
                   QuestionTileWidget(questionRecord: correctQuestions[index]),
                 ]);
                 return Column(children: buildList);
@@ -51,9 +58,10 @@ class QuizResultPage extends StatelessWidget {
 
               if (index == numberOfQuestions - incorrectQuestions.length) {
                 buildList.addAll([
-                  const Padding(
-                    padding: EdgeInsets.only(top: 30),
-                    child: Text("Questions you got wrong"),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Text("Questions you got wrong",
+                        style: Theme.of(context).textTheme.titleMedium),
                   ),
                   QuestionTileWidget(
                     questionRecord:
@@ -118,6 +126,7 @@ class QuestionTileWidget extends StatelessWidget {
         title: Text(
           questionRecord.$1.title,
           textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
         tileColor: Theme.of(context).primaryColor,
         trailing: const Icon(Icons.chevron_right),

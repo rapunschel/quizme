@@ -28,9 +28,9 @@ class PlayQuizPage extends StatelessWidget {
           if (index == 0) {
             return Wrap(
               children: [
-                Center(child: questionCounter(quiz, 20)),
+                Center(child: questionCounter(context, quiz, 20)),
                 resultCounter(context, 10),
-                Center(child: questionTitleWidget(question)),
+                Center(child: questionTitleWidget(context, question)),
                 AnswerTileWidget(answer: answers[index]),
               ],
             );
@@ -89,10 +89,12 @@ class PlayQuizPage extends StatelessWidget {
     );
   }
 
-  Padding questionTitleWidget(Question question) {
+  Padding questionTitleWidget(BuildContext context, Question question) {
     return Padding(
-        padding: const EdgeInsets.only(top: 45, bottom: 75),
-        child: Text(question.title));
+      padding: const EdgeInsets.only(top: 45, bottom: 75),
+      child:
+          Text(question.title, style: Theme.of(context).textTheme.titleMedium),
+    );
   }
 
   Padding resultCounter(BuildContext context, double topPadding) {
@@ -105,7 +107,7 @@ class PlayQuizPage extends StatelessWidget {
               icon,
               color: color,
             ),
-            Text(text),
+            Text(text, style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
       );
@@ -125,11 +127,12 @@ class PlayQuizPage extends StatelessWidget {
     );
   }
 
-  Padding questionCounter(QuizModel quiz, double topPadding) {
+  Padding questionCounter(BuildContext context, quiz, double topPadding) {
     return Padding(
       padding: EdgeInsets.only(top: topPadding),
       child: Text(
-          "Question : ${quiz.currentQuestionIndex + 1} / ${quiz.getNumberOfQuestions()}"),
+          "Question : ${quiz.currentQuestionIndex + 1} / ${quiz.getNumberOfQuestions()}",
+          style: Theme.of(context).textTheme.titleLarge),
     );
   }
 }
@@ -178,7 +181,10 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
       padding:
           const EdgeInsets.only(top: 12.5, bottom: 12.5, left: 25, right: 25),
       child: ListTile(
-        title: Center(child: Text(widget.answer.text)),
+        title: Center(
+          child: Text(widget.answer.text,
+              style: Theme.of(context).textTheme.bodyLarge),
+        ),
         onTap: () {
           wasTapped = true;
           if (widget.answer.isCorrect) {

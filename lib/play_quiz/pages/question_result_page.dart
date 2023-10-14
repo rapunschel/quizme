@@ -17,16 +17,22 @@ class QuestionResultPage extends StatelessWidget {
     List<Widget> buildList = [];
     buildList.add(Padding(
         padding: const EdgeInsets.only(top: 20),
-        child: Text(question.$1.title)));
-    buildList.add(const Padding(
-        padding: EdgeInsets.only(top: 25), child: Text("You answered")));
+        child: Text(question.$1.title,
+            style: Theme.of(context).textTheme.titleLarge)));
+    buildList.add(
+      Padding(
+        padding: const EdgeInsets.only(top: 25),
+        child: Text("You answered",
+            style: Theme.of(context).textTheme.titleMedium),
+      ),
+    );
     buildList.add(
       AnswerCardTile(answer: question.$2),
     );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(question.$1.title),
+        title: const Text("Question overview"),
         centerTitle: true,
       ),
       body: ListView.builder(
@@ -35,9 +41,10 @@ class QuestionResultPage extends StatelessWidget {
           if (index == 0) {
             buildList.addAll(
               [
-                const Padding(
-                    padding: EdgeInsets.only(top: 25),
-                    child: Text("Correct answer(s)")),
+                Padding(
+                    padding: const EdgeInsets.only(top: 25),
+                    child: Text("Correct answer(s)",
+                        style: Theme.of(context).textTheme.titleMedium)),
                 AnswerCardTile(answer: correctAnswers[index])
               ],
             );
@@ -85,6 +92,7 @@ class AnswerCardTile extends StatelessWidget {
       child: ListTile(
         title: Text(
           answer.text,
+          style: Theme.of(context).textTheme.bodyLarge,
           textAlign: TextAlign.center,
         ),
         tileColor: Theme.of(context).primaryColor,
