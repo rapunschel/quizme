@@ -170,7 +170,7 @@ Quiz initiateQuiz() {
   question6.addAnswer("New York", false);
 
   Question question7 = Question("What's the capital of China?");
-  question7.addAnswer("Beijing", false);
+  question7.addAnswer("Beijing", true);
   question7.addAnswer("Chongqing", false);
   question7.addAnswer("Changsha", false);
   question7.addAnswer("Shanghai", false);
