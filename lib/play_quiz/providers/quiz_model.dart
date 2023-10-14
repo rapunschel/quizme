@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class QuizModel extends ChangeNotifier {
-  Quiz _quiz = initiateQuiz();
+  Quiz _quiz;
+
+  // Save list of questions
+  List? questions;
+  List? currentQanswers;
 
   // Index for current question
   int currentQuestionIndex = 0;
@@ -18,7 +22,10 @@ class QuizModel extends ChangeNotifier {
   int incorrectQuestionsIndex = 1;
   List<List<(Question, Answer)>> _doneQuestions = [];
   // Save question
-  QuizModel();
+  QuizModel(this._quiz) {
+    questions = _quiz.questions;
+    currentQanswers = questions![currentQuestionIndex].answers;
+  }
 
   // Set quiz and reset all variables
   void setQuiz(Quiz quiz) {
@@ -28,16 +35,20 @@ class QuizModel extends ChangeNotifier {
     noIncorrect = 0;
     isAnswered = false;
     _doneQuestions = [];
+    questions = quiz.questions;
+    // Shuffle questions so they dont appear in same order if quiz taken twice
+    questions!.shuffle();
+    currentQanswers = questions![currentQuestionIndex].answers;
+    // Shuffle answers
+    currentQanswers!.shuffle();
+
+    // Shuffle the questions and current answers
     notifyListeners();
   }
 
   void resetQuiz() {
-    currentQuestionIndex = 0;
-    noCorrect = 0;
-    noIncorrect = 0;
-    isAnswered = false;
-    _doneQuestions = [];
-    notifyListeners();
+    // Reset simply by setting the same quiz again
+    setQuiz(_quiz);
   }
 
   void addDoneQuestion(Answer answer) {
@@ -91,15 +102,15 @@ class QuizModel extends ChangeNotifier {
 
   // Getters
   int getNumberOfQuestions() {
-    return _quiz.questions.length;
+    return questions!.length;
   }
 
   List getCurrentAnswers() {
-    return _quiz.questions[currentQuestionIndex].answers;
+    return currentQanswers!;
   }
 
   Question getCurrentQuestion() {
-    return _quiz.questions[currentQuestionIndex];
+    return questions![currentQuestionIndex];
   }
 
   get title => _quiz.title;
@@ -108,14 +119,17 @@ class QuizModel extends ChangeNotifier {
     // Reset isAnswered
     isAnswered = false;
     // Only increment if we are in range.
-    if (currentQuestionIndex < _quiz.questions.length - 1) {
+    if (currentQuestionIndex < questions!.length - 1) {
       currentQuestionIndex++;
+      // Update current answers and shuffle the answers
+      currentQanswers = questions![currentQuestionIndex].answers;
+      currentQanswers!.shuffle();
       notifyListeners();
     }
   }
 }
 
-// All below for test run only, delete later
+// All below for test run
 Quiz initiateQuiz() {
   Quiz quiz = Quiz("Capital of countries");
 

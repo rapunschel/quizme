@@ -14,7 +14,8 @@ class Play extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => QuizModel(),
+      // Quizmodel takes a default quiz, update later with setQuiz.
+      create: (context) => QuizModel(initiateQuiz()),
       child: MaterialApp(
         title: 'quiz run test',
         theme: ThemeData(
