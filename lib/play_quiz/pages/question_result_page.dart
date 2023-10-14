@@ -15,8 +15,11 @@ class QuestionResultPage extends StatelessWidget {
 
     // Initialize list with user's answer
     List<Widget> buildList = [];
-    buildList.add(Text(question.$1.title));
-    buildList.add(const Text("You answered"));
+    buildList.add(Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Text(question.$1.title)));
+    buildList.add(const Padding(
+        padding: EdgeInsets.only(top: 25), child: Text("You answered")));
     buildList.add(
       AnswerCardTile(answer: question.$2),
     );
@@ -32,7 +35,9 @@ class QuestionResultPage extends StatelessWidget {
           if (index == 0) {
             buildList.addAll(
               [
-                const Text("Correct answers"),
+                const Padding(
+                    padding: EdgeInsets.only(top: 25),
+                    child: Text("Correct answer(s)")),
                 AnswerCardTile(answer: correctAnswers[index])
               ],
             );

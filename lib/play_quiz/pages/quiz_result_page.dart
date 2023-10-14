@@ -23,15 +23,18 @@ class QuizResultPage extends StatelessWidget {
           itemBuilder: (context, index) {
             List<Widget> buildList = [];
 
-            // If index is 0, add Score title.
+            // If index is 0, add Score title & counter for correct questions.
             if (index == 0) {
-              buildList.add(const Text("Score"));
+              buildList.add(const Padding(
+                  padding: EdgeInsets.only(top: 20), child: Text("Score")));
               buildList.add(Text(
                   "You answered ${quiz.noCorrect} out of $numberOfQuestions questions correctly!"));
               // Append first question tile if not empty.
               if (correctQuestions.isNotEmpty) {
                 buildList.addAll([
-                  const Text("Questions you got right"),
+                  const Padding(
+                      padding: EdgeInsets.only(top: 30),
+                      child: Text("Questions you got right")),
                   QuestionTileWidget(questionRecord: correctQuestions[index]),
                 ]);
                 return Column(children: buildList);
@@ -41,7 +44,6 @@ class QuizResultPage extends StatelessWidget {
             // Keep adding questions
             if (index < numberOfQuestions) {
               // Keep returning correct questions
-
               if (index < correctQuestions.length) {
                 return QuestionTileWidget(
                     questionRecord: correctQuestions[index]);
@@ -49,7 +51,10 @@ class QuizResultPage extends StatelessWidget {
 
               if (index == numberOfQuestions - incorrectQuestions.length) {
                 buildList.addAll([
-                  const Text("Questions you got wrong"),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child: Text("Questions you got wrong"),
+                  ),
                   QuestionTileWidget(
                     questionRecord:
                         incorrectQuestions[index % incorrectQuestions.length],
