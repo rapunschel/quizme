@@ -32,7 +32,7 @@ class QuizResultPage extends StatelessWidget {
               ));
               buildList.add(
                 Text(
-                    "You answered ${quiz.noCorrect} out of $numberOfQuestions questions correctly!",
+                    "You scored ${quiz.noCorrect} out of $numberOfQuestions questions!",
                     style: Theme.of(context).textTheme.bodyLarge),
               );
               // Append first question tile if not empty.

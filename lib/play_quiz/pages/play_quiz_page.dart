@@ -91,7 +91,8 @@ class PlayQuizPage extends StatelessWidget {
 
   Padding questionTitleWidget(BuildContext context, Question question) {
     return Padding(
-      padding: const EdgeInsets.only(top: 45, bottom: 45),
+      padding:
+          const EdgeInsets.only(top: 45, bottom: 45, left: 12.5, right: 12.5),
       child:
           Text(question.title, style: Theme.of(context).textTheme.titleMedium),
     );

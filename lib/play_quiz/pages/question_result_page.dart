@@ -16,7 +16,7 @@ class QuestionResultPage extends StatelessWidget {
     // Initialize list with user's answer
     List<Widget> buildList = [];
     buildList.add(Padding(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 20, left: 12.5, right: 12.5),
         child: Text(question.$1.title,
             style: Theme.of(context).textTheme.titleLarge)));
     buildList.add(
