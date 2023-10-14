@@ -81,7 +81,8 @@ class QuizResultPage extends StatelessWidget {
 
             // No more question to add, add button.
             return Padding(
-              padding: const EdgeInsets.only(top: 25, left: 115, right: 115),
+              padding: const EdgeInsets.only(
+                  top: 25, left: 115, right: 115, bottom: 50),
               child: TextButton(
                 onPressed: () {
                   quiz.resetQuiz();
