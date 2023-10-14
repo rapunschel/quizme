@@ -54,7 +54,7 @@ class PlayQuizPage extends StatelessWidget {
 
   Padding nextQuestionButton(QuizModel quiz, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+      padding: const EdgeInsets.only(top: 25, left: 115, right: 115),
       child: TextButton(
         onPressed: () {
           quiz.getNextQuestion();
@@ -70,7 +70,7 @@ class PlayQuizPage extends StatelessWidget {
 
   Padding quizResultButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+      padding: const EdgeInsets.only(top: 25, left: 115, right: 115),
       child: TextButton(
         onPressed: () {
           Navigator.push(

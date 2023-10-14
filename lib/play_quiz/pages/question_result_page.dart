@@ -58,7 +58,7 @@ class QuestionResultPage extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+            padding: const EdgeInsets.only(top: 25, left: 115, right: 115),
             child: TextButton(
               onPressed: () {
                 Navigator.pop(context);
