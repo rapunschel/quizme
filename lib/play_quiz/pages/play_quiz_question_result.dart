@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../providers/quiz_model.dart';
+import '../widgets/reuseable_widgets.dart';
 
 class QuestionResultPage extends StatelessWidget {
   const QuestionResultPage({super.key, required this.question});
@@ -86,10 +87,8 @@ class AnswerCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 12.5, bottom: 12.5, left: 25, right: 25),
-      child: ListTile(
+    return playQuizTilePadding(
+      ListTile(
         title: Text(
           answer.text,
           style: Theme.of(context).textTheme.bodyLarge,

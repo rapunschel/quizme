@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/quiz_model.dart';
-import '../pages/quiz_result_page.dart';
+import 'play_quiz_result.dart';
+import '../widgets/reuseable_widgets.dart';
 
 class PlayQuizPage extends StatelessWidget {
   const PlayQuizPage({super.key});
@@ -178,37 +179,33 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
     else {
       wasTapped = false;
     }
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 12.5, bottom: 12.5, left: 25, right: 25),
-      child: ListTile(
-        title: Center(
-          child: Text(widget.answer.text,
-              style: Theme.of(context).textTheme.bodyLarge),
-        ),
-        onTap: () {
-          wasTapped = true;
-          if (widget.answer.isCorrect) {
-            quiz.incrementNoCorrect();
-          } else {
-            quiz.incrementNoIncorrect();
-          }
-          // addDoneQuestion() must be called before update.
-          quiz.addDoneQuestion(widget.answer);
-          quiz.updateIsAnswered();
-        },
-
-        // Styling
-        tileColor: color,
-        // Highlight tapped listTile.
-        shape: wasTapped
-            ? RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
-                side: const BorderSide(color: Colors.black, width: 2))
-            : RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
-              ),
+    return playQuizTilePadding(ListTile(
+      title: Center(
+        child: Text(widget.answer.text,
+            style: Theme.of(context).textTheme.bodyLarge),
       ),
-    );
+      onTap: () {
+        wasTapped = true;
+        if (widget.answer.isCorrect) {
+          quiz.incrementNoCorrect();
+        } else {
+          quiz.incrementNoIncorrect();
+        }
+        // addDoneQuestion() must be called before update.
+        quiz.addDoneQuestion(widget.answer);
+        quiz.updateIsAnswered();
+      },
+
+      // Styling
+      tileColor: color,
+      // Highlight tapped listTile.
+      shape: wasTapped
+          ? RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+              side: const BorderSide(color: Colors.black, width: 2))
+          : RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+    ));
   }
 }

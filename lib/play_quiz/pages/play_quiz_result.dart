@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/quiz_model.dart';
-import 'question_result_page.dart';
+import 'play_quiz_question_result.dart';
+import '../widgets/reuseable_widgets.dart';
 
 class QuizResultPage extends StatelessWidget {
   const QuizResultPage({super.key});
@@ -112,10 +113,8 @@ class QuestionTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 12.5, bottom: 12.5, left: 25, right: 25),
-      child: ListTile(
+    return playQuizTilePadding(
+      ListTile(
         onTap: () {
           Navigator.push(
               context,
