@@ -19,6 +19,7 @@ class QuizResultPage extends StatelessWidget {
           title: Text(quiz.title),
           centerTitle: true,
         ),
+        floatingActionButton: CompleteQuizButton(quiz: quiz),
         body: ListView.builder(
           itemCount: numberOfQuestions + 1,
           itemBuilder: (context, index) {
@@ -80,22 +81,37 @@ class QuizResultPage extends StatelessWidget {
               );
             }
 
-            // No more question to add, add button.
-            return Padding(
-              padding: const EdgeInsets.only(
-                  top: 25, left: 115, right: 115, bottom: 50),
-              child: TextButton(
-                onPressed: () {
-                  quiz.resetQuiz();
-                  //TODO Change to go to homepage.
-
-                  Navigator.pop(context);
-                },
-                child: const Text("Complete Quiz"),
-              ),
+            // Padding between floatingActionButton and last element of listview
+            return const Padding(
+              padding:
+                  EdgeInsets.only(top: 57.5, left: 115, right: 115, bottom: 50),
             );
           },
         ));
+  }
+}
+
+class CompleteQuizButton extends StatelessWidget {
+  const CompleteQuizButton({
+    super.key,
+    required this.quiz,
+  });
+
+  final QuizModel quiz;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 115, right: 115, bottom: 25),
+      child: TextButton(
+        onPressed: () {
+          quiz.resetQuiz();
+          //TODO Change to go to homepage.
+          Navigator.pop(context);
+        },
+        child: const Text("Complete Quiz"),
+      ),
+    );
   }
 }
 
