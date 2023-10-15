@@ -91,10 +91,6 @@ class QuizResultPage extends StatelessWidget {
 
                   Navigator.pop(context);
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).primaryColor),
-                ),
                 child: const Text("Complete Quiz"),
               ),
             );

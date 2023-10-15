@@ -13,13 +13,15 @@ class Play extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color primaryColor = const Color.fromARGB(255, 201, 237, 244);
+    Color buttonColor = const Color.fromARGB(255, 153, 225, 239);
     return ChangeNotifierProvider(
       // Quizmodel takes a default quiz, update later with setQuiz.
       create: (context) => QuizModel(initiateQuiz()),
       child: MaterialApp(
         title: 'quiz run test',
         theme: ThemeData(
-            primaryColor: const Color.fromARGB(255, 192, 241, 251),
+            primaryColor: primaryColor,
             primaryColorLight: Colors.green,
             fontFamily: GoogleFonts.openSans().fontFamily,
             useMaterial3: true,
@@ -28,6 +30,12 @@ class Play extends StatelessWidget {
                   .textTheme
                   .titleLarge!
                   .copyWith(fontWeight: FontWeight.normal),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all<double>(3),
+                backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
+              ),
             ),
             textTheme: const TextTheme(
                 // Global styling, use Theme... to use a specific style

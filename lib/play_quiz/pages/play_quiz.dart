@@ -60,10 +60,6 @@ class PlayQuizPage extends StatelessWidget {
         onPressed: () {
           quiz.getNextQuestion();
         },
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
-        ),
         child: const Text("Next question"),
       ),
     );
@@ -81,10 +77,6 @@ class PlayQuizPage extends StatelessWidget {
             ),
           );
         },
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
-        ),
         child: const Text("Quiz Result"),
       ),
     );
