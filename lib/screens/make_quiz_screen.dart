@@ -1,38 +1,20 @@
 import 'package:flutter/material.dart';
-import 'screens/add_questions_screen.dart';
-import 'main/add_question_main.dart';
-import 'model/question_model.dart';
-import 'screens/question_list_screen.dart';
-import 'model/quiz_class.dart';
-import 'provider_class.dart';
+import 'add_questions_screen.dart';
+import '../create_quiz_add_questions/main/add_question_main.dart';
+import '../create_quiz_add_questions/model/question_model.dart';
+import '../create_quiz_add_questions/screens/question_list_screen.dart';
+import '../create_quiz_add_questions/model/quiz_class.dart';
+import '../providers/quiz_creation_provider.dart';
 import 'package:provider/provider.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MakeQuizScreen extends StatefulWidget {
+  const MakeQuizScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 92, 199, 149)),
-        useMaterial3: true,
-      ),
-      home: const NewQuiz(title: 'Create new Quiz'),
-    );
-  }
+  State<MakeQuizScreen> createState() => _MyHomePageState();
 }
 
-class NewQuiz extends StatefulWidget {
-  const NewQuiz({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<NewQuiz> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<NewQuiz> {
+class _MyHomePageState extends State<MakeQuizScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   List<Quiz> quizzes = [];
@@ -70,7 +52,7 @@ class _MyHomePageState extends State<NewQuiz> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          title: const Text('Make the Quiz'),
           centerTitle: true,
         ),
         body: Padding(
@@ -110,7 +92,7 @@ class _MyHomePageState extends State<NewQuiz> {
                 },
                 child: const Text('Next Step (add questions)'),
               ),
-              const SizedBox(height: 20),
+              /*  const SizedBox(height: 20),
               Expanded(
                 child: QuestionList(),
                 //ListView.builder(
@@ -120,7 +102,7 @@ class _MyHomePageState extends State<NewQuiz> {
                 //    child: ListTile(
                 //      title: Text('Title: ${quizzes[index].title}'),
                 //     subtitle: Text('Description: ${quizzes[index].description}'),
-              ),
+              ), */
             ])));
   }
   // ),

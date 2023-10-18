@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/add_questions_screen.dart'; // Make sure to import the AddQuestionScreen file
+import '../../screens/add_questions_screen.dart'; // Make sure to import the AddQuestionScreen file
 
 void main() => runApp(QuestionApp());
 

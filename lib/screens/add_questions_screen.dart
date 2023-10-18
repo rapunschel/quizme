@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../model/question_model.dart';
-import 'question_list_screen.dart';
-import '../provider_class.dart';
+import '../create_quiz_add_questions/model/question_model.dart';
+import '../create_quiz_add_questions/screens/question_list_screen.dart';
+import '../providers/quiz_creation_provider.dart';
 import 'package:provider/provider.dart';
 
 class AddQuestionScreen extends StatefulWidget {

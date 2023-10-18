@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'model/quiz_class.dart';
-import 'model/question_model.dart';
+import '../create_quiz_add_questions/model/quiz_class.dart';
+import '../create_quiz_add_questions/model/question_model.dart';
 
 class QuizProvider with ChangeNotifier {
   Quiz? currentQuiz; // The current quiz being created
