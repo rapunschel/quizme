@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "122909042976",
+    "project_id": "quiz-g4",
+    "storage_bucket": "quiz-g4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122909042976:android:a3efbcfe169188551c8f45",
+        "android_client_info": {
+          "package_name": "com.example.firebase_learning"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0zbxmMQAosMTv2fvhg9tj-qgHjEiPrAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
