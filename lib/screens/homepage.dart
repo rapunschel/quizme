@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quizme/screens/play_quiz_screen/play_quiz.dart';
+import 'package:quizme/screens/play_quiz_screen/play_quiz_screen.dart';
 import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/quizzes_handler.dart';

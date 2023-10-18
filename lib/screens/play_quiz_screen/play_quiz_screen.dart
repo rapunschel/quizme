@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/quiz_model.dart';
-import 'play_quiz_result.dart';
+import 'quiz_result_screen.dart';
 import '../../widgets/reuseable_widgets.dart';
 
 class PlayQuizScreen extends StatelessWidget {
