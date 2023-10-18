@@ -110,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  style: Theme.of(context).textTheme.bodyLarge,
                   controller: _emailController,
                   decoration: InputDecoration(
                     hintText: 'Email',
@@ -125,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  style: Theme.of(context).textTheme.bodyLarge,
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -162,15 +164,16 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextButton(
                 onPressed: () {},
-                child: const Text('Forgot password?'),
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.deepPurple,
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
                 ),
+                child: const Text('Forgot password?'),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Don\'t have an account? '),
+                  const Text('Don\'t have an account? '),
                   GestureDetector(
                     onTap: openSignupScreen,
                     child: Text(

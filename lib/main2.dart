@@ -5,15 +5,24 @@ import 'providers/quiz_creation_provider.dart';
 import 'providers/quizzes_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/homepage.dart';
-/* import 'screens/play_quiz_screen/play_quiz.dart';
 import 'package:quizme/auth.dart';
 import 'package:quizme/firebase_options.dart';
 import 'package:quizme/screens/login_screen.dart';
 import 'package:quizme/screens/signup_screen.dart';
 import 'package:flutter/foundation.dart';
-import 'package:firebase_core/firebase_core.dart'; */
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const Quiz());
 }
 
@@ -35,17 +44,26 @@ class Quiz extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        home: const HomePage(),
+        debugShowCheckedModeBanner: false,
         theme: appStyling(context),
+        routes: {
+          '/': (context) => const Auth(),
+          'homeScreen': (context) => const HomePage(),
+          'loginScreen': (context) => const LoginScreen(),
+          'signupScreen': (context) => const SignupScreen(),
+        },
       ),
     );
   }
 
   ThemeData appStyling(BuildContext context) {
-    Color primaryColor = const Color.fromARGB(255, 201, 237, 244);
-    Color buttonColor = const Color.fromARGB(255, 153, 225, 239);
+    Color primaryColor = const Color.fromARGB(
+        143, 120, 182, 123); //const Color.fromARGB(255, 201, 237, 244);
+    Color buttonColor = const Color.fromARGB(
+        143, 120, 182, 123); //const Color.fromARGB(255, 153, 225, 239);
     return ThemeData(
         primaryColor: primaryColor,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         fontFamily: GoogleFonts.openSans().fontFamily,
         useMaterial3: true,
         appBarTheme: AppBarTheme(
@@ -56,7 +74,7 @@ class Quiz extends StatelessWidget {
         ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
-            elevation: MaterialStateProperty.all<double>(3),
+            elevation: MaterialStateProperty.all<double>(0),
             backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
           ),
         ),

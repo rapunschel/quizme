@@ -4,6 +4,7 @@ import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/quizzes_handler.dart';
 import '../providers/quiz_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -78,9 +79,20 @@ class HomePage extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: previousQuizzes.length,
+              itemCount: previousQuizzes.length + 1,
               itemBuilder: (context, index) {
-                return QuizCard(quiz: previousQuizzes[index]);
+                if (index < previousQuizzes.length) {
+                  return QuizCard(quiz: previousQuizzes[index]);
+                }
+
+                // Temporary, delete later
+                return MaterialButton(
+                  onPressed: () async {
+                    FirebaseAuth.instance.signOut();
+                  },
+                  color: const Color.fromARGB(255, 243, 187, 5),
+                  child: const Text('Sign out'),
+                );
               },
             ),
           ),
