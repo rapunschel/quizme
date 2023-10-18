@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/quiz_model.dart';
+import '../../providers/quiz_model.dart';
 import 'play_quiz_question_result.dart';
-import '../widgets/reuseable_widgets.dart';
+import '../../widgets/reuseable_widgets.dart';
 
-class QuizResultPage extends StatelessWidget {
-  const QuizResultPage({super.key});
+class QuizResultScreen extends StatelessWidget {
+  const QuizResultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +132,7 @@ class QuestionTileWidget extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    QuestionResultPage(question: questionRecord),
+                    QuestionResultScreen(question: questionRecord),
               ));
         },
         title: Text(

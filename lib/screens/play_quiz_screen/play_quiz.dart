@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/quiz_model.dart';
+import '../../providers/quiz_model.dart';
 import 'play_quiz_result.dart';
-import '../widgets/reuseable_widgets.dart';
+import '../../widgets/reuseable_widgets.dart';
 
-class PlayQuizPage extends StatelessWidget {
-  const PlayQuizPage({super.key});
+class PlayQuizScreen extends StatelessWidget {
+  const PlayQuizScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class PlayQuizPage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const QuizResultPage(),
+              builder: (context) => const QuizResultScreen(),
             ),
           );
         },

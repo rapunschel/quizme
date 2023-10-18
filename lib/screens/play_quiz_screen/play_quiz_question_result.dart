@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../providers/quiz_model.dart';
-import '../widgets/reuseable_widgets.dart';
+import '../../providers/quiz_model.dart';
+import '../../widgets/reuseable_widgets.dart';
 
-class QuestionResultPage extends StatelessWidget {
-  const QuestionResultPage({super.key, required this.question});
+class QuestionResultScreen extends StatelessWidget {
+  const QuestionResultScreen({super.key, required this.question});
 
   final (Question, Answer) question;
 

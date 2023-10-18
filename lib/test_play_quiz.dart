@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/quiz_model.dart';
-import 'pages/play_quiz.dart';
+import 'screens/play_quiz_screen/play_quiz.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -22,7 +22,6 @@ class Play extends StatelessWidget {
         title: 'quiz run test',
         theme: ThemeData(
             primaryColor: primaryColor,
-            primaryColorLight: Colors.green,
             fontFamily: GoogleFonts.openSans().fontFamily,
             useMaterial3: true,
             appBarTheme: AppBarTheme(
@@ -50,7 +49,7 @@ class Play extends StatelessWidget {
                 // Buttons uses labelLarge
                 labelLarge:
                     TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),
-        home: const PlayQuizPage(),
+        home: const PlayQuizScreen(),
       ),
     );
   }
