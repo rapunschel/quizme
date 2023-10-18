@@ -15,10 +15,10 @@ class HomePage extends StatelessWidget {
     final List<Quiz> previousQuizzes = quizHandler.getQuizzes();
 
     return Scaffold(
-      backgroundColor: Colors.white12,
+      //backgroundColor: Colors.white12,
       appBar: AppBar(
         title: const Text('My Sessions', style: TextStyle(fontSize: 20)),
-        backgroundColor: const Color.fromARGB(143, 120, 182, 123),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       floatingActionButton: Tooltip(
         message: 'Create new',
@@ -31,21 +31,17 @@ class HomePage extends StatelessWidget {
               ),
             );
           },
-          backgroundColor: Colors.grey,
+          backgroundColor: Theme.of(context).primaryColor, //Colors.grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
-          label: const Row(
+          label: Row(
             children: [
-              Icon(Icons.add, color: Colors.white),
-              SizedBox(width: 8.0),
-              Text(
-                'Create new',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.0,
-                ),
+              const Icon(
+                Icons.add, /* color: Colors.white */
               ),
+              const SizedBox(width: 8.0),
+              Text('Create new', style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),
@@ -126,7 +122,8 @@ class QuizCard extends StatelessWidget {
       },
       child: Card(
         margin: const EdgeInsets.all(10.0),
-        color: const Color.fromARGB(255, 210, 231, 211),
+        color: Theme.of(context)
+            .primaryColor, //const Color.fromARGB(255, 210, 231, 211),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

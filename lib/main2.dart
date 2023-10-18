@@ -58,9 +58,9 @@ class Quiz extends StatelessWidget {
 
   ThemeData appStyling(BuildContext context) {
     Color primaryColor = const Color.fromARGB(
-        143, 120, 182, 123); //const Color.fromARGB(255, 201, 237, 244);
-    Color buttonColor = const Color.fromARGB(
-        143, 120, 182, 123); //const Color.fromARGB(255, 153, 225, 239);
+        255, 210, 231, 211); //const Color.fromARGB(255, 201, 237, 244);
+    Color buttonColor =
+        primaryColor; //const Color.fromARGB(255, 153, 225, 239);
     return ThemeData(
         primaryColor: primaryColor,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
