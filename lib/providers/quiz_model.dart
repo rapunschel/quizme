@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class QuizModel extends ChangeNotifier {
-  Quiz _quiz;
+  Quiz? _quiz;
 
   // Save list of questions
   List? questions;
@@ -22,10 +22,7 @@ class QuizModel extends ChangeNotifier {
   int incorrectQuestionsIndex = 1;
   List<List<(Question, Answer)>> _doneQuestions = [];
   // Save question
-  QuizModel(this._quiz) {
-    questions = _quiz.questions;
-    currentQanswers = questions![currentQuestionIndex].answers;
-  }
+  QuizModel();
 
   // Set quiz and reset all variables
   void setQuiz(Quiz quiz) {
@@ -39,7 +36,7 @@ class QuizModel extends ChangeNotifier {
     // Shuffle questions so they dont appear in same order if quiz taken twice
     questions!.shuffle();
     currentQanswers = questions![currentQuestionIndex].answers;
-    // Shuffle answers
+    //Shuffle answers
     currentQanswers!.shuffle();
 
     // Shuffle the questions and current answers
@@ -48,7 +45,7 @@ class QuizModel extends ChangeNotifier {
 
   void resetQuiz() {
     // Reset simply by setting the same quiz again
-    setQuiz(_quiz);
+    setQuiz(_quiz!);
   }
 
   void addDoneQuestion(Answer answer) {
@@ -113,7 +110,7 @@ class QuizModel extends ChangeNotifier {
     return questions![currentQuestionIndex];
   }
 
-  get title => _quiz.title;
+  get title => _quiz!.title;
 
   void getNextQuestion() {
     // Reset isAnswered
@@ -130,6 +127,31 @@ class QuizModel extends ChangeNotifier {
 }
 
 // All below for test run
+
+Quiz initiateQuiz2() {
+  Quiz quiz = Quiz("Basic math");
+  Question question1 = Question("What is 2 + 2?");
+  question1.addAnswer("5", false);
+  question1.addAnswer("2", false);
+  question1.addAnswer("4", true);
+
+  Question question2 = Question("What is 5 * 120?");
+  question2.addAnswer("600", true);
+  question2.addAnswer("580", false);
+  question2.addAnswer("620", false);
+  question2.addAnswer("480", false);
+
+  Question question3 = Question("What is 100 - 73");
+  question3.addAnswer("27", true);
+  question3.addAnswer("23", false);
+  question3.addAnswer("28", false);
+  question3.addAnswer("29", false);
+  quiz.addQuestion(question1);
+  quiz.addQuestion(question2);
+  quiz.addQuestion(question3);
+  return quiz;
+}
+
 Quiz initiateQuiz() {
   Quiz quiz = Quiz("Capital of countries");
 
