@@ -107,7 +107,9 @@ class CompleteQuizButton extends StatelessWidget {
         onPressed: () {
           quiz.resetQuiz();
           //TODO Change to go to homepage.
-          Navigator.pop(context);
+          Navigator.of(context)
+            ..pop()
+            ..pop();
         },
         child: const Text("Complete Quiz"),
       ),

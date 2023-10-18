@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quizme/screens/play_quiz_screen/play_quiz.dart';
 import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
+import '../providers/quizzes_handler.dart';
 import '../providers/quiz_model.dart';
 import '../providers/quiz_creation_provider.dart';
 
@@ -9,11 +11,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> previousQuizzes = [
-      'Quiz 1',
-      'Quiz 2',
-      'Quiz 3',
-    ];
+    final QuizHandler quizHandler = context.read<QuizHandler>();
+    final List<Quiz> previousQuizzes = quizHandler.getQuizzes();
 
     return Scaffold(
       backgroundColor: Colors.white12,
@@ -82,32 +81,54 @@ class HomePage extends StatelessWidget {
               ),
               itemCount: previousQuizzes.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    // hej PÅ DIG
-                  },
-                  child: Card(
-                    margin: const EdgeInsets.all(10.0),
-                    color: const Color.fromARGB(255, 210, 231, 211),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // omslag
-                        Text(
-                          previousQuizzes[index],
-                          style: const TextStyle(
-                            fontSize: 30.0,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                return QuizCard(quiz: previousQuizzes[index]);
               },
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class QuizCard extends StatelessWidget {
+  const QuizCard({
+    super.key,
+    required this.quiz,
+  });
+
+  final Quiz quiz;
+
+  @override
+  Widget build(BuildContext context) {
+    final QuizModel playQuizModel = context.read<QuizModel>();
+    return GestureDetector(
+      onTap: () {
+        // Must set quiz before pushing to the PlayQuizScreen
+        playQuizModel.setQuiz(quiz);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PlayQuizScreen(),
+          ),
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.all(10.0),
+        color: const Color.fromARGB(255, 210, 231, 211),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // omslag
+            Text(
+              quiz.title,
+              style: const TextStyle(
+                fontSize: 30.0,
+                // color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
