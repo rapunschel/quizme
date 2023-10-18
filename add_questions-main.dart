@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'question_model.dart';
 import 'question_list_screen.dart';
-import 'package:quizme/provider_class.dart';
+import 'provider_class.dart';
 import 'package:provider/provider.dart';
-
-
 
 class AddQuestionScreen extends StatefulWidget {
   @override
@@ -36,7 +34,7 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                 ),
               );
             },
-            )
+          )
         ],
       ),
       body: Form(
@@ -102,31 +100,31 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                     primary: Colors.green,
                   ),
                   child: Text('Save'),
-onPressed: () {
-  if (_formKey.currentState!.validate() && _correctAnswerIndex != null) {
-    final newQuestion = Question(
-      quizTitle: _quizTitle,
-      quizDescription: _quizDescription,
-      question: _question,
-      answers: _answers,
-      correctAnswerIndex: _correctAnswerIndex!,
-    );
+                  onPressed: () {
+                    if (_formKey.currentState!.validate() &&
+                        _correctAnswerIndex != null) {
+                      final newQuestion = Question(
+                        quizTitle: _quizTitle,
+                        quizDescription: _quizDescription,
+                        question: _question,
+                        answers: _answers,
+                        correctAnswerIndex: _correctAnswerIndex!,
+                      );
 
-    // Add the question to the current quiz
-    Provider.of<QuizProvider>(context, listen: false)
-        .addQuestionToCurrentQuiz(newQuestion);
+                      // Add the question to the current quiz
+                      Provider.of<QuizProvider>(context, listen: false)
+                          .addQuestionToCurrentQuiz(newQuestion);
 
-    // Clear the form
-    _quizTitle= '';
-    _quizDescription = '';
-    _question = '';
-    _answers = ['', '', '', ''];
-    _isAnswerSelected = [false, false, false, false];
-    _correctAnswerIndex = null;
-    setState(() {});
-  }
-},
-
+                      // Clear the form
+                      _quizTitle = '';
+                      _quizDescription = '';
+                      _question = '';
+                      _answers = ['', '', '', ''];
+                      _isAnswerSelected = [false, false, false, false];
+                      _correctAnswerIndex = null;
+                      setState(() {});
+                    }
+                  },
                 ),
               ),
             ),
@@ -136,7 +134,3 @@ onPressed: () {
     );
   }
 }
-
-
-
-

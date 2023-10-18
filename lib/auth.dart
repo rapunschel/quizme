@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_learning/screens/home_screen.dart';
-import 'package:firebase_learning/screens/login_screen.dart';
+import 'package:quizme/screens/home_screen.dart';
+import 'package:quizme/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class Auth extends StatelessWidget {

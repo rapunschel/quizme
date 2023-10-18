@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quizme/add_questions_folder/add_questions-main.dart';
-import 'package:quizme/add_questions_folder/add_questions_screen.dart';
-import 'package:quizme/add_questions_folder/question_model.dart';
-import 'package:quizme/add_questions_folder/question_list_screen.dart';
+import 'add_questions-main.dart';
+import 'add_questions_screen.dart';
+import 'question_model.dart';
+import 'question_list_screen.dart';
 import 'quiz_class.dart';
 import 'provider_class.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 92, 199, 149)),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 92, 199, 149)),
         useMaterial3: true,
       ),
       home: const NewQuiz(title: 'Create new Quiz'),
@@ -32,98 +33,101 @@ class NewQuiz extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<NewQuiz> {
-final TextEditingController _titleController = TextEditingController();
-final TextEditingController _descriptionController = TextEditingController();
-List<Quiz> quizzes = [];
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  List<Quiz> quizzes = [];
 
-void addQuiz(BuildContext context) {
-  String quizTitle = _titleController.text;
-  String descriptionTitle = _descriptionController.text;
+  void addQuiz(BuildContext context) {
+    String quizTitle = _titleController.text;
+    String descriptionTitle = _descriptionController.text;
 
-  // Create a new question with the quiz title and description
-  Question question = Question(
-    question: quizTitle,
-    answers: [descriptionTitle], // Using description as the answer for simplicity
-    correctAnswerIndex: 0, // Assuming the only answer is correct
-    quizTitle: quizTitle,
-    quizDescription: descriptionTitle,
-  );
+    // Create a new question with the quiz title and description
+    Question question = Question(
+      question: quizTitle,
+      answers: [
+        descriptionTitle
+      ], // Using description as the answer for simplicity
+      correctAnswerIndex: 0, // Assuming the only answer is correct
+      quizTitle: quizTitle,
+      quizDescription: descriptionTitle,
+    );
 
-  // Add the question to the current quiz
-  Provider.of<QuizProvider>(context, listen: false)
-      .addQuestionToCurrentQuiz(question);
+    // Add the question to the current quiz
+    Provider.of<QuizProvider>(context, listen: false)
+        .addQuestionToCurrentQuiz(question);
 
-  _titleController.clear();
-  _descriptionController.clear();
+    _titleController.clear();
+    _descriptionController.clear();
 
-  setState(() {
-    quizzes = Provider.of<QuizProvider>(context, listen: false).setCurrentQuiz(newQuiz);
-  });
-}
+    setState(() {
+      quizzes = Provider.of<QuizProvider>(context, listen: false)
+          .setCurrentQuiz(newQuiz);
+    });
+  }
 
-
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title), 
-        centerTitle: true,
-      ),
-      body: Padding(padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          TextField(controller: _titleController,
-              decoration: InputDecoration( 
-            labelText: 'Quiz Title',
-          ),
-          ),
-          SizedBox(height: 20),
-          TextField(
-            controller: _descriptionController,
-            maxLines: 5,
-            decoration: InputDecoration(
-              labelText: 'Description',
-              hintText: 'Max 5 lines',
-            )
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-    onPressed: () {
-      addQuiz(context);
-  // Set the current quiz
-  Provider.of<QuizProvider>(context, listen: false).setCurrentQuiz(
-    Quiz(
-      title: _titleController.text,
-      description: _descriptionController.text,
-      questions: [],
-    ),
-  );
-  Navigator.push(context, MaterialPageRoute(builder: (context) => AddQuestionScreen()));
-    },
-    child: Text('Next Step (add questions)'),
-  ),
-          SizedBox(height: 20),
-            Expanded(
-              child: QuestionList(),
-              //ListView.builder(
-              //  itemCount: quizzes.length,
-              //  itemBuilder: (context, index) {
-               //   return Card(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(widget.title),
+          centerTitle: true,
+        ),
+        body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(children: [
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: 'Quiz Title',
+                ),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                  controller: _descriptionController,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                    hintText: 'Max 5 lines',
+                  )),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  addQuiz(context);
+                  // Set the current quiz
+                  Provider.of<QuizProvider>(context, listen: false)
+                      .setCurrentQuiz(
+                    Quiz(
+                      title: _titleController.text,
+                      description: _descriptionController.text,
+                      questions: [],
+                    ),
+                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddQuestionScreen()));
+                },
+                child: Text('Next Step (add questions)'),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: QuestionList(),
+                //ListView.builder(
+                //  itemCount: quizzes.length,
+                //  itemBuilder: (context, index) {
+                //   return Card(
                 //    child: ListTile(
                 //      title: Text('Title: ${quizzes[index].title}'),
-                 //     subtitle: Text('Description: ${quizzes[index].description}'),
-                      
-                    ),
-      ])
-      )
-        );
-                }
-             // ),
-           // ),
-       //   ]
-        //  ),
-         // ) 
-       // );
+                //     subtitle: Text('Description: ${quizzes[index].description}'),
+              ),
+            ])));
   }
+  // ),
+  // ),
+  //   ]
+  //  ),
+  // )
+  // );
+}
 //}

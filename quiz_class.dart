@@ -1,9 +1,10 @@
-import 'add_questions_folder/question_model.dart';
+import 'question_model.dart';
+
 //Ta bort?
 class Quiz {
   final String title;
   final String description;
-  final List<Question> questions;  // List of questions
+  final List<Question> questions; // List of questions
 
   Quiz({
     required this.title,
@@ -12,13 +13,11 @@ class Quiz {
   });
 }
 
-
-
 // Folder class
 class CreateFolder {
   final String title;
-  
-  CreateFolder ({required this.title});
+
+  CreateFolder({required this.title});
 }
 
 class FolderContents {
@@ -32,5 +31,6 @@ class Folder {
   final String description;
   final List<Quiz> quizzes;
 
-  Folder({required this.title, required this.description, required this.quizzes});
+  Folder(
+      {required this.title, required this.description, required this.quizzes});
 }
