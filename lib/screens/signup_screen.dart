@@ -132,7 +132,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Image.asset(
-                'images/welcome',
+                'images/welcome.png',
                 height: 300,
               ),
               Text(

@@ -12,7 +12,6 @@ void main() async {
 
   if (kIsWeb) {
     await Firebase.initializeApp(
-      name: 'Firebase Learning',
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
