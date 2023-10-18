@@ -6,7 +6,7 @@ import 'package:quizme/screens/signup_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'screens/homepage.dart';
+// import 'screens/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const Auth(),
-        'homeScreen': (context) => HomePage(), //const HomeScreen(),
+        'homeScreen': (context) => const HomeScreen(),
         'loginScreen': (context) => const LoginScreen(),
         'signupScreen': (context) => const SignupScreen(),
       },

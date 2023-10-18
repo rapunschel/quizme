@@ -4,7 +4,6 @@ import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/quizzes_handler.dart';
 import '../providers/quiz_model.dart';
-import '../providers/quiz_creation_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

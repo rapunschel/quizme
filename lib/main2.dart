@@ -5,13 +5,13 @@ import 'providers/quiz_creation_provider.dart';
 import 'providers/quizzes_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/homepage.dart';
-import 'screens/play_quiz_screen/play_quiz.dart';
+/* import 'screens/play_quiz_screen/play_quiz.dart';
 import 'package:quizme/auth.dart';
 import 'package:quizme/firebase_options.dart';
 import 'package:quizme/screens/login_screen.dart';
 import 'package:quizme/screens/signup_screen.dart';
 import 'package:flutter/foundation.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart'; */
 
 void main() {
   runApp(const Quiz());
