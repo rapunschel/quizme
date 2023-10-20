@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../providers/play_quiz_provider.dart';
 import '../../widgets/reuseable_widgets.dart';
 import '../../models/quiz_model.dart';
 

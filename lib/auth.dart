@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:quizme/screens/home_screen.dart';
 import 'package:quizme/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/homepage.dart';
@@ -14,7 +13,7 @@ class Auth extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const HomePage(); //HomeScreen();
+          return const HomePage();
         } else {
           return const LoginScreen();
         }
