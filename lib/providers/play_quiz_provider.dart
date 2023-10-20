@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../models/quiz_model.dart';
 
-class QuizModel extends ChangeNotifier {
+class PlayQuizProvider extends ChangeNotifier {
   Quiz? _quiz;
 
   // Save list of questions
@@ -22,7 +23,7 @@ class QuizModel extends ChangeNotifier {
   int incorrectQuestionsIndex = 1;
   List<List<(Question, Answer)>> _doneQuestions = [];
   // Save question
-  QuizModel();
+  PlayQuizProvider();
 
   // Set quiz and reset all variables
   void setQuiz(Quiz quiz) {
@@ -126,6 +127,8 @@ class QuizModel extends ChangeNotifier {
   }
 }
 
+// Classes to model a quiz
+
 // All below for test run
 
 Quiz initiateQuiz2() {
@@ -227,34 +230,4 @@ Quiz initiateQuiz() {
   quiz.addQuestion(question10);
 
   return quiz;
-}
-
-// Classes to model a quiz
-class Quiz {
-  String title;
-  List<Question> questions = [];
-
-  Quiz(this.title);
-
-  void addQuestion(Question question) {
-    questions.add(question);
-  }
-}
-
-class Question {
-  String title;
-  List answers = [];
-
-  Question(this.title);
-
-  void addAnswer(String text, bool isCorrect) {
-    answers.add(Answer(text, isCorrect));
-  }
-}
-
-class Answer {
-  String text;
-  bool isCorrect;
-
-  Answer(this.text, this.isCorrect);
 }

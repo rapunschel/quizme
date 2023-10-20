@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../providers/quiz_model.dart';
+import '../../providers/play_quiz_provider.dart';
 import '../../widgets/reuseable_widgets.dart';
+import '../../models/quiz_model.dart';
 
 class QuestionResultScreen extends StatelessWidget {
   const QuestionResultScreen({super.key, required this.question});

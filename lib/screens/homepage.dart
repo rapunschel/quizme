@@ -3,8 +3,9 @@ import 'package:quizme/screens/play_quiz_screen/play_quiz_screen.dart';
 import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/quizzes_handler.dart';
-import '../providers/quiz_model.dart';
+import '../providers/play_quiz_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../models/quiz_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -108,7 +109,7 @@ class QuizCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final QuizModel playQuizModel = context.read<QuizModel>();
+    final PlayQuizProvider playQuizModel = context.read<PlayQuizProvider>();
     return GestureDetector(
       onTap: () {
         // Must set quiz before pushing to the PlayQuizScreen

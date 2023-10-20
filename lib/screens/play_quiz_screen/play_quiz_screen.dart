@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/quiz_model.dart';
+import '../../providers/play_quiz_provider.dart';
 import 'quiz_result_screen.dart';
 import '../../widgets/reuseable_widgets.dart';
+import '../../models/quiz_model.dart';
 
 class PlayQuizScreen extends StatelessWidget {
   const PlayQuizScreen({super.key});
@@ -10,8 +11,8 @@ class PlayQuizScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Listen to the currentIndex.
-    context.watch<QuizModel>().currentQuestionIndex;
-    QuizModel quiz = context.read<QuizModel>();
+    context.watch<PlayQuizProvider>().currentQuestionIndex;
+    PlayQuizProvider quiz = context.read<PlayQuizProvider>();
     Question question = quiz.getCurrentQuestion();
     List answers = quiz.getCurrentAnswers();
 
@@ -53,7 +54,7 @@ class PlayQuizScreen extends StatelessWidget {
     );
   }
 
-  Padding nextQuestionButton(QuizModel quiz, BuildContext context) {
+  Padding nextQuestionButton(PlayQuizProvider quiz, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 25, left: 115, right: 115),
       child: TextButton(
@@ -112,9 +113,9 @@ class PlayQuizScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          iconText(10, "${context.watch<QuizModel>().noCorrect}",
+          iconText(10, "${context.watch<PlayQuizProvider>().noCorrect}",
               Icons.check_circle_rounded, Colors.green),
-          iconText(10, "${context.watch<QuizModel>().noIncorrect}",
+          iconText(10, "${context.watch<PlayQuizProvider>().noIncorrect}",
               Icons.cancel, Colors.red),
         ],
       ),
@@ -148,9 +149,9 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
   @override
   Widget build(BuildContext context) {
     // Be notified on changes to the variable.
-    context.watch<QuizModel>().isAnswered;
+    context.watch<PlayQuizProvider>().isAnswered;
     // Get reference but don't listen to changes
-    QuizModel quiz = context.read<QuizModel>();
+    PlayQuizProvider quiz = context.read<PlayQuizProvider>();
     Color color = Theme.of(context).primaryColor;
 
     if (quiz.isAnswered) {

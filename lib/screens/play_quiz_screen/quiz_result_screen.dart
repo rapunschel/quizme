@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/quiz_model.dart';
+import '../../providers/play_quiz_provider.dart';
 import 'question_result_screen.dart';
 import '../../widgets/reuseable_widgets.dart';
+import '../../models/quiz_model.dart';
 
 class QuizResultScreen extends StatelessWidget {
   const QuizResultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    QuizModel quiz = context.read<QuizModel>();
+    PlayQuizProvider quiz = context.read<PlayQuizProvider>();
     List<(Question, Answer)> correctQuestions = quiz.getCorrectQuestions();
     List<(Question, Answer)> incorrectQuestions = quiz.getIncorrectQuestions();
     int numberOfQuestions = quiz.getNumberOfQuestions();
@@ -97,7 +98,7 @@ class CompleteQuizButton extends StatelessWidget {
     required this.quiz,
   });
 
-  final QuizModel quiz;
+  final PlayQuizProvider quiz;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +107,6 @@ class CompleteQuizButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           quiz.resetQuiz();
-          //TODO Change to go to homepage.
           Navigator.of(context)
             ..pop()
             ..pop();

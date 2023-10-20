@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/quiz_model.dart';
+import 'providers/play_quiz_provider.dart';
 import 'providers/quiz_creation_provider.dart';
 import 'providers/quizzes_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,8 +39,8 @@ class Quiz extends StatelessWidget {
         ChangeNotifierProvider<QuizHandler>(
           create: (context) => QuizHandler(),
         ),
-        ChangeNotifierProvider<QuizModel>(
-          create: (context) => QuizModel(),
+        ChangeNotifierProvider<PlayQuizProvider>(
+          create: (context) => PlayQuizProvider(),
         ),
       ],
       child: MaterialApp(

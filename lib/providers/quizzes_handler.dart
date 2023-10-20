@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'quiz_model.dart';
+import 'play_quiz_provider.dart';
+import '../models/quiz_model.dart';
 
 // Contain a list of all quizzes made.
 class QuizHandler extends ChangeNotifier {
