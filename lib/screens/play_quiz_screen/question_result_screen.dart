@@ -31,11 +31,7 @@ class QuestionResultScreen extends StatelessWidget {
       AnswerCardTile(answer: question.$2),
     );
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text("Question overview"),
-        centerTitle: true,
-      ),
+      appBar: const QuizmeAppBar(title: "Question overview"),
       body: ListView.builder(
         itemCount: noCorrectAnswers + 1,
         itemBuilder: (context, index) {
