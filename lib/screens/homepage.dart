@@ -3,7 +3,7 @@ import 'package:quizme/providers/quiz_creation_provider.dart';
 import 'package:quizme/screens/play_quiz_screen/play_quiz_screen.dart';
 import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
-import '../providers/quizzes_handler.dart';
+import '../providers/quiz_handler.dart';
 import '../providers/play_quiz_provider.dart';
 import '../models/quiz_model.dart';
 import '../widgets/reuseable_widgets.dart';
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<QuizHandler>().quizzes;
+    context.watch<QuizHandler>();
     final QuizHandler quizHandler = context.read<QuizHandler>();
     final List<Quiz> previousQuizzes = quizHandler.getQuizzes();
 
@@ -134,6 +134,29 @@ class QuizCard extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            Positioned(
+              bottom: 15.0,
+              right: 10.0,
+              child: Wrap(spacing: -5, children: [
+                IconButton(
+                    onPressed: () {
+                      QuizCreationProvider qcProvider =
+                          context.read<QuizCreationProvider>();
+                      qcProvider.setCurrentQuiz(quiz);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MakeQuizScreen(),
+                          ));
+                    },
+                    icon: const Icon(Icons.edit)),
+                IconButton(
+                    onPressed: () {
+                      context.read<QuizHandler>().removeQuiz(quiz);
+                    },
+                    icon: const Icon(Icons.delete))
+              ]),
             ),
             Positioned(
               bottom: 10.0,
