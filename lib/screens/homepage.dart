@@ -143,6 +143,7 @@ class QuizCard extends StatelessWidget {
                     onPressed: () {
                       QuizCreationProvider qcProvider =
                           context.read<QuizCreationProvider>();
+                      qcProvider.reset();
                       qcProvider.setCurrentQuiz(quiz);
                       Navigator.push(
                           context,

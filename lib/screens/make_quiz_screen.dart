@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'add_questions_screen.dart';
 import '../providers/quiz_creation_provider.dart';
+import '../providers/quiz_handler.dart';
 import 'package:provider/provider.dart';
 import '../models/quiz_model.dart';
 import '../widgets/reuseable_widgets.dart';
@@ -63,7 +64,15 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             const SizedBox(height: 20),
             descriptionTextFormField(),
             const SizedBox(height: 20),
-            addQuestionButton(quiz, editQuizProvider, context),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              editQuizProvider.isQuizAdded
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: updateQuizInfo(quiz, editQuizProvider, context),
+                    )
+                  : Container(),
+              addQuestionButton(quiz, editQuizProvider, context)
+            ]),
             Expanded(
               child: ListView.builder(
                 itemCount: questions.length,
@@ -82,6 +91,33 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  ElevatedButton updateQuizInfo(
+      quiz, QuizCreationProvider editQuizProvider, BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _isTitleFieldEmpty = _titleController.text.isEmpty;
+        });
+
+        if (!_isTitleFieldEmpty) {
+          // If quiz is empty,create a quiz and set the provider quiz
+          if (quiz == null) {
+            editQuizProvider.setCurrentQuiz(Quiz.description(
+                _titleController.text, _descriptionController.text));
+          } else {
+            // Update current quiz in provider.
+            // Dont need to set, since we got reference
+            quiz.title = _titleController.text;
+            quiz.quizDescription = _descriptionController.text;
+          }
+          context.read<QuizHandler>().notifyQuizUpdated();
+          Navigator.pop(context);
+        }
+      },
+      child: const Text('Update Quiz Info'),
     );
   }
 
@@ -162,13 +198,15 @@ class QuestionTileWidget extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () {
-                  //TODO implement edit question
+                  //TODO implement edit question. Use callbacks to update is probably easiest
                 },
               ),
               IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () {
-                  //TODO implement remove question
+                  //TODO implement remove question.
+                  //Convert to stateful, extract List<Answer> then build updates
+                  // Tell homepage to update somehow, callback or use ugly fix?
                 },
               ),
             ],
