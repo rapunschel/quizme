@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/play_quiz_provider.dart';
 import 'providers/quiz_creation_provider.dart';
-import 'providers/quizzes_handler.dart';
+import 'providers/quiz_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/homepage.dart';
 import 'package:quizme/auth.dart';
@@ -33,8 +33,8 @@ class Quiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<QuizProvider>(
-          create: (context) => QuizProvider(),
+        ChangeNotifierProvider<QuizCreationProvider>(
+          create: (context) => QuizCreationProvider(),
         ),
         ChangeNotifierProvider<QuizHandler>(
           create: (context) => QuizHandler(),
@@ -57,37 +57,40 @@ class Quiz extends StatelessWidget {
   }
 
   ThemeData appStyling(BuildContext context) {
-    Color primaryColor = const Color.fromARGB(
-        255, 210, 231, 211); //const Color.fromARGB(255, 201, 237, 244);
+    Color textColor = Colors.black;
+    Color primaryColor = const Color.fromARGB(255, 201, 237, 244);
     Color buttonColor =
         primaryColor; //const Color.fromARGB(255, 153, 225, 239);
     return ThemeData(
-        primaryColor: primaryColor,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        fontFamily: GoogleFonts.openSans().fontFamily,
-        useMaterial3: true,
-        appBarTheme: AppBarTheme(
-          titleTextStyle: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(fontWeight: FontWeight.normal),
+      primaryColor: primaryColor,
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      fontFamily: GoogleFonts.openSans().fontFamily,
+      useMaterial3: true,
+      appBarTheme: AppBarTheme(
+        titleTextStyle: Theme.of(context)
+            .textTheme
+            .titleLarge!
+            .copyWith(fontWeight: FontWeight.normal),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all<double>(0),
+          backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
         ),
-        textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            elevation: MaterialStateProperty.all<double>(0),
-            backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
-          ),
-        ),
-        textTheme: const TextTheme(
-            // Global styling, use Theme... to use a specific style
-            //and copyWith to overwrite specific values
-            titleLarge: TextStyle(fontWeight: FontWeight.bold),
-            // Edit
-            titleMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            titleSmall: TextStyle(),
-            bodyLarge: TextStyle(),
-            bodyMedium: TextStyle(),
-            // Buttons uses labelLarge
-            labelLarge: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)));
+      ),
+      textTheme: const TextTheme(
+
+              // Global styling, use Theme... to use a specific style
+              //and copyWith to overwrite specific values
+              titleLarge: TextStyle(fontWeight: FontWeight.bold),
+              // Edit
+              titleMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              titleSmall: TextStyle(),
+              bodyLarge: TextStyle(),
+              bodyMedium: TextStyle(),
+              // Buttons uses labelLarge
+              labelLarge: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+          .apply(bodyColor: textColor, displayColor: textColor),
+    );
   }
 }
