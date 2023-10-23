@@ -5,7 +5,8 @@ class Quiz {
   String? quizDescription;
 
   Quiz(this.title);
-
+  // Alternative constructor
+  Quiz.description(this.title, this.quizDescription);
   void addQuestion(Question question) {
     questions.add(question);
   }
