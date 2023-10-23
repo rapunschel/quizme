@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../providers/quizzes_handler.dart';
+import '../providers/quiz_handler.dart';
 import '../models/quiz_model.dart';
 import '../providers/quiz_creation_provider.dart';
 import 'package:provider/provider.dart';
@@ -113,6 +113,7 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                       QuizCreationProvider creationProvider =
                           context.read<QuizCreationProvider>();
 
+                      QuizHandler quizHandler = context.read<QuizHandler>();
                       final newQuestion = Question(_questionController.text);
 
                       for (int i = 0; i < _answerControllers.length; i++) {
@@ -131,9 +132,10 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                       // Add quiz if needed
                       if (!creationProvider.isQuizAdded) {
                         creationProvider.isQuizAdded = true;
-                        context
-                            .read<QuizHandler>()
-                            .addQuiz(creationProvider.currentQuiz!);
+                        quizHandler.addQuiz(creationProvider.currentQuiz!);
+                      } else {
+                        // Tell that a quiz been updated
+                        quizHandler.notifyQuizUpdated();
                       }
                       // Clear the form
                       for (TextEditingController controller
