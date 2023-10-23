@@ -7,6 +7,8 @@ class QuizHandler extends ChangeNotifier {
   List<Quiz> quizzes = [initiateQuiz(), initiateQuiz2()];
   bool _updateFlag = false;
 
+  // Only used for undoing deletion
+  Quiz? lastRemovedQuiz;
   void addQuiz(Quiz quiz) {
     if (!quizzes.contains(quiz)) {
       quizzes.add(quiz);
@@ -15,7 +17,10 @@ class QuizHandler extends ChangeNotifier {
   }
 
   void removeQuiz(Quiz quiz) {
-    quizzes.remove(quiz);
+    if (quizzes.remove(quiz)) {
+      lastRemovedQuiz = quiz;
+    }
+
     notifyListeners();
   }
 

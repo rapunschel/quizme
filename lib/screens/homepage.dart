@@ -39,14 +39,11 @@ class HomePage extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
-          label: Row(
+          label: const Row(
             children: [
-              const Icon(
-                Icons.add, /* color: Colors.white */
-              ),
-              const SizedBox(width: 8.0),
-              Text('Create Quiz',
-                  style: Theme.of(context).textTheme.bodyMedium),
+              Icon(Icons.add),
+              SizedBox(width: 8.0),
+              Text('Create Quiz'),
             ],
           ),
         ),
@@ -136,9 +133,10 @@ class QuizCard extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 15.0,
+              bottom: 25.0,
               right: 10.0,
               child: Wrap(spacing: -5, children: [
+                // Edit Quiz button
                 IconButton(
                     onPressed: () {
                       QuizCreationProvider qcProvider =
@@ -152,9 +150,12 @@ class QuizCard extends StatelessWidget {
                           ));
                     },
                     icon: const Icon(Icons.edit)),
+                // Delete Quiz button
                 IconButton(
                     onPressed: () {
+                      final messenger = ScaffoldMessenger.of(context);
                       context.read<QuizHandler>().removeQuiz(quiz);
+                      messenger.showSnackBar(showSnackBar(context));
                     },
                     icon: const Icon(Icons.delete))
               ]),
@@ -171,6 +172,36 @@ class QuizCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  SnackBar showSnackBar(BuildContext context) {
+    QuizHandler handler = context.read<QuizHandler>();
+
+    var removedQuiz = handler.lastRemovedQuiz;
+    return SnackBar(
+      margin: EdgeInsets.only(left: 15, right: 15, bottom: 90),
+      duration: const Duration(seconds: 2),
+      content: Text.rich(
+        TextSpan(
+          text: "Deleted: ",
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                color: Colors.red,
+              ),
+          children: <InlineSpan>[
+            TextSpan(
+              text: removedQuiz!.title,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ), //Text("Deleted: ${removedTask!.text}"),
+      action: SnackBarAction(
+        label: 'Undo deletion',
+        onPressed: () {
+          handler.addQuiz(removedQuiz);
+        },
       ),
     );
   }
