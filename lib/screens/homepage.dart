@@ -125,15 +125,29 @@ class QuizCard extends StatelessWidget {
         margin: const EdgeInsets.all(10.0),
         color: Theme.of(context)
             .primaryColor, //const Color.fromARGB(255, 210, 231, 211),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Stack(
           children: [
-            // omslag
-            Text(
-              quiz.title,
-              style: const TextStyle(
-                fontSize: 30.0,
-                // color: Colors.grey,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // omslag
+                Text(
+                  quiz.title,
+                  style: const TextStyle(
+                    fontSize: 30.0,
+                    // color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 10.0,
+              right: 10.0,
+              child: Text(
+                '${quiz.questions.length} Questions',
+                style: const TextStyle(
+                  fontSize: 16.0,
+                ),
               ),
             ),
           ],

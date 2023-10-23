@@ -144,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               Text(
-                'Welomce! Here you can create an account.',
+                'Welcome! Here you can create an account.',
                 style: GoogleFonts.robotoCondensed(
                   fontSize: 15,
                   color: Colors.deepPurple,
