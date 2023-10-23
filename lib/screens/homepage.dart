@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:quizme/providers/quiz_creation_provider.dart';
 import 'package:quizme/screens/play_quiz_screen/play_quiz_screen.dart';
 import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/quizzes_handler.dart';
 import '../providers/play_quiz_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../models/quiz_model.dart';
 import '../widgets/reuseable_widgets.dart';
 
@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<QuizHandler>().quizzes;
     final QuizHandler quizHandler = context.read<QuizHandler>();
     final List<Quiz> previousQuizzes = quizHandler.getQuizzes();
 
@@ -25,6 +26,8 @@ class HomePage extends StatelessWidget {
         message: 'Create new',
         child: FloatingActionButton.extended(
           onPressed: () {
+            // Reset provider for making quiz
+            context.read<QuizCreationProvider>().reset();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -42,7 +45,8 @@ class HomePage extends StatelessWidget {
                 Icons.add, /* color: Colors.white */
               ),
               const SizedBox(width: 8.0),
-              Text('Create new', style: Theme.of(context).textTheme.bodyMedium),
+              Text('Create Quiz',
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),
@@ -76,20 +80,11 @@ class HomePage extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: previousQuizzes.length + 1,
+              itemCount: previousQuizzes.length,
               itemBuilder: (context, index) {
                 if (index < previousQuizzes.length) {
                   return QuizCard(quiz: previousQuizzes[index]);
                 }
-
-                // Temporary, delete later
-                return MaterialButton(
-                  onPressed: () async {
-                    FirebaseAuth.instance.signOut();
-                  },
-                  color: const Color.fromARGB(255, 243, 187, 5),
-                  child: const Text('Sign out'),
-                );
               },
             ),
           ),
