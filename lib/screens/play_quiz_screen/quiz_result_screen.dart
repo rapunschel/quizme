@@ -15,11 +15,7 @@ class QuizResultScreen extends StatelessWidget {
     List<(Question, Answer)> incorrectQuestions = quiz.getIncorrectQuestions();
     int numberOfQuestions = quiz.getNumberOfQuestions();
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text(quiz.title),
-          centerTitle: true,
-        ),
+        appBar: QuizmeAppBar(title: quiz.title),
         floatingActionButton: CompleteQuizButton(quiz: quiz),
         body: ListView.builder(
           itemCount: numberOfQuestions + 1,
@@ -107,9 +103,8 @@ class CompleteQuizButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           quiz.resetQuiz();
-          Navigator.of(context)
-            ..pop()
-            ..pop();
+          Navigator.pushNamedAndRemoveUntil(
+              context, 'homeScreen', (route) => false);
         },
         child: const Text("Complete Quiz"),
       ),

@@ -6,6 +6,7 @@ import '../providers/quizzes_handler.dart';
 import '../providers/play_quiz_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/quiz_model.dart';
+import '../widgets/reuseable_widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,9 +18,8 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       //backgroundColor: Colors.white12,
-      appBar: AppBar(
-        title: const Text('My Sessions', style: TextStyle(fontSize: 20)),
-        backgroundColor: Theme.of(context).primaryColor,
+      appBar: const QuizmeAppBar(
+        title: "My quizzes",
       ),
       floatingActionButton: Tooltip(
         message: 'Create new',

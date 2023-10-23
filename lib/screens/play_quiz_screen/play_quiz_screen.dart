@@ -17,11 +17,7 @@ class PlayQuizScreen extends StatelessWidget {
     List answers = quiz.getCurrentAnswers();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(quiz.title),
-        centerTitle: true,
-      ),
+      appBar: QuizmeAppBar(title: quiz.title),
       body: ListView.builder(
         // If quiz is answered, add +1 to account for button
         itemCount: quiz.isAnswered ? answers.length + 1 : answers.length,
