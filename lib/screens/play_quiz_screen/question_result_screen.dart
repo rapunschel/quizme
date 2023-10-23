@@ -79,7 +79,7 @@ class AnswerCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return playQuizTilePadding(
+    return quizTilePadding(
       ListTile(
         title: Text(
           answer.text,

@@ -122,7 +122,7 @@ class QuestionTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return playQuizTilePadding(
+    return quizTilePadding(
       ListTile(
         onTap: () {
           Navigator.push(

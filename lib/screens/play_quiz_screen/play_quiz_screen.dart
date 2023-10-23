@@ -168,7 +168,7 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
     else {
       wasTapped = false;
     }
-    return playQuizTilePadding(ListTile(
+    return quizTilePadding(ListTile(
       title: Center(
         child: Text(widget.answer.text,
             style: Theme.of(context).textTheme.bodyLarge),
