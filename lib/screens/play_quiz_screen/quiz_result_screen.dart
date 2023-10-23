@@ -35,13 +35,13 @@ class QuizResultScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyLarge),
               );
               // Append first question tile if not empty.
-              if (correctQuestions.isNotEmpty) {
+              if (incorrectQuestions.isNotEmpty) {
                 buildList.addAll([
                   Padding(
                       padding: const EdgeInsets.only(top: 30),
-                      child: Text("Questions you got right",
+                      child: Text("Questions you got wrong",
                           style: Theme.of(context).textTheme.titleMedium)),
-                  QuestionTileWidget(questionRecord: correctQuestions[index]),
+                  QuestionTileWidget(questionRecord: incorrectQuestions[index]),
                 ]);
                 return Column(children: buildList);
               }
@@ -49,22 +49,22 @@ class QuizResultScreen extends StatelessWidget {
 
             // Keep adding questions
             if (index < numberOfQuestions) {
-              // Keep returning correct questions
-              if (index < correctQuestions.length) {
+              // Keep returning incorrect questions
+              if (index < incorrectQuestions.length) {
                 return QuestionTileWidget(
-                    questionRecord: correctQuestions[index]);
+                    questionRecord: incorrectQuestions[index]);
               }
 
-              if (index == numberOfQuestions - incorrectQuestions.length) {
+              if (index == numberOfQuestions - correctQuestions.length) {
                 buildList.addAll([
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
-                    child: Text("Questions you got wrong",
+                    child: Text("Questions you got right",
                         style: Theme.of(context).textTheme.titleMedium),
                   ),
                   QuestionTileWidget(
                     questionRecord:
-                        incorrectQuestions[index % incorrectQuestions.length],
+                        correctQuestions[index % correctQuestions.length],
                   )
                 ]);
                 return Column(
@@ -74,7 +74,7 @@ class QuizResultScreen extends StatelessWidget {
 
               return QuestionTileWidget(
                 questionRecord:
-                    incorrectQuestions[index % incorrectQuestions.length],
+                    correctQuestions[index % correctQuestions.length],
               );
             }
 
