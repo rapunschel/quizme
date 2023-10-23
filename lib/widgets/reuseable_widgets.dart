@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-Padding playQuizTilePadding(ListTile tile) {
+Padding quizTilePadding(ListTile tile) {
   return Padding(
     padding:
         const EdgeInsets.only(top: 12.5, bottom: 12.5, left: 25, right: 25),
@@ -29,7 +29,8 @@ class QuizmeAppBar extends StatelessWidget implements PreferredSizeWidget {
             // Empty the stack
             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
           },
-          icon: const Icon(Icons.logout_outlined),
+          icon: Icon(Icons.logout_outlined,
+              color: Theme.of(context).iconTheme.color),
           iconSize: 30,
         ),
       ],

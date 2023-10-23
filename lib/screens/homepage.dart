@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:quizme/providers/quiz_creation_provider.dart';
 import 'package:quizme/screens/play_quiz_screen/play_quiz_screen.dart';
 import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
-import '../providers/quizzes_handler.dart';
+import '../providers/quiz_handler.dart';
 import '../providers/play_quiz_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../models/quiz_model.dart';
 import '../widgets/reuseable_widgets.dart';
 
@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<QuizHandler>();
     final QuizHandler quizHandler = context.read<QuizHandler>();
     final List<Quiz> previousQuizzes = quizHandler.getQuizzes();
 
@@ -25,6 +26,8 @@ class HomePage extends StatelessWidget {
         message: 'Create new',
         child: FloatingActionButton.extended(
           onPressed: () {
+            // Reset provider for making quiz
+            context.read<QuizCreationProvider>().reset();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -36,13 +39,11 @@ class HomePage extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
-          label: Row(
+          label: const Row(
             children: [
-              const Icon(
-                Icons.add, /* color: Colors.white */
-              ),
-              const SizedBox(width: 8.0),
-              Text('Create new', style: Theme.of(context).textTheme.bodyMedium),
+              Icon(Icons.add),
+              SizedBox(width: 8.0),
+              Text('Create Quiz'),
             ],
           ),
         ),
@@ -76,20 +77,11 @@ class HomePage extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: previousQuizzes.length + 1,
+              itemCount: previousQuizzes.length,
               itemBuilder: (context, index) {
                 if (index < previousQuizzes.length) {
                   return QuizCard(quiz: previousQuizzes[index]);
                 }
-
-                // Temporary, delete later
-                return MaterialButton(
-                  onPressed: () async {
-                    FirebaseAuth.instance.signOut();
-                  },
-                  color: const Color.fromARGB(255, 243, 187, 5),
-                  child: const Text('Sign out'),
-                );
               },
             ),
           ),
@@ -141,6 +133,34 @@ class QuizCard extends StatelessWidget {
               ],
             ),
             Positioned(
+              bottom: 25.0,
+              right: 10.0,
+              child: Wrap(spacing: -5, children: [
+                // Edit Quiz button
+                IconButton(
+                    onPressed: () {
+                      QuizCreationProvider qcProvider =
+                          context.read<QuizCreationProvider>();
+                      qcProvider.reset();
+                      qcProvider.setCurrentQuiz(quiz);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MakeQuizScreen(),
+                          ));
+                    },
+                    icon: const Icon(Icons.edit)),
+                // Delete Quiz button
+                IconButton(
+                    onPressed: () {
+                      final messenger = ScaffoldMessenger.of(context);
+                      context.read<QuizHandler>().removeQuiz(quiz);
+                      messenger.showSnackBar(showSnackBar(context));
+                    },
+                    icon: const Icon(Icons.delete))
+              ]),
+            ),
+            Positioned(
               bottom: 10.0,
               right: 10.0,
               child: Text(
@@ -152,6 +172,36 @@ class QuizCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  SnackBar showSnackBar(BuildContext context) {
+    QuizHandler handler = context.read<QuizHandler>();
+
+    var removedQuiz = handler.lastRemovedQuiz;
+    return SnackBar(
+      margin: EdgeInsets.only(left: 15, right: 15, bottom: 90),
+      duration: const Duration(seconds: 2),
+      content: Text.rich(
+        TextSpan(
+          text: "Deleted: ",
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                color: Colors.red,
+              ),
+          children: <InlineSpan>[
+            TextSpan(
+              text: removedQuiz!.title,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ), //Text("Deleted: ${removedTask!.text}"),
+      action: SnackBarAction(
+        label: 'Undo deletion',
+        onPressed: () {
+          handler.addQuiz(removedQuiz);
+        },
       ),
     );
   }

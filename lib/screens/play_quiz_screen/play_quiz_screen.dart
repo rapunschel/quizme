@@ -52,8 +52,9 @@ class PlayQuizScreen extends StatelessWidget {
 
   Padding nextQuestionButton(PlayQuizProvider quiz, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 25, left: 115, right: 115),
-      child: TextButton(
+      padding:
+          const EdgeInsets.only(top: 25, left: 105, right: 105, bottom: 50),
+      child: ElevatedButton(
         onPressed: () {
           quiz.getNextQuestion();
         },
@@ -64,8 +65,9 @@ class PlayQuizScreen extends StatelessWidget {
 
   Padding quizResultButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 25, left: 115, right: 115),
-      child: TextButton(
+      padding:
+          const EdgeInsets.only(top: 25, left: 105, right: 105, bottom: 50),
+      child: ElevatedButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -168,7 +170,7 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
     else {
       wasTapped = false;
     }
-    return playQuizTilePadding(ListTile(
+    return quizTilePadding(ListTile(
       title: Center(
         child: Text(widget.answer.text,
             style: Theme.of(context).textTheme.bodyLarge),

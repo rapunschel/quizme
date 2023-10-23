@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
-import '../create_quiz_add_questions/model/quiz_class.dart';
-import '../create_quiz_add_questions/model/question_model.dart';
+import '../models/quiz_model.dart';
 
-class QuizProvider with ChangeNotifier {
+class QuizCreationProvider with ChangeNotifier {
   Quiz? currentQuiz; // The current quiz being created
 
+  bool isQuizAdded = true;
   // Set the current quiz
   void setCurrentQuiz(Quiz quiz) {
     currentQuiz = quiz;
@@ -17,5 +17,11 @@ class QuizProvider with ChangeNotifier {
       currentQuiz!.questions.add(question);
       notifyListeners();
     }
+  }
+
+  void reset() {
+    currentQuiz = null;
+    isQuizAdded = true;
+    notifyListeners();
   }
 }

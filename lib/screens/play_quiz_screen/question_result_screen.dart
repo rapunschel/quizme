@@ -55,8 +55,8 @@ class QuestionResultScreen extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(top: 25, left: 115, right: 115),
-            child: TextButton(
+            padding: const EdgeInsets.only(top: 25, left: 130, right: 130),
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -79,7 +79,7 @@ class AnswerCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return playQuizTilePadding(
+    return quizTilePadding(
       ListTile(
         title: Text(
           answer.text,
