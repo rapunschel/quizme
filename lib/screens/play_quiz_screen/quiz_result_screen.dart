@@ -99,7 +99,7 @@ class CompleteQuizButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 115, right: 115, bottom: 25),
+      padding: const EdgeInsets.only(left: 105, right: 105, bottom: 25),
       child: ElevatedButton(
         onPressed: () {
           quiz.resetQuiz();
