@@ -104,7 +104,6 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 20.0),
-                    backgroundColor: Colors.green,
                   ),
                   child: const Text('Save'),
                   onPressed: () {

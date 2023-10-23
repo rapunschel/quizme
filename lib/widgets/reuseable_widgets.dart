@@ -29,7 +29,8 @@ class QuizmeAppBar extends StatelessWidget implements PreferredSizeWidget {
             // Empty the stack
             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
           },
-          icon: const Icon(Icons.logout_outlined),
+          icon: Icon(Icons.logout_outlined,
+              color: Theme.of(context).iconTheme.color),
           iconSize: 30,
         ),
       ],
