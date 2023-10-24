@@ -25,7 +25,8 @@ class FirebaseProvider {
       print("Här är quizdata from edit:");
       print(quizData);
       // Add the quiz data to Firestore
-      await _firestore.collection('quizzes').doc(quiz.title).set(quizData);
+      await _firestore.collection('quizzes').doc(quiz.id).set(quizData);
+      // print the id
     } catch (error) {
       print('Error saving quiz to Firestore: $error');
     }
@@ -49,13 +50,25 @@ class FirebaseProvider {
           };
         }).toList(),
       };
-      print("Här är quizdata:");
-      print(quizData);
+
+/*       print("Här är quizdata:");
+      print(quizData); */
       // Add the quiz data to Firestore
       await _firestore.collection('quizzes').add(quizData);
     } catch (error) {
       print('Error saving quiz to Firestore: $error');
     }
+  }
+
+  static Future<bool> deleteQuizFromFirestore(Quiz quiz) async {
+    try {
+      // Delete the quiz from Firestore
+      await _firestore.collection('quizzes').doc(quiz.id).delete();
+      return true;
+    } catch (error) {
+      print('Error deleting quiz from Firestore: $error');
+    }
+    return false;
   }
 
   static Future<List<Quiz>> getQuizzesFromFirestore() async {
@@ -68,14 +81,14 @@ class FirebaseProvider {
       for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
         Map<String, dynamic> data =
             documentSnapshot.data() as Map<String, dynamic>;
-
+        //     print(data);
         // Convert data from Firestore back to Quiz object
         String title = data['title'] ?? '';
         String description = data['description'] ?? '';
         List<Question> questions = [];
 
         if (data['questions'] != null) {
-          print("ADDING QUESTION");
+          //print("ADDING QUESTION");
           for (var questionData in data['questions']) {
             String questionTitle = questionData['title'] ?? '';
             //List<Answer> answers = [];
@@ -92,9 +105,12 @@ class FirebaseProvider {
           }
         }
 
-        Quiz quiz = Quiz(title);
+        Quiz quiz = Quiz(title, documentSnapshot.id);
         quiz.questions = questions;
-        print("Amount of questions: ${quiz.questions}");
+        quiz.quizDescription = description;
+        // print the id
+/*         print("ID: ${documentSnapshot.id}");
+        print("Amount of questions: ${quiz.questions}"); */
         quizzes.add(quiz);
       }
     } catch (error) {

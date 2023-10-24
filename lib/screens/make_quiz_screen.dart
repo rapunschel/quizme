@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:quizme/providers/load_data.dart';
 import 'add_questions_screen.dart';
 import '../providers/quiz_creation_provider.dart';
 import '../providers/quiz_handler.dart';
@@ -112,6 +114,10 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             // Dont need to set, since we got reference
             quiz.title = _titleController.text;
             quiz.quizDescription = _descriptionController.text;
+
+            if (editQuizProvider.isQuizAdded) {
+              FirebaseProvider.editQuizInFireSTore(quiz);
+            }
           }
           context.read<QuizHandler>().notifyQuizUpdated();
           Navigator.pop(context);
@@ -130,11 +136,15 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
         });
 
         if (!_isTitleFieldEmpty) {
-          // If quiz is empty,create a quiz and set the provider quiz
+          // If quiz is null,create a quiz and set the provider quiz
           if (quiz == null) {
             editQuizProvider.setCurrentQuiz(Quiz.description(
                 _titleController.text, _descriptionController.text));
+            print(
+                "Quiz id is: probably null == ${editQuizProvider.currentQuiz!.id}");
           } else {
+            print(
+                "Quiz id is: probably null == ${editQuizProvider.currentQuiz!.id}");
             // Update current quiz in provider.
             // Dont need to set, since we got reference
             quiz.title = _titleController.text;

@@ -12,12 +12,15 @@ class QuizHandler extends ChangeNotifier {
 
   // Only used for undoing deletion
   Quiz? lastRemovedQuiz;
+
   Future<void> addQuiz(Quiz quiz) async {
     // If quiz already exists, update it
     if (!quizzes.contains(quiz)) {
-      quizzes.add(quiz);
+      print("Adding quiz: ${quiz.title} & id: ${quiz.id}");
       await FirebaseProvider.saveQuizToFirestore(quiz);
+      fetchQuizzes();
     } else {
+      print("Editing quiz: ${quiz.title} & id: ${quiz.id}");
       await FirebaseProvider.editQuizInFireSTore(quiz);
     }
     notifyListeners();
@@ -25,13 +28,21 @@ class QuizHandler extends ChangeNotifier {
 
   Future<void> editQuiz(Quiz quiz) async {
     await FirebaseProvider.editQuizInFireSTore(quiz);
+    fetchQuizzes();
   }
 
-  void removeQuiz(Quiz quiz) {
-    if (quizzes.remove(quiz)) {
+  void removeQuiz(Quiz quiz) async {
+    if (await FirebaseProvider.deleteQuizFromFirestore(quiz)) {
       lastRemovedQuiz = quiz;
+      fetchQuizzes();
     }
+    notifyListeners();
+  }
 
+  void fetchQuizzes() async {
+    await FirebaseProvider.getQuizzesFromFirestore().then((fetchedQuizzes) {
+      quizzes = fetchedQuizzes;
+    });
     notifyListeners();
   }
 

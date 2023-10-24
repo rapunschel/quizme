@@ -126,14 +126,6 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                             _answerControllers[i].text, _isAnswerSelected[i]);
                       }
 
-                      // Add the question to the current quiz
-                      /*             if (creationProvider.isQuizAdded) {
-                        creationProvider.addQuestionToCurrentQuiz(newQuestion);
-                        FirebaseProvider.editQuizInFireSTore(
-                            creationProvider.currentQuiz!);
-                      } else {
-                        creationProvider.addQuestionToCurrentQuiz(newQuestion);
-                      } */
                       creationProvider.addQuestionToCurrentQuiz(newQuestion);
 
                       // Add quiz if needed
@@ -143,7 +135,7 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                       } else {
                         // Tell that a quiz been updated
                         quizHandler.editQuiz(creationProvider.currentQuiz!);
-                        quizHandler.notifyQuizUpdated();
+                        //quizHandler.notifyQuizUpdated();
                       }
                       // Clear the form
                       for (TextEditingController controller
