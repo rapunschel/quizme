@@ -25,10 +25,10 @@ class FirebaseProvider {
       print("Här är quizdata from edit:");
       print(quizData);
       // Add the quiz data to Firestore
-      await _firestore.collection('quizzes').doc(quiz.id).set(quizData);
+      await _firestore.collection('quizzes').doc(quiz.id).update(quizData);
       // print the id
     } catch (error) {
-      print('Error saving quiz to Firestore: $error');
+      print('Error editing quiz to Firestore: $error');
     }
   }
 
