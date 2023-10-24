@@ -11,35 +11,33 @@ class QuizHandler extends ChangeNotifier {
   QuizHandler(this.quizzes);
 
   // Only used for undoing deletion
-  Quiz? lastRemovedQuiz;
+  //Quiz? lastRemovedQuiz;
 
   Future<void> addQuiz(Quiz quiz) async {
     // If quiz already exists, update it
     if (!quizzes.contains(quiz)) {
-      print("Adding quiz: ${quiz.title} & id: ${quiz.id}");
       await FirebaseProvider.saveQuizToFirestore(quiz);
-      fetchQuizzes();
-    } else {
-      print("Editing quiz: ${quiz.title} & id: ${quiz.id}");
-      await FirebaseProvider.editQuizInFireSTore(quiz);
+      await fetchQuizzes();
     }
-    notifyListeners();
   }
 
   Future<void> editQuiz(Quiz quiz) async {
     await FirebaseProvider.editQuizInFireSTore(quiz);
-    fetchQuizzes();
+    // await for fetchQuizzes to finish, to give homepage time to get changes
+    await fetchQuizzes();
   }
 
   void removeQuiz(Quiz quiz) async {
     if (await FirebaseProvider.deleteQuizFromFirestore(quiz)) {
-      lastRemovedQuiz = quiz;
-      fetchQuizzes();
+      // lastRemovedQuiz = quiz;
+      await fetchQuizzes();
     }
     notifyListeners();
   }
 
-  void fetchQuizzes() async {
+  // Need to await when calling this function,
+  //to give time for homepage to update (else you see the change happening)
+  Future<void> fetchQuizzes() async {
     await FirebaseProvider.getQuizzesFromFirestore().then((fetchedQuizzes) {
       quizzes = fetchedQuizzes;
     });
