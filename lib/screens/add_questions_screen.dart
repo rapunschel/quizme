@@ -53,7 +53,6 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
             const SizedBox(height: 20.0),
             // Question form field
             TextFormField(
-              //onChanged: (value) => _question = value,
               controller: _questionController,
               decoration: const InputDecoration(
                 labelText: 'Question',
@@ -131,10 +130,12 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                       // Add quiz if needed
                       if (!creationProvider.isQuizAdded) {
                         creationProvider.isQuizAdded = true;
-                        quizHandler.addQuiz(creationProvider.currentQuiz!);
+                        await quizHandler
+                            .addQuiz(creationProvider.currentQuiz!);
                       } else {
                         // Tell that a quiz been updated
-                        quizHandler.editQuiz(creationProvider.currentQuiz!);
+                        await quizHandler
+                            .editQuiz(creationProvider.currentQuiz!);
                         //quizHandler.notifyQuizUpdated();
                       }
                       // Clear the form
@@ -145,7 +146,7 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                       _questionController.clear();
                       _isAnswerSelected = [false, false, false, false];
                       _correctAnswerIndex = null;
-                      Navigator.pop(context);
+                      if (context.mounted) Navigator.of(context).pop();
                     }
                   },
                 ),

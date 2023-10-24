@@ -41,7 +41,7 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
     // Null if there is no set quiz
     dynamic quiz = editQuizProvider.currentQuiz;
     List<Question> questions = [];
-    print(quiz);
+
     if (quiz != null) {
       questions = quiz.questions;
       // The operator '??=' assigns a default value if the left hand side is null
@@ -99,7 +99,7 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
   ElevatedButton updateQuizInfo(
       quiz, QuizCreationProvider editQuizProvider, BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         setState(() {
           _isTitleFieldEmpty = _titleController.text.isEmpty;
         });
@@ -114,13 +114,12 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             // Dont need to set, since we got reference
             quiz.title = _titleController.text;
             quiz.quizDescription = _descriptionController.text;
-
             if (editQuizProvider.isQuizAdded) {
-              FirebaseProvider.editQuizInFireSTore(quiz);
+              await context.read<QuizHandler>().editQuiz(quiz);
             }
           }
-          context.read<QuizHandler>().notifyQuizUpdated();
-          Navigator.pop(context);
+
+          if (context.mounted) Navigator.of(context).pop();
         }
       },
       child: const Text('Update Quiz Info'),
@@ -130,7 +129,7 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
   ElevatedButton addQuestionButton(
       quiz, QuizCreationProvider editQuizProvider, BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         setState(() {
           _isTitleFieldEmpty = _titleController.text.isEmpty;
         });
@@ -151,7 +150,7 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             quiz.quizDescription = _descriptionController.text;
           }
 
-          Navigator.push(
+          await Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const AddQuestionScreen()));
