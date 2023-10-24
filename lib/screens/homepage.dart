@@ -175,9 +175,10 @@ class QuizCard extends StatelessWidget {
                 // Delete Quiz button
                 IconButton(
                     onPressed: () {
-                      final messenger = ScaffoldMessenger.of(context);
                       context.read<QuizHandler>().removeQuiz(quiz);
-                      messenger.showSnackBar(showSnackBar(context));
+                      //final messenger = ScaffoldMessenger.of(context);
+
+                      //   messenger.showSnackBar(showSnackBar(context));
                     },
                     icon: const Icon(Icons.delete))
               ]),
@@ -198,7 +199,7 @@ class QuizCard extends StatelessWidget {
     );
   }
 
-  SnackBar showSnackBar(BuildContext context) {
+  /* SnackBar showSnackBar(BuildContext context) {
     QuizHandler handler = context.read<QuizHandler>();
 
     var removedQuiz = handler.lastRemovedQuiz;
@@ -225,6 +226,6 @@ class QuizCard extends StatelessWidget {
           handler.addQuiz(removedQuiz);
         },
       ),
-    );
-  }
+    ); 
+  } */
 }
