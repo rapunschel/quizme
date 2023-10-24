@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quizme/screens/forgot_password_page.dart';
 import 'providers/play_quiz_provider.dart';
 import 'providers/quiz_creation_provider.dart';
 import 'providers/quiz_handler.dart';
@@ -60,6 +61,7 @@ class Quiz extends StatelessWidget {
           'homeScreen': (context) => const HomePage(),
           'loginScreen': (context) => const LoginScreen(),
           'signupScreen': (context) => const SignupScreen(),
+          'forgotPasswordScreen': (context) => const ForgotPasswordPage(),
         },
       ),
     );
