@@ -11,6 +11,7 @@ import 'package:quizme/screens/login_screen.dart';
 import 'package:quizme/screens/signup_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
+import '../providers/load_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,11 +24,19 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const Quiz());
+
+  var fetchedQuizzes = await FirebaseProvider.getQuizzesFromFirestore();
+
+  runApp(
+    Quiz(
+      quizzes: fetchedQuizzes,
+    ),
+  );
 }
 
 class Quiz extends StatelessWidget {
-  const Quiz({super.key});
+  final quizzes;
+  const Quiz({super.key, required this.quizzes});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +46,7 @@ class Quiz extends StatelessWidget {
           create: (context) => QuizCreationProvider(),
         ),
         ChangeNotifierProvider<QuizHandler>(
-          create: (context) => QuizHandler(),
+          create: (context) => QuizHandler(quizzes),
         ),
         ChangeNotifierProvider<PlayQuizProvider>(
           create: (context) => PlayQuizProvider(),

@@ -1,24 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:quizme/providers/load_data.dart';
 import 'package:quizme/providers/quiz_creation_provider.dart';
 import 'package:quizme/screens/play_quiz_screen/play_quiz_screen.dart';
+import 'package:quizme/widgets/reuseable_widgets.dart';
 import 'make_quiz_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/quiz_handler.dart';
 import '../providers/play_quiz_provider.dart';
 import '../models/quiz_model.dart';
-import '../widgets/reuseable_widgets.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late List<Quiz> quizzes;
+
+/*   @override
+  void initState() {
+    super.initState();
+    // Fetch quizzes from Firestore when the widget is first created
+    fetchQuizzes();
+  } */
+
+  Future<void> fetchQuizzes() async {
+    //FirebaseProvider firebaseProvider = FirebaseProvider();
+    List<Quiz> fetchedQuizzes =
+        await FirebaseProvider.getQuizzesFromFirestore();
+    setState(() {
+      quizzes = fetchedQuizzes;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     context.watch<QuizHandler>();
     final QuizHandler quizHandler = context.read<QuizHandler>();
-    final List<Quiz> previousQuizzes = quizHandler.getQuizzes();
-
+    quizzes = quizHandler.quizzes;
     return Scaffold(
-      //backgroundColor: Colors.white12,
       appBar: const QuizmeAppBar(
         title: "My quizzes",
       ),
@@ -35,7 +57,7 @@ class HomePage extends StatelessWidget {
               ),
             );
           },
-          backgroundColor: Theme.of(context).primaryColor, //Colors.grey,
+          backgroundColor: Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
@@ -77,11 +99,12 @@ class HomePage extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: previousQuizzes.length,
+              itemCount: quizzes.length,
               itemBuilder: (context, index) {
-                if (index < previousQuizzes.length) {
-                  return QuizCard(quiz: previousQuizzes[index]);
+                if (index < quizzes.length) {
+                  return QuizCard(quiz: quizzes[index]);
                 }
+                return Container(); // Placeholder, you can customize this as needed
               },
             ),
           ),
@@ -93,9 +116,9 @@ class HomePage extends StatelessWidget {
 
 class QuizCard extends StatelessWidget {
   const QuizCard({
-    super.key,
+    Key? key,
     required this.quiz,
-  });
+  }) : super(key: key);
 
   final Quiz quiz;
 
@@ -104,6 +127,7 @@ class QuizCard extends StatelessWidget {
     final PlayQuizProvider playQuizModel = context.read<PlayQuizProvider>();
     return GestureDetector(
       onTap: () {
+        print(quiz.questions);
         // Must set quiz before pushing to the PlayQuizScreen
         playQuizModel.setQuiz(quiz);
         Navigator.push(
@@ -115,19 +139,16 @@ class QuizCard extends StatelessWidget {
       },
       child: Card(
         margin: const EdgeInsets.all(10.0),
-        color: Theme.of(context)
-            .primaryColor, //const Color.fromARGB(255, 210, 231, 211),
+        color: Theme.of(context).primaryColor,
         child: Stack(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // omslag
                 Text(
                   quiz.title,
                   style: const TextStyle(
                     fontSize: 30.0,
-                    // color: Colors.grey,
                   ),
                 ),
               ],
@@ -144,10 +165,11 @@ class QuizCard extends StatelessWidget {
                       qcProvider.reset();
                       qcProvider.setCurrentQuiz(quiz);
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MakeQuizScreen(),
-                          ));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MakeQuizScreen(),
+                        ),
+                      );
                     },
                     icon: const Icon(Icons.edit)),
                 // Delete Quiz button
@@ -196,7 +218,7 @@ class QuizCard extends StatelessWidget {
             ),
           ],
         ),
-      ), //Text("Deleted: ${removedTask!.text}"),
+      ),
       action: SnackBarAction(
         label: 'Undo deletion',
         onPressed: () {

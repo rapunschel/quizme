@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizme/providers/load_data.dart';
 import '../providers/quiz_handler.dart';
 import '../models/quiz_model.dart';
 import '../providers/quiz_creation_provider.dart';
@@ -106,7 +107,7 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                     textStyle: const TextStyle(fontSize: 20.0),
                   ),
                   child: const Text('Save'),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         _correctAnswerIndex != null) {
                       QuizCreationProvider creationProvider =
@@ -126,6 +127,13 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                       }
 
                       // Add the question to the current quiz
+                      /*             if (creationProvider.isQuizAdded) {
+                        creationProvider.addQuestionToCurrentQuiz(newQuestion);
+                        FirebaseProvider.editQuizInFireSTore(
+                            creationProvider.currentQuiz!);
+                      } else {
+                        creationProvider.addQuestionToCurrentQuiz(newQuestion);
+                      } */
                       creationProvider.addQuestionToCurrentQuiz(newQuestion);
 
                       // Add quiz if needed
@@ -134,6 +142,7 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                         quizHandler.addQuiz(creationProvider.currentQuiz!);
                       } else {
                         // Tell that a quiz been updated
+                        quizHandler.editQuiz(creationProvider.currentQuiz!);
                         quizHandler.notifyQuizUpdated();
                       }
                       // Clear the form

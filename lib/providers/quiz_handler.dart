@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
 import 'play_quiz_provider.dart';
 import '../models/quiz_model.dart';
+import 'load_data.dart';
 
 // Contain a list of all quizzes made.
 class QuizHandler extends ChangeNotifier {
-  List<Quiz> quizzes = [initiateQuiz(), initiateQuiz2()];
+  List<Quiz> quizzes = [];
   bool _updateFlag = false;
+
+  QuizHandler(this.quizzes);
 
   // Only used for undoing deletion
   Quiz? lastRemovedQuiz;
-  void addQuiz(Quiz quiz) {
+  Future<void> addQuiz(Quiz quiz) async {
+    // If quiz already exists, update it
     if (!quizzes.contains(quiz)) {
       quizzes.add(quiz);
+      await FirebaseProvider.saveQuizToFirestore(quiz);
+    } else {
+      await FirebaseProvider.editQuizInFireSTore(quiz);
     }
     notifyListeners();
+  }
+
+  Future<void> editQuiz(Quiz quiz) async {
+    await FirebaseProvider.editQuizInFireSTore(quiz);
   }
 
   void removeQuiz(Quiz quiz) {
