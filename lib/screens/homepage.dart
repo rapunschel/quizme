@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quizme/providers/quiz_creation_provider.dart';
 import 'package:quizme/screens/play_quiz_screen/play_quiz_screen.dart';
 import 'package:quizme/widgets/reuseable_widgets.dart';
 import 'make_quiz_screen.dart';
@@ -20,10 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    QuizCreationProvider quizCreationProvider =
-        context.read<QuizCreationProvider>();
-
-    context.watch<QuizHandler>();
+    context.watch<QuizHandler>().quizzes;
     final QuizHandler quizHandler = context.read<QuizHandler>();
     quizzes = quizHandler.quizzes;
     return Scaffold(
@@ -35,23 +31,22 @@ class _HomePageState extends State<HomePage> {
         message: 'Create new',
         child: FloatingActionButton.extended(
           onPressed: () async {
-            // Reset provider for making quiz
-            quizCreationProvider.reset();
-            await Navigator.push(
+            Quiz? quiz = await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MakeQuizScreen(callback: () async {
-                  await context.read<QuizHandler>().addQuiz(
-                        quizCreationProvider.currentQuiz!,
-                      );
-                }),
+                builder: (context) => MakeQuizScreen(
+                    quiz: null,
+                    callback: (Quiz quiz) async {
+                      await context.read<QuizHandler>().addQuiz(
+                            quiz,
+                          );
+                    }),
               ),
             );
-            if (context.mounted && quizCreationProvider.isQuizAdded) {
-              await quizHandler.editQuiz(quizCreationProvider.currentQuiz!);
-            }
 
-            setState(() {/* Rebuild */});
+            if (context.mounted && quiz != null) {
+              await quizHandler.editQuiz(quiz);
+            }
           },
           backgroundColor: Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(
@@ -156,14 +151,12 @@ class QuizCard extends StatelessWidget {
                 // Edit Quiz button
                 IconButton(
                     onPressed: () async {
-                      QuizCreationProvider qcProvider =
-                          context.read<QuizCreationProvider>();
-                      qcProvider.reset();
-                      qcProvider.setCurrentQuiz(quiz);
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MakeQuizScreen(),
+                          builder: (context) => MakeQuizScreen(
+                            quiz: quiz,
+                          ),
                         ),
                       );
 

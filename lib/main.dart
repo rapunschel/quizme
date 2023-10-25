@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/play_quiz_provider.dart';
-import 'providers/quiz_creation_provider.dart';
 import 'providers/quiz_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/homepage.dart';
@@ -42,9 +41,6 @@ class Quiz extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<QuizCreationProvider>(
-          create: (context) => QuizCreationProvider(),
-        ),
         ChangeNotifierProvider<QuizHandler>(
           create: (context) => QuizHandler(quizzes),
         ),
