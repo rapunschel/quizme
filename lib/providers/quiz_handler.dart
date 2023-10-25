@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'play_quiz_provider.dart';
 import '../models/quiz_model.dart';
 import 'load_data.dart';
 
 // Contain a list of all quizzes made.
 class QuizHandler extends ChangeNotifier {
   List<Quiz> quizzes = [];
-  bool _updateFlag = false;
 
   QuizHandler(this.quizzes);
 
@@ -42,14 +40,6 @@ class QuizHandler extends ChangeNotifier {
       quizzes = fetchedQuizzes;
     });
     notifyListeners();
-  }
-
-  // Ugly fix: Should probably use callbacks to rebuild homepage
-  // If a quiz is edited, need to tell homepage to rebuild
-  void notifyQuizUpdated() {
-    _updateFlag = true;
-    notifyListeners();
-    _updateFlag = false;
   }
 
   List<Quiz> getQuizzes() {
