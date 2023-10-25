@@ -16,6 +16,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
+  bool _isObscure = true;
+  bool _isConfirmPasswordObscure = true;
 
   Future signUp() async {
     String email = _emailController.text.trim();
@@ -202,52 +204,107 @@ class _SignupScreenState extends State<SignupScreen> {
                                         Container(
                                           padding: EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                              border: Border(
-                                                  bottom: BorderSide(
-                                                      color: Colors
-                                                          .grey.shade200))),
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color:
+                                                        Colors.grey.shade200)),
+                                          ),
                                           child: TextField(
                                             controller: _emailController,
                                             decoration: InputDecoration(
-                                                hintText: "Email",
-                                                hintStyle: TextStyle(
-                                                    color: Colors.grey),
-                                                border: InputBorder.none),
+                                              hintText: "Email",
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              border: InputBorder.none,
+                                              prefixIcon: Container(
+                                                padding: EdgeInsets.all(10),
+                                                child: Icon(
+                                                  Icons.email_outlined,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         Container(
                                           padding: EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                              border: Border(
-                                                  bottom: BorderSide(
-                                                      color: Colors
-                                                          .grey.shade200))),
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color:
+                                                        Colors.grey.shade200)),
+                                          ),
                                           child: TextField(
-                                            obscureText: true,
+                                            obscureText: _isObscure,
                                             controller: _passwordController,
                                             decoration: InputDecoration(
-                                                hintText: "Password",
-                                                hintStyle: TextStyle(
-                                                    color: Colors.grey),
-                                                border: InputBorder.none),
+                                              hintText: "Password",
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              border: InputBorder.none,
+                                              prefixIcon: Container(
+                                                padding: EdgeInsets.all(10),
+                                                child: Icon(
+                                                  Icons.lock_outline,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              suffixIcon: GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _isObscure = !_isObscure;
+                                                  });
+                                                },
+                                                child: Icon(
+                                                  _isObscure
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         Container(
                                           padding: EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                              border: Border(
-                                                  bottom: BorderSide(
-                                                      color: Colors
-                                                          .grey.shade200))),
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color:
+                                                        Colors.grey.shade200)),
+                                          ),
                                           child: TextField(
-                                            obscureText: true,
+                                            obscureText:
+                                                _isConfirmPasswordObscure,
                                             controller:
                                                 _confirmpasswordController,
                                             decoration: InputDecoration(
-                                                hintText: "Confirm password",
-                                                hintStyle: TextStyle(
-                                                    color: Colors.grey),
-                                                border: InputBorder.none),
+                                              hintText: "Confirm Password",
+                                              hintStyle:
+                                                  TextStyle(color: Colors.grey),
+                                              border: InputBorder.none,
+                                              prefixIcon: Container(
+                                                padding: EdgeInsets.all(10),
+                                                child: Icon(
+                                                  Icons.lock_outline,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              suffixIcon: GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _isConfirmPasswordObscure =
+                                                        !_isConfirmPasswordObscure;
+                                                  });
+                                                },
+                                                child: Icon(
+                                                  _isConfirmPasswordObscure
+                                                      ? Icons.visibility
+                                                      : Icons.visibility_off,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],

@@ -1,6 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizme/screens/forgot_password_page.dart';
@@ -120,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   FadeInUp(
                       duration: Duration(milliseconds: 1300),
                       child: Text(
-                        "Welomce back! Nice to see you again.",
+                        "Welcome back! Nice to see you again.",
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       )),
                 ],
@@ -426,11 +425,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
                       FadeInUp(
-                        duration: Duration(
+                        duration: const Duration(
                             milliseconds:
                                 2200), // Adjust the duration as needed
                         child: Row(
