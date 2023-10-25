@@ -1,9 +1,6 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:quizme/providers/load_data.dart';
 import 'add_questions_screen.dart';
 import '../providers/quiz_creation_provider.dart';
-import '../providers/quiz_handler.dart';
 import 'package:provider/provider.dart';
 import '../models/quiz_model.dart';
 import '../widgets/reuseable_widgets.dart';
@@ -110,13 +107,8 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             editQuizProvider.setCurrentQuiz(Quiz.description(
                 _titleController.text, _descriptionController.text));
           } else {
-            // Update current quiz in provider.
-            // Dont need to set, since we got reference
             quiz.title = _titleController.text;
             quiz.quizDescription = _descriptionController.text;
-            if (editQuizProvider.isQuizAdded) {
-              await context.read<QuizHandler>().editQuiz(quiz);
-            }
           }
 
           if (context.mounted) Navigator.of(context).pop();

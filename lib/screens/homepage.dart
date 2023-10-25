@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quizme/providers/load_data.dart';
 import 'package:quizme/providers/quiz_creation_provider.dart';
 import 'package:quizme/screens/play_quiz_screen/play_quiz_screen.dart';
 import 'package:quizme/widgets/reuseable_widgets.dart';
@@ -13,30 +12,25 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   late List<Quiz> quizzes;
 
-/*   @override
-  void initState() {
-    super.initState();
-    // Fetch quizzes from Firestore when the widget is first created
-    fetchQuizzes();
-  } */
-
-  Future<void> fetchQuizzes() async {
-    //FirebaseProvider firebaseProvider = FirebaseProvider();
+/*   Future<void> fetchQuizzes() async {
     List<Quiz> fetchedQuizzes =
         await FirebaseProvider.getQuizzesFromFirestore();
     setState(() {
       quizzes = fetchedQuizzes;
     });
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
+    QuizCreationProvider quizCreationProvider =
+        context.read<QuizCreationProvider>();
+
     context.watch<QuizHandler>();
     final QuizHandler quizHandler = context.read<QuizHandler>();
     quizzes = quizHandler.quizzes;
@@ -44,18 +38,26 @@ class _HomePageState extends State<HomePage> {
       appBar: const QuizmeAppBar(
         title: "My quizzes",
       ),
+      // Floating Button
       floatingActionButton: Tooltip(
         message: 'Create new',
         child: FloatingActionButton.extended(
-          onPressed: () {
+          onPressed: () async {
             // Reset provider for making quiz
-            context.read<QuizCreationProvider>().reset();
-            Navigator.push(
+            quizCreationProvider.reset();
+            await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const MakeQuizScreen(),
               ),
             );
+            if (context.mounted && quizCreationProvider.isQuizAdded) {
+              // add the quiz
+              await context
+                  .read<QuizHandler>()
+                  .addQuiz(quizCreationProvider.currentQuiz!);
+            }
+            setState(() {});
           },
           backgroundColor: Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(
@@ -124,10 +126,10 @@ class QuizCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    QuizHandler quizHandler = context.read<QuizHandler>();
     final PlayQuizProvider playQuizModel = context.read<PlayQuizProvider>();
     return GestureDetector(
       onTap: () {
-        print(quiz.questions);
         // Must set quiz before pushing to the PlayQuizScreen
         playQuizModel.setQuiz(quiz);
         Navigator.push(
@@ -159,23 +161,25 @@ class QuizCard extends StatelessWidget {
               child: Wrap(spacing: -5, children: [
                 // Edit Quiz button
                 IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       QuizCreationProvider qcProvider =
                           context.read<QuizCreationProvider>();
                       qcProvider.reset();
                       qcProvider.setCurrentQuiz(quiz);
-                      Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MakeQuizScreen(),
                         ),
                       );
+
+                      quizHandler.editQuiz(quiz);
                     },
                     icon: const Icon(Icons.edit)),
                 // Delete Quiz button
                 IconButton(
                     onPressed: () {
-                      context.read<QuizHandler>().removeQuiz(quiz);
+                      quizHandler.removeQuiz(quiz);
                       //final messenger = ScaffoldMessenger.of(context);
 
                       //   messenger.showSnackBar(showSnackBar(context));

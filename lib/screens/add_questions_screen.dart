@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quizme/providers/load_data.dart';
-import '../providers/quiz_handler.dart';
 import '../models/quiz_model.dart';
 import '../providers/quiz_creation_provider.dart';
 import 'package:provider/provider.dart';
@@ -106,15 +104,14 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                     textStyle: const TextStyle(fontSize: 20.0),
                   ),
                   child: const Text('Save'),
-                  onPressed: () async {
+                  onPressed: () {
                     if (_formKey.currentState!.validate() &&
                         _correctAnswerIndex != null) {
                       QuizCreationProvider creationProvider =
                           context.read<QuizCreationProvider>();
-
-                      QuizHandler quizHandler = context.read<QuizHandler>();
                       final newQuestion = Question(_questionController.text);
 
+                      creationProvider.isQuizAdded = true;
                       for (int i = 0; i < _answerControllers.length; i++) {
                         TextEditingController controller =
                             _answerControllers[i];
@@ -127,17 +124,6 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
 
                       creationProvider.addQuestionToCurrentQuiz(newQuestion);
 
-                      // Add quiz if needed
-                      if (!creationProvider.isQuizAdded) {
-                        creationProvider.isQuizAdded = true;
-                        await quizHandler
-                            .addQuiz(creationProvider.currentQuiz!);
-                      } else {
-                        // Tell that a quiz been updated
-                        await quizHandler
-                            .editQuiz(creationProvider.currentQuiz!);
-                        //quizHandler.notifyQuizUpdated();
-                      }
                       // Clear the form
                       for (TextEditingController controller
                           in _answerControllers) {
