@@ -26,67 +26,72 @@ class _HomePageState extends State<HomePage> {
       appBar: const QuizmeAppBar(
         title: "My quizzes",
       ),
-      // Floating Button
       floatingActionButton: Tooltip(
         message: 'Create new',
-        child: FloatingActionButton.extended(
-          onPressed: () async {
-            Quiz? quiz = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MakeQuizScreen(
-                    quiz: null,
-                    callback: (Quiz quiz) async {
-                      await context.read<QuizHandler>().addQuiz(
-                            quiz,
-                          );
-                    }),
-              ),
-            );
-
-            if (context.mounted && quiz != null) {
-              await quizHandler.editQuiz(quiz);
-            }
-          },
-          backgroundColor: Theme.of(context).primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          label: const Row(
-            children: [
-              Icon(Icons.add),
-              SizedBox(width: 8.0),
-              Text('Create Quiz'),
-            ],
-          ),
-        ),
+        child: createQuizFloatingButton(context, quizHandler),
       ),
-      body: Column(
+      body: loadScreenContents(),
+    );
+  }
+
+  FloatingActionButton createQuizFloatingButton(
+      BuildContext context, QuizHandler quizHandler) {
+    return FloatingActionButton.extended(
+      onPressed: () async {
+        Quiz? quiz = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MakeQuizScreen(
+                quiz: null,
+                callback: (Quiz quiz) async {
+                  await context.read<QuizHandler>().addQuiz(
+                        quiz,
+                      );
+                }),
+          ),
+        );
+
+        if (context.mounted && quiz != null) {
+          await quizHandler.editQuiz(quiz);
+        }
+      },
+      label: const Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: 500.0,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: 50.0,
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search...',
-                    filled: true,
-                    fillColor: const Color.fromARGB(255, 224, 219, 219),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+          Icon(Icons.add),
+          SizedBox(width: 8.0),
+          Text('Create Quiz'),
+        ],
+      ),
+    );
+  }
+
+  Column loadScreenContents() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            width: 500.0,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: 50.0,
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  hintText: 'Search...',
+                  //filled: true,
+                  //fillColor: const Color.fromARGB(255, 224, 219, 219),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
             ),
           ),
-          Expanded(
-            child: GridView.builder(
+        ),
+        Expanded(
+          child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
@@ -95,12 +100,10 @@ class _HomePageState extends State<HomePage> {
                 if (index < quizzes.length) {
                   return QuizCard(quiz: quizzes[index]);
                 }
-                return Container(); // Placeholder, you can customize this as needed
-              },
-            ),
-          ),
-        ],
-      ),
+                return Container();
+              }),
+        ),
+      ],
     );
   }
 }
@@ -138,9 +141,10 @@ class QuizCard extends StatelessWidget {
               children: [
                 Text(
                   quiz.title,
-                  style: const TextStyle(
-                    fontSize: 30.0,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontWeight: FontWeight.normal),
                 ),
               ],
             ),
@@ -174,12 +178,8 @@ class QuizCard extends StatelessWidget {
             Positioned(
               bottom: 10.0,
               right: 10.0,
-              child: Text(
-                '${quiz.questions.length} Questions',
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
+              child: Text('${quiz.questions.length} Questions',
+                  style: Theme.of(context).textTheme.bodyLarge),
             ),
           ],
         ),

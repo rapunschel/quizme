@@ -85,6 +85,10 @@ class Quiz extends StatelessWidget {
         extendedTextStyle: Theme.of(context).textTheme.bodyMedium,
         // Color for the icon
         foregroundColor: iconColor,
+        backgroundColor: primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
