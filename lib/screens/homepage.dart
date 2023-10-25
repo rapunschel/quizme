@@ -18,14 +18,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late List<Quiz> quizzes;
 
-/*   Future<void> fetchQuizzes() async {
-    List<Quiz> fetchedQuizzes =
-        await FirebaseProvider.getQuizzesFromFirestore();
-    setState(() {
-      quizzes = fetchedQuizzes;
-    });
-  } */
-
   @override
   Widget build(BuildContext context) {
     QuizCreationProvider quizCreationProvider =
@@ -51,13 +43,14 @@ class _HomePageState extends State<HomePage> {
                 builder: (context) => const MakeQuizScreen(),
               ),
             );
+            // Only add the quiz to firestore if the quiz is marked as added.
             if (context.mounted && quizCreationProvider.isQuizAdded) {
               // add the quiz
               await context
                   .read<QuizHandler>()
                   .addQuiz(quizCreationProvider.currentQuiz!);
             }
-            setState(() {});
+            setState(() {/* Rebuild */});
           },
           backgroundColor: Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(
@@ -76,7 +69,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Container(
+            child: SizedBox(
               width: 500.0,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
@@ -180,9 +173,6 @@ class QuizCard extends StatelessWidget {
                 IconButton(
                     onPressed: () {
                       quizHandler.removeQuiz(quiz);
-                      //final messenger = ScaffoldMessenger.of(context);
-
-                      //   messenger.showSnackBar(showSnackBar(context));
                     },
                     icon: const Icon(Icons.delete))
               ]),
@@ -202,34 +192,4 @@ class QuizCard extends StatelessWidget {
       ),
     );
   }
-
-  /* SnackBar showSnackBar(BuildContext context) {
-    QuizHandler handler = context.read<QuizHandler>();
-
-    var removedQuiz = handler.lastRemovedQuiz;
-    return SnackBar(
-      margin: EdgeInsets.only(left: 15, right: 15, bottom: 90),
-      duration: const Duration(seconds: 2),
-      content: Text.rich(
-        TextSpan(
-          text: "Deleted: ",
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                color: Colors.red,
-              ),
-          children: <InlineSpan>[
-            TextSpan(
-              text: removedQuiz!.title,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ],
-        ),
-      ),
-      action: SnackBarAction(
-        label: 'Undo deletion',
-        onPressed: () {
-          handler.addQuiz(removedQuiz);
-        },
-      ),
-    ); 
-  } */
 }

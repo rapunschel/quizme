@@ -121,21 +121,21 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
   ElevatedButton addQuestionButton(
       quiz, QuizCreationProvider editQuizProvider, BuildContext context) {
     return ElevatedButton(
+      child: const Text('Add question'),
       onPressed: () async {
         setState(() {
           _isTitleFieldEmpty = _titleController.text.isEmpty;
         });
-
         if (!_isTitleFieldEmpty) {
           // If quiz is null,create a quiz and set the provider quiz
           if (quiz == null) {
-            editQuizProvider.setCurrentQuiz(Quiz.description(
-                _titleController.text, _descriptionController.text));
-            print(
-                "Quiz id is: probably null == ${editQuizProvider.currentQuiz!.id}");
+            editQuizProvider.setCurrentQuiz(
+              Quiz.description(
+                _titleController.text,
+                _descriptionController.text,
+              ),
+            );
           } else {
-            print(
-                "Quiz id is: probably null == ${editQuizProvider.currentQuiz!.id}");
             // Update current quiz in provider.
             // Dont need to set, since we got reference
             quiz.title = _titleController.text;
@@ -148,7 +148,6 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
                   builder: (context) => const AddQuestionScreen()));
         }
       },
-      child: const Text('Add question'),
     );
   }
 
@@ -199,7 +198,7 @@ class QuestionTileWidget extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () {
-                  //TODO implement edit question. Use callbacks to update is probably easiest
+                  //TODO implement edit question.
                 },
               ),
               IconButton(
@@ -207,7 +206,6 @@ class QuestionTileWidget extends StatelessWidget {
                 onPressed: () {
                   //TODO implement remove question.
                   //Convert to stateful, extract List<Answer> then build updates
-                  // Tell homepage to update somehow, callback or use ugly fix?
                 },
               ),
             ],

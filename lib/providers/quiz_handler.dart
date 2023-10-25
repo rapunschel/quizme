@@ -8,9 +8,6 @@ class QuizHandler extends ChangeNotifier {
 
   QuizHandler(this.quizzes);
 
-  // Only used for undoing deletion
-  //Quiz? lastRemovedQuiz;
-
   Future<void> addQuiz(Quiz quiz) async {
     // If quiz already exists, update it
     if (!quizzes.contains(quiz)) {
