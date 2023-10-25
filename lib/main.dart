@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'providers/play_quiz_provider.dart';
 import 'providers/quiz_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/homepage.dart';
+import 'screens/home_screen.dart';
 import 'package:quizme/auth.dart';
 import 'package:quizme/firebase_options.dart';
 import 'package:quizme/screens/login_screen.dart';
@@ -53,7 +53,7 @@ class Quiz extends StatelessWidget {
         theme: appStyling(context),
         routes: {
           '/': (context) => const Auth(),
-          'homeScreen': (context) => const HomePage(),
+          'homeScreen': (context) => const HomeScreen(),
           'loginScreen': (context) => const LoginScreen(),
           'signupScreen': (context) => const SignupScreen(),
         },
