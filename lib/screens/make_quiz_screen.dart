@@ -6,7 +6,8 @@ import '../models/quiz_model.dart';
 import '../widgets/reuseable_widgets.dart';
 
 class MakeQuizScreen extends StatefulWidget {
-  const MakeQuizScreen({super.key});
+  final Function? callback;
+  const MakeQuizScreen({super.key, this.callback});
 
   @override
   State<MakeQuizScreen> createState() => _MakeQuizScreenState();
@@ -121,7 +122,9 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
   ElevatedButton addQuestionButton(
       quiz, QuizCreationProvider editQuizProvider, BuildContext context) {
     return ElevatedButton(
-      child: const Text('Add question'),
+      child: Text(editQuizProvider.isQuizAdded
+          ? 'Add question'
+          : 'Add Quiz (Go to add question)'),
       onPressed: () async {
         setState(() {
           _isTitleFieldEmpty = _titleController.text.isEmpty;
@@ -129,12 +132,13 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
         if (!_isTitleFieldEmpty) {
           // If quiz is null,create a quiz and set the provider quiz
           if (quiz == null) {
-            editQuizProvider.setCurrentQuiz(
-              Quiz.description(
-                _titleController.text,
-                _descriptionController.text,
-              ),
+            Quiz quiz = Quiz.description(
+              _titleController.text,
+              _descriptionController.text,
             );
+            editQuizProvider.setCurrentQuiz(quiz);
+            editQuizProvider.isQuizAdded = true;
+            widget.callback!();
           } else {
             // Update current quiz in provider.
             // Dont need to set, since we got reference
@@ -142,10 +146,12 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             quiz.quizDescription = _descriptionController.text;
           }
 
-          await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AddQuestionScreen()));
+          if (context.mounted) {
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddQuestionScreen()));
+          }
         }
       },
     );

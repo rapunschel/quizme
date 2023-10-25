@@ -40,16 +40,17 @@ class _HomePageState extends State<HomePage> {
             await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const MakeQuizScreen(),
+                builder: (context) => MakeQuizScreen(callback: () async {
+                  await context.read<QuizHandler>().addQuiz(
+                        quizCreationProvider.currentQuiz!,
+                      );
+                }),
               ),
             );
-            // Only add the quiz to firestore if the quiz is marked as added.
             if (context.mounted && quizCreationProvider.isQuizAdded) {
-              // add the quiz
-              await context
-                  .read<QuizHandler>()
-                  .addQuiz(quizCreationProvider.currentQuiz!);
+              await quizHandler.editQuiz(quizCreationProvider.currentQuiz!);
             }
+
             setState(() {/* Rebuild */});
           },
           backgroundColor: Theme.of(context).primaryColor,
