@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quizme/models/quiz_model.dart';
 
-class FirebaseProvider {
+class FirestoreDB {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   static Future<void> editQuizInFireSTore(Quiz quiz) async {

@@ -11,7 +11,7 @@ import 'package:quizme/screens/login_screen.dart';
 import 'package:quizme/screens/signup_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '../providers/load_data.dart';
+import 'apis/firestore_db.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  var fetchedQuizzes = await FirebaseProvider.getQuizzesFromFirestore();
+  var fetchedQuizzes = await FirestoreDB.getQuizzesFromFirestore();
 
   runApp(
     Quiz(
