@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/quiz_model.dart';
-import '../providers/quiz_creation_provider.dart';
-import 'package:provider/provider.dart';
 import '../widgets/reuseable_widgets.dart';
 
 class AddQuestionScreen extends StatefulWidget {
-  const AddQuestionScreen({super.key});
+  final Quiz quiz;
+  const AddQuestionScreen({super.key, required this.quiz});
 
   @override
   State<AddQuestionScreen> createState() => _AddQuestionScreenState();
@@ -107,11 +106,8 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                   onPressed: () {
                     if (_formKey.currentState!.validate() &&
                         _correctAnswerIndex != null) {
-                      QuizCreationProvider creationProvider =
-                          context.read<QuizCreationProvider>();
                       final newQuestion = Question(_questionController.text);
 
-                      creationProvider.isQuizAdded = true;
                       for (int i = 0; i < _answerControllers.length; i++) {
                         TextEditingController controller =
                             _answerControllers[i];
@@ -122,7 +118,7 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
                             _answerControllers[i].text, _isAnswerSelected[i]);
                       }
 
-                      creationProvider.addQuestionToCurrentQuiz(newQuestion);
+                      widget.quiz.questions.add(newQuestion);
 
                       // Clear the form
                       for (TextEditingController controller

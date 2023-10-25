@@ -146,12 +146,11 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             quiz.quizDescription = _descriptionController.text;
           }
 
-          if (context.mounted) {
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AddQuestionScreen()));
-          }
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AddQuestionScreen(quiz: editQuizProvider.currentQuiz!)));
         }
       },
     );
