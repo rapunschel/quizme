@@ -239,7 +239,7 @@ class _QuestionTileWidgetState extends State<QuestionTileWidget> {
             spacing: -10,
             children: <IconButton>[
               IconButton(
-                icon: const Icon(Icons.edit),
+                icon: const Icon(Icons.edit, size: 30),
                 onPressed: () async {
                   bool? isEdited = await Navigator.push(
                       context,
@@ -254,7 +254,7 @@ class _QuestionTileWidgetState extends State<QuestionTileWidget> {
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.delete),
+                icon: const Icon(Icons.delete, size: 30),
                 onPressed: () async {
                   await widget.removeQuestionCallback(widget.question);
                 },

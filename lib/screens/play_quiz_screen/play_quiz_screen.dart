@@ -193,7 +193,7 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
       shape: wasTapped
           ? RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
-              side: const BorderSide(color: Colors.black, width: 2))
+              side: const BorderSide(color: Colors.black, width: 6))
           : RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
             ),

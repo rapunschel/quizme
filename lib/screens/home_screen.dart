@@ -81,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
                     hintText: 'Search...',
+                    hintStyle: Theme.of(context).textTheme.bodyLarge,
                     //filled: true,
                     //fillColor: const Color.fromARGB(255, 224, 219, 219),
                     border: OutlineInputBorder(
@@ -142,6 +143,7 @@ class QuizTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: Material(
+          color: Theme.of(context).primaryColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: ListTile(
@@ -183,9 +185,11 @@ class QuizTile extends StatelessWidget {
   InkWell deleteQuizButton(QuizHandler quizHandler) {
     return InkWell(
         onTap: () {
-          quizHandler.removeQuiz(quiz);
+          quizHandler.removeQuiz(
+            quiz,
+          );
         },
-        child: const Icon(Icons.delete));
+        child: const Icon(Icons.delete, size: 30));
   }
 
   InkWell editQuizButton(BuildContext context, QuizHandler quizHandler) {
@@ -202,6 +206,6 @@ class QuizTile extends StatelessWidget {
             ),
           );
         },
-        child: const Icon(Icons.edit));
+        child: const Icon(Icons.edit, size: 30));
   }
 }
