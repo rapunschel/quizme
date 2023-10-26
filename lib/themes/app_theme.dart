@@ -3,27 +3,28 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Color for the text for everything
-  static Color textColor = Colors.white;
+  static Color textColor = Colors.black;
 
   // Color for listtiles & appbar
-  static Color primaryColor = Colors.black;
+  static Color primaryColor = const Color.fromARGB(255, 142, 199, 201);
 
   // Backgroundcolor (The scaffold)
-  static Color backgroundColor = const Color.fromARGB(108, 46, 42, 42);
+  static Color backgroundColor = Colors.white;
 
   // Color for all icons
-  static Color iconColor = Colors.pinkAccent;
+  static Color iconColor = Colors.black;
 
   // Styling for buttons
-  static Color textButtonColor = Colors.pink;
-  static Color buttonColor = primaryColor;
-  static Color buttonBackground = const Color.fromARGB(255, 35, 35, 36);
+  static Color textButtonColor = Colors.black;
+  // static Color buttonColor = primaryColor;
+  static Color buttonColor = const Color.fromARGB(255, 111, 167, 169);
 
   static ThemeData appStyling() {
     return ThemeData(
       scaffoldBackgroundColor: backgroundColor,
       primaryColor: primaryColor,
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+/*       colorScheme:
+          ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 146, 121, 189)), */
       fontFamily: GoogleFonts.openSans().fontFamily,
       useMaterial3: true,
       appBarTheme: AppBarTheme(
@@ -34,7 +35,7 @@ class AppTheme {
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         // Color for the icon
         foregroundColor: iconColor,
-        backgroundColor: buttonBackground,
+        backgroundColor: buttonColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
@@ -49,10 +50,10 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(textButtonColor),
-        textStyle: MaterialStateProperty.all<TextStyle>(
-            TextStyle(color: textButtonColor)),
+        textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(
+            color: textButtonColor, fontSize: 16, fontWeight: FontWeight.bold)),
         elevation: MaterialStateProperty.all<double>(3),
-        backgroundColor: MaterialStateProperty.all<Color>(buttonBackground),
+        backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
       )),
       iconTheme: IconThemeData(color: iconColor),
       textTheme: const TextTheme(

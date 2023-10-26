@@ -224,9 +224,11 @@ class _QuestionTileWidgetState extends State<QuestionTileWidget> {
   @override
   Widget build(BuildContext context) {
     // Wrap with Material widget so it doesnt bleed.
-    return Material(
-      child: quizTilePadding(
-        ListTile(
+    return quizTilePadding(
+      Material(
+        color: Theme.of(context).primaryColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        child: ListTile(
           title: Text(
             widget.question.title,
             textAlign: TextAlign.center,

@@ -62,24 +62,30 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Column loadScreenContents() {
+    double roundedBorder = 16.0;
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SizedBox(
-            width: 500.0,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: 50.0,
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: 'Search...',
-                  //filled: true,
-                  //fillColor: const Color.fromARGB(255, 224, 219, 219),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+          padding: EdgeInsets.all(roundedBorder),
+          child: Material(
+            shape: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(roundedBorder),
+            ),
+            child: SizedBox(
+              width: 500.0,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 50.0,
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search),
+                    hintText: 'Search...',
+                    //filled: true,
+                    //fillColor: const Color.fromARGB(255, 224, 219, 219),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(roundedBorder),
+                    ),
                   ),
                 ),
               ),
@@ -149,8 +155,10 @@ class QuizTile extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: Material(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: ListTile(
             tileColor: Theme.of(context).primaryColor,
             title: Text(
@@ -179,9 +187,8 @@ class QuizTile extends StatelessWidget {
                       .titleMedium!
                       .copyWith(fontWeight: FontWeight.normal)),
             ]),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
         ),
       ),

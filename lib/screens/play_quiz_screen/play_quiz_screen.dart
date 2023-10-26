@@ -156,14 +156,14 @@ class _AnswerTileWidgetState extends State<AnswerTileWidget> {
       // Check if the tile wasTapped and set correct color
       if (wasTapped) {
         if (widget.answer.isCorrect) {
-          color = Colors.greenAccent;
+          color = Colors.green;
         } else {
-          color = const Color.fromARGB(255, 252, 105, 105);
+          color = Colors.red;
         }
       }
       // If it wasnt tapped but was also a correct answer, set to green.
       else if (widget.answer.isCorrect) {
-        color = Colors.greenAccent;
+        color = Colors.green;
       }
     }
     // If quiz is not answered reset wasTapped to false.
