@@ -11,6 +11,9 @@ class AddQuestionScreen extends StatefulWidget {
 }
 
 class _AddQuestionScreenState extends State<AddQuestionScreen> {
+  int? _correctAnswerIndex;
+  List<bool> _isAnswerSelected = [false, false, false, false];
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _questionController = TextEditingController();
   final List<TextEditingController> _answerControllers = [
@@ -30,9 +33,6 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
     super.dispose();
   }
 
-  int? _correctAnswerIndex;
-  List<bool> _isAnswerSelected = [false, false, false, false];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,99 +42,115 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            // Description
-            const Text(
-              'Enter your question and provide four possible answers. Mark the correct answer.',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
-            ),
+            loadQuestionFormField(),
             const SizedBox(height: 20.0),
-            // Question form field
-            TextFormField(
-              controller: _questionController,
-              decoration: const InputDecoration(
-                labelText: 'Question',
-                hintText: 'Enter your question here',
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                ),
-              ),
-              maxLines: 3,
-              style: const TextStyle(fontSize: 18.0),
-            ),
+            loadAnswerFormFields(),
             const SizedBox(height: 20.0),
-
-            // List the answer fields
-            ..._answerControllers.asMap().entries.map((entry) {
-              int index = entry.key;
-              return ListTile(
-                title: TextFormField(
-                  controller: _answerControllers[index],
-                  decoration: InputDecoration(
-                    labelText: 'Answer ${index + 1}',
-                  ),
-                ),
-                leading: Checkbox(
-                  value: _isAnswerSelected[index],
-                  onChanged: (value) {
-                    setState(() {
-                      for (int i = 0; i < _isAnswerSelected.length; i++) {
-                        _isAnswerSelected[i] = false;
-                      }
-                      _isAnswerSelected[index] = value!;
-                      _correctAnswerIndex = value ? index : null;
-                    });
-                  },
-                ),
-              );
-            }).toList(),
-            const SizedBox(height: 20.0),
-            Container(
-              width: double.infinity,
-              height: 60.0,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Align(
-                alignment: const Alignment(0, 0.5),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 20.0),
-                  ),
-                  child: const Text('Save'),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate() &&
-                        _correctAnswerIndex != null) {
-                      final newQuestion = Question(_questionController.text);
-
-                      for (int i = 0; i < _answerControllers.length; i++) {
-                        TextEditingController controller =
-                            _answerControllers[i];
-                        if (controller.text.isEmpty) {
-                          continue;
-                        }
-                        newQuestion.addAnswer(
-                            _answerControllers[i].text, _isAnswerSelected[i]);
-                      }
-
-                      widget.quiz.questions.add(newQuestion);
-
-                      // Clear the form
-                      for (TextEditingController controller
-                          in _answerControllers) {
-                        controller.clear();
-                      }
-                      _questionController.clear();
-                      _isAnswerSelected = [false, false, false, false];
-                      _correctAnswerIndex = null;
-                      if (context.mounted) Navigator.of(context).pop();
-                    }
-                  },
-                ),
-              ),
-            ),
+            saveButton(context),
           ],
+        ),
+      ),
+    );
+  }
+
+  Wrap loadQuestionFormField() {
+    return Wrap(
+      children: [
+        // Description
+        const Text(
+          'Enter your question and provide four possible answers. Mark the correct answer.',
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: 20.0),
+        // Question form field
+        TextFormField(
+          controller: _questionController,
+          decoration: const InputDecoration(
+            labelText: 'Question',
+            hintText: 'Enter your question here',
+            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 2.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey, width: 1.0),
+            ),
+          ),
+          maxLines: 3,
+          style: const TextStyle(fontSize: 18.0),
+        ),
+      ],
+    );
+  }
+
+  Wrap loadAnswerFormFields() {
+    return Wrap(
+      children: [
+        ..._answerControllers.asMap().entries.map((entry) {
+          int index = entry.key;
+          return ListTile(
+            title: TextFormField(
+              controller: _answerControllers[index],
+              decoration: InputDecoration(
+                labelText: 'Answer ${index + 1}',
+              ),
+            ),
+            leading: Checkbox(
+              value: _isAnswerSelected[index],
+              onChanged: (value) {
+                setState(() {
+                  for (int i = 0; i < _isAnswerSelected.length; i++) {
+                    _isAnswerSelected[i] = false;
+                  }
+                  _isAnswerSelected[index] = value!;
+                  _correctAnswerIndex = value ? index : null;
+                });
+              },
+            ),
+          );
+        }).toList(),
+      ],
+    );
+  }
+
+  Container saveButton(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 60.0,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Align(
+        alignment: const Alignment(0, 0.5),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            textStyle: const TextStyle(fontSize: 20.0),
+          ),
+          child: const Text('Save'),
+          onPressed: () {
+            if (_formKey.currentState!.validate() &&
+                _correctAnswerIndex != null) {
+              final newQuestion = Question(_questionController.text);
+
+              for (int i = 0; i < _answerControllers.length; i++) {
+                TextEditingController controller = _answerControllers[i];
+                if (controller.text.isEmpty) {
+                  continue;
+                }
+                newQuestion.addAnswer(
+                    _answerControllers[i].text, _isAnswerSelected[i]);
+              }
+
+              widget.quiz.questions.add(newQuestion);
+
+              // Clear the form
+              for (TextEditingController controller in _answerControllers) {
+                controller.clear();
+              }
+              _questionController.clear();
+              _isAnswerSelected = [false, false, false, false];
+              _correctAnswerIndex = null;
+              if (context.mounted) Navigator.of(context).pop();
+            }
+          },
         ),
       ),
     );

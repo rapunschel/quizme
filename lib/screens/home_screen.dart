@@ -26,37 +26,37 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: const QuizmeAppBar(
         title: "My quizzes",
       ),
-      floatingActionButton: Tooltip(
-        message: 'Create new',
-        child: createQuizFloatingButton(context, quizHandler),
-      ),
+      floatingActionButton: createQuizFloatingButton(context, quizHandler),
       body: loadScreenContents(),
     );
   }
 
-  FloatingActionButton createQuizFloatingButton(
+  Tooltip createQuizFloatingButton(
       BuildContext context, QuizHandler quizHandler) {
-    return FloatingActionButton.extended(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MakeQuizScreen(
-                quiz: null,
-                callback: (Quiz quiz) {
-                  context.read<QuizHandler>().addQuiz(
-                        quiz,
-                      );
-                }),
-          ),
-        );
-      },
-      label: const Row(
-        children: [
-          Icon(Icons.add),
-          SizedBox(width: 8.0),
-          Text('Create Quiz'),
-        ],
+    return Tooltip(
+      message: 'Create new',
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MakeQuizScreen(
+                  quiz: null,
+                  callback: (Quiz quiz) {
+                    context.read<QuizHandler>().addQuiz(
+                          quiz,
+                        );
+                  }),
+            ),
+          );
+        },
+        label: const Row(
+          children: [
+            Icon(Icons.add),
+            SizedBox(width: 8.0),
+            Text('Create Quiz'),
+          ],
+        ),
       ),
     );
   }
