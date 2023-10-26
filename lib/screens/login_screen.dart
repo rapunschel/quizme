@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
         animType: AnimType.topSlide,
         showCloseIcon: true,
         title: 'Textfields empty! Please insert email and password.',
-        btnOkColor: Colors.red,
+        btnOkColor: Colors.orange[900],
         btnOkOnPress: () {},
       ).show();
     } else {
