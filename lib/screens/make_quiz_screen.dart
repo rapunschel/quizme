@@ -35,6 +35,7 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Rebuilding all contents");
     List<Question> questions = [];
 
     // If quiz is not null, initialize variables.
@@ -84,18 +85,13 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             QuestionTileWidget(
               question: questions[index],
               editQuestionCallback: () async {
-                /*           await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            AddQuestionScreen(quiz: resultQuiz!)));
-                await widget.callback(resultQuiz); */
+                await widget.callback(resultQuiz);
               },
               removeQuestionCallback: (Question question) async {
                 // removed question
                 resultQuiz!.questions.remove(question);
                 // Update firestore with callback
-                await widget.callback(resultQuiz!);
+                await widget.callback(resultQuiz);
                 setState(() {/* rebuild */});
               },
             ),
@@ -155,7 +151,6 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
             resultQuiz = Quiz.description(
                 _titleController.text, _descriptionController.text);
             isQuizAdded = true;
-
             widget.callback(resultQuiz);
           } else {
             resultQuiz!.title = _titleController.text;
@@ -164,12 +159,18 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
 
           if (!context.mounted) return;
 
-          await Navigator.push(
+          Question? question = await Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddQuestionScreen(quiz: resultQuiz!)));
+                  builder: (context) => const AddQuestionScreen()));
 
-          setState(() {/* Rebuild */});
+          // A question has been created, add to quiz & update firestore with callback.
+          if (question != null) {
+            resultQuiz!.addQuestion(question);
+            // Update
+            widget.callback(resultQuiz);
+            setState(() {/* Rebuild */});
+          }
         }
       },
     );
@@ -213,6 +214,14 @@ class QuestionTileWidget extends StatefulWidget {
 }
 
 class _QuestionTileWidgetState extends State<QuestionTileWidget> {
+  Question? question;
+
+  @override
+  void initState() {
+    question = widget.question;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Wrap with Material widget so it doesnt bleed.
@@ -231,11 +240,16 @@ class _QuestionTileWidgetState extends State<QuestionTileWidget> {
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () async {
-                  //TODO fix
-                  // await widget.editQuestionCallback();
-                  setState(() {
-                    // Rebuild
-                  });
+                  bool? isEdited = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddQuestionScreen(
+                              editQuestion: widget.question)));
+
+                  if (context.mounted && isEdited == true) {
+                    await widget.editQuestionCallback();
+                    setState(() {/* rebuild */});
+                  }
                 },
               ),
               IconButton(

@@ -3,8 +3,8 @@ import '../models/quiz_model.dart';
 import '../widgets/reuseable_widgets.dart';
 
 class AddQuestionScreen extends StatefulWidget {
-  final Quiz quiz;
-  const AddQuestionScreen({super.key, required this.quiz});
+  final Question? editQuestion;
+  const AddQuestionScreen({super.key, this.editQuestion});
 
   @override
   State<AddQuestionScreen> createState() => _AddQuestionScreenState();
@@ -13,7 +13,8 @@ class AddQuestionScreen extends StatefulWidget {
 class _AddQuestionScreenState extends State<AddQuestionScreen> {
   int? _correctAnswerIndex;
   List<bool> _isAnswerSelected = [false, false, false, false];
-
+  bool isEditingQuestion = false;
+  Question? question;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _questionController = TextEditingController();
   final List<TextEditingController> _answerControllers = [
@@ -22,6 +23,29 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
     TextEditingController(),
     TextEditingController()
   ];
+
+  @override
+  void initState() {
+    isEditingQuestion = widget.editQuestion == null ? false : true;
+    if (isEditingQuestion) {
+      question = widget.editQuestion;
+      _questionController.text = question!.title;
+
+      // Initialize answer forms
+      List<Answer> answers = question!.answers;
+
+      for (int i = 0; i < answers.length; i++) {
+        Answer answer = answers[i];
+        _answerControllers[i].text = answer.text;
+        _isAnswerSelected[i] = answer.isCorrect;
+
+        if (answer.isCorrect) {
+          _correctAnswerIndex = i;
+        }
+      }
+    }
+    super.initState();
+  }
 
   // have to manually dispose of the controller when widget is disposed.
   @override
@@ -36,7 +60,8 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const QuizmeAppBar(title: "Add Question"),
+      appBar: QuizmeAppBar(
+          title: isEditingQuestion ? "Edit Question" : "Add Question"),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -128,18 +153,22 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
           onPressed: () {
             if (_formKey.currentState!.validate() &&
                 _correctAnswerIndex != null) {
-              final newQuestion = Question(_questionController.text);
+              if (!isEditingQuestion) {
+                question = Question(_questionController.text);
+              } else {
+                question!.title = _questionController.text;
+                // Reset the answers before adding the edits.
+                question!.answers = [];
+              }
 
               for (int i = 0; i < _answerControllers.length; i++) {
                 TextEditingController controller = _answerControllers[i];
                 if (controller.text.isEmpty) {
                   continue;
                 }
-                newQuestion.addAnswer(
+                question!.addAnswer(
                     _answerControllers[i].text, _isAnswerSelected[i]);
               }
-
-              widget.quiz.questions.add(newQuestion);
 
               // Clear the form
               for (TextEditingController controller in _answerControllers) {
@@ -148,7 +177,15 @@ class _AddQuestionScreenState extends State<AddQuestionScreen> {
               _questionController.clear();
               _isAnswerSelected = [false, false, false, false];
               _correctAnswerIndex = null;
-              if (context.mounted) Navigator.of(context).pop();
+
+              if (context.mounted) {
+                if (isEditingQuestion) {
+                  // We have clicked save button, return true to notify edit
+                  Navigator.of(context).pop(true);
+                } else {
+                  Navigator.of(context).pop(question);
+                }
+              }
             }
           },
         ),
