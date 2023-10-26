@@ -140,7 +140,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(
-                    height: 40,
+                    height: 50,
                   ),
                   Padding(
                     padding: EdgeInsets.all(20),
@@ -181,188 +181,197 @@ class _SignupScreenState extends State<SignupScreen> {
                               topRight: Radius.circular(60))),
                       child: Padding(
                           padding: EdgeInsets.all(30),
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: 60,
-                              ),
-                              FadeInUp(
-                                  duration: Duration(milliseconds: 1400),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Color.fromRGBO(
-                                                  225, 95, 27, .3),
-                                              blurRadius: 20,
-                                              offset: Offset(0, 10))
-                                        ]),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                                bottom: BorderSide(
-                                                    color:
-                                                        Colors.grey.shade200)),
-                                          ),
-                                          child: TextField(
-                                            controller: _emailController,
-                                            decoration: InputDecoration(
-                                              hintText: "Email",
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
-                                              border: InputBorder.none,
-                                              prefixIcon: Container(
-                                                padding: EdgeInsets.all(10),
-                                                child: Icon(
-                                                  Icons.email_outlined,
-                                                  color: Colors.grey,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 60,
+                                ),
+                                FadeInUp(
+                                    duration: Duration(milliseconds: 1400),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Color.fromRGBO(
+                                                    225, 95, 27, .3),
+                                                blurRadius: 20,
+                                                offset: Offset(10, 10))
+                                          ]),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: Colors
+                                                          .grey.shade200)),
+                                            ),
+                                            child: TextField(
+                                              controller: _emailController,
+                                              decoration: InputDecoration(
+                                                hintText: "Email",
+                                                hintStyle: TextStyle(
+                                                    color: Colors.grey),
+                                                border: InputBorder.none,
+                                                prefixIcon: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Icon(
+                                                    Icons.email_outlined,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                                bottom: BorderSide(
-                                                    color:
-                                                        Colors.grey.shade200)),
-                                          ),
-                                          child: TextField(
-                                            obscureText: _isObscure,
-                                            controller: _passwordController,
-                                            decoration: InputDecoration(
-                                              hintText: "Password",
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
-                                              border: InputBorder.none,
-                                              prefixIcon: Container(
-                                                padding: EdgeInsets.all(10),
-                                                child: Icon(
-                                                  Icons.lock_outline,
-                                                  color: Colors.grey,
+                                          Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: Colors
+                                                          .grey.shade200)),
+                                            ),
+                                            child: TextField(
+                                              obscureText: _isObscure,
+                                              controller: _passwordController,
+                                              decoration: InputDecoration(
+                                                hintText: "Password",
+                                                hintStyle: TextStyle(
+                                                    color: Colors.grey),
+                                                border: InputBorder.none,
+                                                prefixIcon: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Icon(
+                                                    Icons.lock_outline,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
-                                              ),
-                                              suffixIcon: GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    _isObscure = !_isObscure;
-                                                  });
-                                                },
-                                                child: Icon(
-                                                  _isObscure
-                                                      ? Icons.visibility
-                                                      : Icons.visibility_off,
-                                                  color: Colors.grey,
+                                                suffixIcon: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _isObscure = !_isObscure;
+                                                    });
+                                                  },
+                                                  child: Icon(
+                                                    _isObscure
+                                                        ? Icons.visibility
+                                                        : Icons.visibility_off,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                                bottom: BorderSide(
-                                                    color:
-                                                        Colors.grey.shade200)),
-                                          ),
-                                          child: TextField(
-                                            obscureText:
-                                                _isConfirmPasswordObscure,
-                                            controller:
-                                                _confirmpasswordController,
-                                            decoration: InputDecoration(
-                                              hintText: "Confirm Password",
-                                              hintStyle:
-                                                  TextStyle(color: Colors.grey),
-                                              border: InputBorder.none,
-                                              prefixIcon: Container(
-                                                padding: EdgeInsets.all(10),
-                                                child: Icon(
-                                                  Icons.lock_outline,
-                                                  color: Colors.grey,
+                                          Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                  bottom: BorderSide(
+                                                      color: Colors
+                                                          .grey.shade200)),
+                                            ),
+                                            child: TextField(
+                                              obscureText:
+                                                  _isConfirmPasswordObscure,
+                                              controller:
+                                                  _confirmpasswordController,
+                                              decoration: InputDecoration(
+                                                hintText: "Confirm Password",
+                                                hintStyle: TextStyle(
+                                                    color: Colors.grey),
+                                                border: InputBorder.none,
+                                                prefixIcon: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Icon(
+                                                    Icons.lock_outline,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
-                                              ),
-                                              suffixIcon: GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    _isConfirmPasswordObscure =
-                                                        !_isConfirmPasswordObscure;
-                                                  });
-                                                },
-                                                child: Icon(
-                                                  _isConfirmPasswordObscure
-                                                      ? Icons.visibility
-                                                      : Icons.visibility_off,
-                                                  color: Colors.grey,
+                                                suffixIcon: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _isConfirmPasswordObscure =
+                                                          !_isConfirmPasswordObscure;
+                                                    });
+                                                  },
+                                                  child: Icon(
+                                                    _isConfirmPasswordObscure
+                                                        ? Icons.visibility
+                                                        : Icons.visibility_off,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              FadeInUp(
-                                  duration: Duration(milliseconds: 1600),
-                                  child: MaterialButton(
-                                    onPressed: () {
-                                      signUp();
-                                    },
-                                    height: 50,
-                                    // margin: EdgeInsets.symmetric(horizontal: 50),
-                                    color: Colors.orange[900],
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    // decoration: BoxDecoration(
-                                    // ),
-                                    child: Center(
-                                      child: Text(
-                                        "Sign up",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
+                                        ],
                                       ),
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 50,
-                              ),
-                              // already have an account
-                              FadeInUp(
-                                  duration: Duration(milliseconds: 1700),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        "Already have an account?",
-                                        style: TextStyle(color: Colors.grey),
+                                    )),
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                FadeInUp(
+                                    duration: Duration(milliseconds: 1600),
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        signUp();
+                                      },
+                                      height: 50,
+                                      // margin: EdgeInsets.symmetric(horizontal: 50),
+                                      color: Colors.orange[900],
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50),
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          openSigninScreen();
-                                        },
+                                      // decoration: BoxDecoration(
+                                      // ),
+                                      child: Center(
                                         child: Text(
-                                          " Sign in",
+                                          "Sign up",
                                           style: TextStyle(
-                                              color: Colors.blue,
+                                              color: Colors.white,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                      )
-                                    ],
-                                  )),
-                            ],
+                                      ),
+                                    )),
+                                SizedBox(
+                                  height: 60,
+                                ),
+                                // already have an account
+                                FadeInUp(
+                                    duration: Duration(milliseconds: 1700),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          "Already have an account?",
+                                          style: GoogleFonts.robotoCondensed(
+                                              color: Colors.grey,
+                                              fontSize: 14,
+                                              fontStyle: FontStyle.italic),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            openSigninScreen();
+                                          },
+                                          child: Text(
+                                            " Sign in",
+                                            style: GoogleFonts.robotoCondensed(
+                                                color: Colors.deepPurple,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic),
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                              ],
+                            ),
                           )),
                     ),
                   ),
