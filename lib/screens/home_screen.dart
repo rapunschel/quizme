@@ -37,23 +37,19 @@ class _HomeScreenState extends State<HomeScreen> {
   FloatingActionButton createQuizFloatingButton(
       BuildContext context, QuizHandler quizHandler) {
     return FloatingActionButton.extended(
-      onPressed: () async {
-        Quiz? quiz = await Navigator.push(
+      onPressed: () {
+        Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => MakeQuizScreen(
                 quiz: null,
-                callback: (Quiz quiz) async {
-                  await context.read<QuizHandler>().addQuiz(
+                callback: (Quiz quiz) {
+                  context.read<QuizHandler>().addQuiz(
                         quiz,
                       );
                 }),
           ),
         );
-
-        if (context.mounted && quiz != null) {
-          await quizHandler.editQuiz(quiz);
-        }
       },
       label: const Row(
         children: [
@@ -154,17 +150,17 @@ class QuizCard extends StatelessWidget {
               child: Wrap(spacing: -5, children: [
                 // Edit Quiz button
                 IconButton(
-                    onPressed: () async {
-                      await Navigator.push(
+                    onPressed: () {
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => MakeQuizScreen(
-                            quiz: quiz,
-                          ),
+                              quiz: quiz,
+                              callback: (Quiz quiz) {
+                                quizHandler.editQuiz(quiz);
+                              }),
                         ),
                       );
-
-                      quizHandler.editQuiz(quiz);
                     },
                     icon: const Icon(Icons.edit)),
                 // Delete Quiz button

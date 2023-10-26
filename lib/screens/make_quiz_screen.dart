@@ -6,7 +6,7 @@ import '../widgets/reuseable_widgets.dart';
 class MakeQuizScreen extends StatefulWidget {
   final Function? callback;
   final Quiz? quiz;
-  const MakeQuizScreen({super.key, this.quiz, this.callback});
+  const MakeQuizScreen({super.key, this.quiz, required this.callback});
 
   @override
   State<MakeQuizScreen> createState() => _MakeQuizScreenState();
@@ -108,8 +108,8 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
         if (!_isTitleFieldEmpty) {
           quiz.title = _titleController.text;
           quiz.quizDescription = _descriptionController.text;
-
-          if (context.mounted) Navigator.of(context).pop(quiz);
+          await widget.callback!(quiz);
+          if (context.mounted) Navigator.of(context).pop();
         }
       },
       child: const Text('Update Quiz Info'),
@@ -144,13 +144,13 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
           }
 
           if (!context.mounted) return;
+
           await Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => AddQuestionScreen(quiz: resultQuiz!)));
-          setState(() {
-            /* Rebuild */
-          });
+
+          setState(() {/* Rebuild */});
         }
       },
     );
