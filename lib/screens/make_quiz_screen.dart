@@ -35,7 +35,6 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Rebuilding all contents");
     List<Question> questions = [];
 
     // If quiz is not null, initialize variables.
