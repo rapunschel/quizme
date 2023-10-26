@@ -93,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         loadQuizTiles(),
-        loadQuizCards(),
       ],
     );
   }
@@ -108,24 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             return const SizedBox(height: 100);
-
-            //  return Container();
-          }),
-    );
-  }
-
-  Expanded loadQuizCards() {
-    return Expanded(
-      child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-          ),
-          itemCount: quizzes.length,
-          itemBuilder: (context, index) {
-            if (index < quizzes.length) {
-              return QuizCard(quiz: quizzes[index]);
-            }
-            return Container();
           }),
     );
   }
@@ -145,7 +126,11 @@ class QuizTile extends StatelessWidget {
     final PlayQuizProvider playQuizModel = context.read<PlayQuizProvider>();
     return GestureDetector(
       onTap: () {
+        // TODO Popup to prompt to add question or a new screen saying quiz has no questions
+        if (quiz.questions.isEmpty) return;
+
         // Must set quiz before pushing to the PlayQuizScreen
+
         playQuizModel.setQuiz(quiz);
         Navigator.push(
           context,
@@ -218,82 +203,5 @@ class QuizTile extends StatelessWidget {
           );
         },
         child: const Icon(Icons.edit));
-  }
-}
-
-class QuizCard extends StatelessWidget {
-  const QuizCard({
-    Key? key,
-    required this.quiz,
-  }) : super(key: key);
-
-  final Quiz quiz;
-
-  @override
-  Widget build(BuildContext context) {
-    QuizHandler quizHandler = context.read<QuizHandler>();
-    final PlayQuizProvider playQuizModel = context.read<PlayQuizProvider>();
-    return GestureDetector(
-      onTap: () {
-        // Must set quiz before pushing to the PlayQuizScreen
-        playQuizModel.setQuiz(quiz);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const PlayQuizScreen(),
-          ),
-        );
-      },
-      child: Card(
-        margin: const EdgeInsets.all(10.0),
-        color: Theme.of(context).primaryColor,
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  quiz.title,
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(),
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 25.0,
-              right: 10.0,
-              child: Wrap(spacing: -5, children: [
-                // Edit Quiz button
-                IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MakeQuizScreen(
-                              quiz: quiz,
-                              callback: (Quiz quiz) {
-                                quizHandler.editQuiz(quiz);
-                              }),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.edit)),
-                // Delete Quiz button
-                IconButton(
-                    onPressed: () {
-                      quizHandler.removeQuiz(quiz);
-                    },
-                    icon: const Icon(Icons.delete))
-              ]),
-            ),
-            Positioned(
-              bottom: 10.0,
-              right: 10.0,
-              child: Text('${quiz.questions.length} Questions',
-                  style: Theme.of(context).textTheme.bodyLarge),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
