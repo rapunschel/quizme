@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:quizme/screens/forgot_password_page.dart';
 import 'providers/play_quiz_provider.dart';
 import 'providers/quiz_handler.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'screens/home_screen.dart';
 import 'package:quizme/auth.dart';
 import 'package:quizme/firebase_options.dart';
@@ -12,6 +11,7 @@ import 'package:quizme/screens/signup_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'apis/firestore_db.dart';
+import 'themes/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +51,7 @@ class Quiz extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: appStyling(context),
+        theme: AppTheme.appStyling(),
         routes: {
           '/': (context) => const Auth(),
           'homeScreen': (context) => const HomeScreen(),
@@ -60,77 +60,6 @@ class Quiz extends StatelessWidget {
           'forgotPasswordScreen': (context) => const ForgotPasswordPage(),
         },
       ),
-    );
-  }
-
-  ThemeData appStyling(BuildContext context) {
-    Color textColor = Colors.black;
-    Color primaryColor = const Color.fromARGB(
-        255, 203, 213, 235); // Color.fromARGB(255, 20, 142, 54);
-    Color buttonBG = const Color.fromARGB(255, 238, 240, 246);
-    Color iconColor = Colors.black;
-    Color buttonColor = primaryColor;
-    return ThemeData(
-      //  scaffoldBackgroundColor: Color.fromARGB(255, 28, 23, 32),
-      primaryColor: primaryColor,
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      fontFamily: GoogleFonts.openSans().fontFamily,
-      useMaterial3: true,
-      appBarTheme: AppBarTheme(
-        iconTheme: IconThemeData(color: iconColor),
-        titleTextStyle: Theme.of(context)
-            .textTheme
-            .titleLarge!
-            .copyWith(fontWeight: FontWeight.normal),
-      ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        extendedTextStyle: Theme.of(context).textTheme.bodyMedium,
-        // Color for the icon
-        foregroundColor: iconColor,
-        backgroundColor: primaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: ButtonStyle(
-          elevation: MaterialStateProperty.all<double>(0),
-          backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
-        ),
-      ),
-      listTileTheme: ListTileThemeData(iconColor: iconColor),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-        elevation: MaterialStateProperty.all<double>(3),
-        backgroundColor: MaterialStateProperty.all<Color>(buttonBG),
-      )),
-      snackBarTheme: SnackBarThemeData(
-        //  closeIconColor: iconColor,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(color: Colors.black, width: 1),
-          borderRadius: BorderRadius.circular(24),
-        ),
-        showCloseIcon: true,
-        closeIconColor: iconColor,
-        actionTextColor: Colors.deepPurple,
-        backgroundColor: primaryColor,
-        contentTextStyle: Theme.of(context).textTheme.bodyMedium,
-      ),
-      iconTheme: IconThemeData(color: iconColor),
-      textTheme: const TextTheme(
-
-              // Global styling, use Theme... to use a specific style
-              //and copyWith to overwrite specific values
-              titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              // Edit
-              titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              titleSmall: TextStyle(),
-              bodyLarge: TextStyle(),
-              bodyMedium: TextStyle(),
-              // Buttons uses labelLarge
-              labelLarge: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
-          .apply(bodyColor: textColor, displayColor: textColor),
     );
   }
 }
