@@ -1,10 +1,12 @@
 // Classes to model a quiz
+import 'package:flutter/material.dart';
+
 class Quiz {
   String title;
   List<Question> questions = [];
   String? quizDescription;
-
-  Quiz(this.title);
+  String? id = UniqueKey().toString();
+  Quiz(this.title, [this.id]);
   // Alternative constructor
   Quiz.description(this.title, this.quizDescription);
   void addQuestion(Question question) {

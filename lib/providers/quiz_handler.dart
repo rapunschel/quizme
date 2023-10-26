@@ -1,35 +1,42 @@
 import 'package:flutter/material.dart';
-import 'play_quiz_provider.dart';
 import '../models/quiz_model.dart';
+import '../apis/firestore_db.dart';
 
 // Contain a list of all quizzes made.
 class QuizHandler extends ChangeNotifier {
-  List<Quiz> quizzes = [initiateQuiz(), initiateQuiz2()];
-  bool _updateFlag = false;
+  List<Quiz> quizzes = [];
 
-  // Only used for undoing deletion
-  Quiz? lastRemovedQuiz;
-  void addQuiz(Quiz quiz) {
+  QuizHandler(this.quizzes);
+
+  Future<void> addQuiz(Quiz quiz) async {
+    // If quiz already exists, update it
     if (!quizzes.contains(quiz)) {
-      quizzes.add(quiz);
+      await FirestoreDB.saveQuizToFirestore(quiz);
+      await fetchQuizzes();
+    }
+  }
+
+  Future<void> editQuiz(Quiz quiz) async {
+    await FirestoreDB.editQuizInFireSTore(quiz);
+    // await for fetchQuizzes to finish, to give homepage time to get changes
+    await fetchQuizzes();
+  }
+
+  void removeQuiz(Quiz quiz) async {
+    if (await FirestoreDB.deleteQuizFromFirestore(quiz)) {
+      // lastRemovedQuiz = quiz;
+      await fetchQuizzes();
     }
     notifyListeners();
   }
 
-  void removeQuiz(Quiz quiz) {
-    if (quizzes.remove(quiz)) {
-      lastRemovedQuiz = quiz;
-    }
-
+  // Need to await when calling this function,
+  //to give time for homepage to update (else you see the change happening)
+  Future<void> fetchQuizzes() async {
+    await FirestoreDB.getQuizzesFromFirestore().then((fetchedQuizzes) {
+      quizzes = fetchedQuizzes;
+    });
     notifyListeners();
-  }
-
-  // Ugly fix: Should probably use callbacks to rebuild homepage
-  // If a quiz is edited, need to tell homepage to rebuild
-  void notifyQuizUpdated() {
-    _updateFlag = true;
-    notifyListeners();
-    _updateFlag = false;
   }
 
   List<Quiz> getQuizzes() {

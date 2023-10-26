@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/play_quiz_provider.dart';
-import 'providers/quiz_creation_provider.dart';
 import 'providers/quiz_handler.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/homepage.dart';
+import 'screens/home_screen.dart';
 import 'package:quizme/auth.dart';
 import 'package:quizme/firebase_options.dart';
 import 'package:quizme/screens/login_screen.dart';
 import 'package:quizme/screens/signup_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'apis/firestore_db.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,21 +23,26 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const Quiz());
+
+  var fetchedQuizzes = await FirestoreDB.getQuizzesFromFirestore();
+
+  runApp(
+    Quiz(
+      quizzes: fetchedQuizzes,
+    ),
+  );
 }
 
 class Quiz extends StatelessWidget {
-  const Quiz({super.key});
+  final quizzes;
+  const Quiz({super.key, required this.quizzes});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<QuizCreationProvider>(
-          create: (context) => QuizCreationProvider(),
-        ),
         ChangeNotifierProvider<QuizHandler>(
-          create: (context) => QuizHandler(),
+          create: (context) => QuizHandler(quizzes),
         ),
         ChangeNotifierProvider<PlayQuizProvider>(
           create: (context) => PlayQuizProvider(),
@@ -48,7 +53,7 @@ class Quiz extends StatelessWidget {
         theme: appStyling(context),
         routes: {
           '/': (context) => const Auth(),
-          'homeScreen': (context) => const HomePage(),
+          'homeScreen': (context) => const HomeScreen(),
           'loginScreen': (context) => const LoginScreen(),
           'signupScreen': (context) => const SignupScreen(),
         },
@@ -80,6 +85,10 @@ class Quiz extends StatelessWidget {
         extendedTextStyle: Theme.of(context).textTheme.bodyMedium,
         // Color for the icon
         foregroundColor: iconColor,
+        backgroundColor: primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
