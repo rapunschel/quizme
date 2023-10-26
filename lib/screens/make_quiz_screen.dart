@@ -4,7 +4,7 @@ import '../models/quiz_model.dart';
 import '../widgets/reuseable_widgets.dart';
 
 class MakeQuizScreen extends StatefulWidget {
-  final Function? callback;
+  final Function callback;
   final Quiz? quiz;
   const MakeQuizScreen({super.key, this.quiz, required this.callback});
 
@@ -80,7 +80,26 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
                 style: Theme.of(context).textTheme.titleMedium));
           }
 
-          contents.add(QuestionTileWidget(question: questions[index]));
+          contents.add(
+            QuestionTileWidget(
+              question: questions[index],
+              editQuestionCallback: () async {
+                /*           await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AddQuestionScreen(quiz: resultQuiz!)));
+                await widget.callback(resultQuiz); */
+              },
+              removeQuestionCallback: (Question question) async {
+                // removed question
+                resultQuiz!.questions.remove(question);
+                // Update firestore with callback
+                await widget.callback(resultQuiz!);
+                setState(() {/* rebuild */});
+              },
+            ),
+          );
           return Column(children: contents);
         },
       ),
@@ -108,7 +127,7 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
         if (!_isTitleFieldEmpty) {
           quiz.title = _titleController.text;
           quiz.quizDescription = _descriptionController.text;
-          await widget.callback!(quiz);
+          await widget.callback(quiz);
           if (context.mounted) Navigator.of(context).pop();
         }
       },
@@ -137,7 +156,7 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
                 _titleController.text, _descriptionController.text);
             isQuizAdded = true;
 
-            widget.callback!(resultQuiz);
+            widget.callback(resultQuiz);
           } else {
             resultQuiz!.title = _titleController.text;
             resultQuiz!.quizDescription = _descriptionController.text;
@@ -177,14 +196,23 @@ class _MakeQuizScreenState extends State<MakeQuizScreen> {
   }
 }
 
-class QuestionTileWidget extends StatelessWidget {
+class QuestionTileWidget extends StatefulWidget {
   const QuestionTileWidget({
     super.key,
     required this.question,
+    required this.editQuestionCallback,
+    required this.removeQuestionCallback,
   });
 
+  final Function editQuestionCallback;
+  final Function removeQuestionCallback;
   final Question question;
 
+  @override
+  State<QuestionTileWidget> createState() => _QuestionTileWidgetState();
+}
+
+class _QuestionTileWidgetState extends State<QuestionTileWidget> {
   @override
   Widget build(BuildContext context) {
     // Wrap with Material widget so it doesnt bleed.
@@ -192,7 +220,7 @@ class QuestionTileWidget extends StatelessWidget {
       child: quizTilePadding(
         ListTile(
           title: Text(
-            question.title,
+            widget.question.title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
@@ -202,15 +230,18 @@ class QuestionTileWidget extends StatelessWidget {
             children: <IconButton>[
               IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () {
-                  //TODO implement edit question.
+                onPressed: () async {
+                  //TODO fix
+                  // await widget.editQuestionCallback();
+                  setState(() {
+                    // Rebuild
+                  });
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  //TODO implement remove question.
-                  //Convert to stateful, extract List<Answer> then build updates
+                icon: const Icon(Icons.delete),
+                onPressed: () async {
+                  await widget.removeQuestionCallback(widget.question);
                 },
               ),
             ],
