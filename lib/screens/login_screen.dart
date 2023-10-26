@@ -2,6 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quizme/screens/forgot_password_page.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:community_material_icon/community_material_icon.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isObscure = true; // Declare _isObscure variable
 
   void signIn() async {
     String emailText = _emailController.text.trim();
@@ -79,115 +83,382 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Image.asset(
-                'images/welcome.png',
-                height: 300,
-              ),
-              Text(
-                'Sign in',
-                style: GoogleFonts.robotoCondensed(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
-                ),
-              ),
-              Text(
-                'Welomce back! Nice to see you again.',
-                style: GoogleFonts.robotoCondensed(
-                  fontSize: 15,
-                  color: Colors.deepPurple,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+          Colors.orange.shade900,
+          Colors.orange.shade800,
+          Colors.orange.shade400
+        ])),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: 50,
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  FadeInUp(
+                      duration: Duration(milliseconds: 1000),
+                      child: Text(
+                        "Sign In",
+                        style: GoogleFonts.robotoCondensed(
+                            color: Colors.white,
+                            fontSize: 40,
+                            letterSpacing: 2,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic),
+                      )),
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: signIn,
-                child: Container(
-                  width: 200,
-                  height: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: Colors.deepPurple,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Text(
-                    'Sign in',
-                    style: GoogleFonts.robotoCondensed(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('Forgot password?'),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Don\'t have an account? '),
-                  GestureDetector(
-                    onTap: openSignupScreen,
-                    child: Text(
-                      'Sign up',
-                      style: GoogleFonts.robotoCondensed(
-                        color: Colors.deepPurple,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  FadeInUp(
+                      duration: Duration(milliseconds: 1300),
+                      child: Text(
+                        "Welcome back! Nice to see you again.",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      )),
                 ],
               ),
-            ]),
-          ),
+            ),
+            SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                        topRight: Radius.circular(60))),
+                child: Padding(
+                  padding: EdgeInsets.all(30),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 40,
+                        ),
+                        FadeInUp(
+                            duration: Duration(milliseconds: 1400),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Color.fromRGBO(225, 95, 27, .3),
+                                        blurRadius: 20,
+                                        offset: Offset(0, 10))
+                                  ]),
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey.shade200),
+                                      ),
+                                    ),
+                                    child: TextField(
+                                      controller: _emailController,
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.email_outlined,
+                                          color: Colors.grey,
+                                        ),
+                                        hintText: "Email",
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey.shade200),
+                                      ),
+                                    ),
+                                    child: TextField(
+                                      obscureText: _isObscure,
+                                      controller: _passwordController,
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.lock_outline, // Password icon
+                                          color: Colors.grey,
+                                        ),
+                                        hintText: "Password",
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                        border: InputBorder.none,
+                                        suffixIcon: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _isObscure = !_isObscure;
+                                            });
+                                          },
+                                          child: Icon(
+                                            _isObscure
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment
+                              .end, // Align the text to the right
+                          children: <Widget>[
+                            FadeInUp(
+                              duration: Duration(
+                                  milliseconds:
+                                      2100), // Adjust the duration as needed
+                              child: GestureDetector(
+                                child: Text(
+                                  'Forgot password?',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 15,
+                                    // Add an underline decoration
+                                  ),
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, ForgotPasswordPage.routeName);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(
+                          height: 40,
+                        ),
+                        FadeInUp(
+                            duration: Duration(milliseconds: 1600),
+                            child: MaterialButton(
+                              onPressed: () {
+                                signIn();
+                              },
+                              height: 50,
+                              // margin: EdgeInsets.symmetric(horizontal: 50),
+                              color: Colors.orange[900],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              // decoration: BoxDecoration(
+                              // ),
+                              child: Center(
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )),
+
+                        SizedBox(
+                          height: 40,
+                        ),
+
+                        // devider
+                        FadeInUp(
+                            duration: Duration(milliseconds: 1700),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Divider(
+                                    color: Colors.grey,
+                                    thickness: 1,
+                                  ),
+                                ),
+                                Text(
+                                  "  Or  ",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                Expanded(
+                                  child: Divider(
+                                    color: Colors.grey,
+                                    thickness: 1,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        FadeInUp(
+                            duration: Duration(milliseconds: 1700),
+                            child: Text(
+                              "Continue with",
+                              style: TextStyle(color: Colors.grey),
+                            )),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: FadeInUp(
+                                duration: Duration(milliseconds: 1800),
+                                child: MaterialButton(
+                                  onPressed: () {
+                                    // Add your Facebook button onPressed logic here
+                                  },
+                                  height: 50,
+                                  color: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.facebook, // Facebook icon
+                                        color: Colors.white,
+                                      ),
+                                      // Adjust the spacing between the icon and text
+                                      SizedBox(width: 1),
+
+                                      Text(
+                                        "Facebook",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              child: FadeInUp(
+                                duration: Duration(milliseconds: 1900),
+                                child: MaterialButton(
+                                  onPressed: () {
+                                    // Add your Apple button onPressed logic here
+                                  },
+                                  height: 50,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  color: Colors.black,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Apple icon
+                                      Icon(
+                                        Icons.apple,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              5), // Adjust the spacing between the icon and text
+                                      Text(
+                                        "Apple",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              child: FadeInUp(
+                                duration: Duration(milliseconds: 2000),
+                                child: MaterialButton(
+                                  onPressed: () {
+                                    // Add your Google button onPressed logic here
+                                  },
+                                  height: 50,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  color: Colors.red,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        CommunityMaterialIcons
+                                            .google, // Google icon
+
+                                        // Google icon, you can change to a different icon from the Icons class if needed
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              1), // Adjust the spacing between the icon and text
+                                      Text(
+                                        "Google",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        ),
+                        FadeInUp(
+                          duration: const Duration(
+                              milliseconds:
+                                  2200), // Adjust the duration as needed
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Don\'t have an account? '),
+                              GestureDetector(
+                                onTap: openSignupScreen,
+                                child: Text(
+                                  'Sign up here',
+                                  style: GoogleFonts.robotoCondensed(
+                                    color: Colors.deepPurple,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
