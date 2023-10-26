@@ -86,21 +86,131 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        Expanded(
-          child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemCount: quizzes.length,
-              itemBuilder: (context, index) {
-                if (index < quizzes.length) {
-                  return QuizCard(quiz: quizzes[index]);
-                }
-                return Container();
-              }),
-        ),
+        loadQuizTiles(),
+        loadQuizCards(),
       ],
     );
+  }
+
+  Expanded loadQuizTiles() {
+    return Expanded(
+      child: ListView.builder(
+          itemCount: quizzes.length + 1,
+          itemBuilder: (context, index) {
+            if (index < quizzes.length) {
+              return QuizTile(quiz: quizzes[index % quizzes.length]);
+            }
+
+            return const SizedBox(height: 100);
+
+            //  return Container();
+          }),
+    );
+  }
+
+  Expanded loadQuizCards() {
+    return Expanded(
+      child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          itemCount: quizzes.length,
+          itemBuilder: (context, index) {
+            if (index < quizzes.length) {
+              return QuizCard(quiz: quizzes[index]);
+            }
+            return Container();
+          }),
+    );
+  }
+}
+
+class QuizTile extends StatelessWidget {
+  const QuizTile({
+    Key? key,
+    required this.quiz,
+  }) : super(key: key);
+
+  final Quiz quiz;
+
+  @override
+  Widget build(BuildContext context) {
+    QuizHandler quizHandler = context.read<QuizHandler>();
+    final PlayQuizProvider playQuizModel = context.read<PlayQuizProvider>();
+    return GestureDetector(
+      onTap: () {
+        // Must set quiz before pushing to the PlayQuizScreen
+        playQuizModel.setQuiz(quiz);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PlayQuizScreen(),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+        child: Material(
+          child: ListTile(
+            tileColor: Theme.of(context).primaryColor,
+            title: Text(
+              quiz.title,
+              style: Theme.of(context).textTheme.titleLarge!,
+            ),
+            subtitle: Text(
+              quiz.quizDescription == null ? "" : quiz.quizDescription!,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontWeight: FontWeight.normal),
+            ),
+            trailing: Column(children: [
+              Wrap(
+                spacing: 5,
+                children: [
+                  editQuizButton(context, quizHandler),
+                  const SizedBox(height: 5),
+                  deleteQuizButton(quizHandler)
+                ],
+              ),
+              Text('Questions: ${quiz.questions.length}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(fontWeight: FontWeight.normal)),
+            ]),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  InkWell deleteQuizButton(QuizHandler quizHandler) {
+    return InkWell(
+        onTap: () {
+          quizHandler.removeQuiz(quiz);
+        },
+        child: const Icon(Icons.delete));
+  }
+
+  InkWell editQuizButton(BuildContext context, QuizHandler quizHandler) {
+    return InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MakeQuizScreen(
+                  quiz: quiz,
+                  callback: (Quiz quiz) {
+                    quizHandler.editQuiz(quiz);
+                  }),
+            ),
+          );
+        },
+        child: const Icon(Icons.edit));
   }
 }
 
@@ -137,10 +247,7 @@ class QuizCard extends StatelessWidget {
               children: [
                 Text(
                   quiz.title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(fontWeight: FontWeight.normal),
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(),
                 ),
               ],
             ),

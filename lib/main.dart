@@ -122,9 +122,9 @@ class Quiz extends StatelessWidget {
 
               // Global styling, use Theme... to use a specific style
               //and copyWith to overwrite specific values
-              titleLarge: TextStyle(fontWeight: FontWeight.bold),
+              titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               // Edit
-              titleMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               titleSmall: TextStyle(),
               bodyLarge: TextStyle(),
               bodyMedium: TextStyle(),
