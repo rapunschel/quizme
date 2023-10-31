@@ -1,6 +1,15 @@
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+// ForgotPasswordPage is a StatefulWidget that displays a form with an email field and a button to reset the password.
+// When the user taps the button, the _resetPassword method is called.
+// This method uses the email address entered by the user to send a password reset email to the user.
+// If the email address is valid, the user will receive an email with a link to reset the password.
+// If the email address is invalid, the user will receive an error message.
+// If the email address is valid and the password reset email is sent successfully, the user will see a success dialog.
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);

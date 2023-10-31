@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// These libraries provide the functionality needed to interact with the Firebase Auth service,
+// create the UI for the login screen, and show AwesomeDialog dialog boxes.
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +17,17 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+// The code declares variables for the email and password controllers. These controllers will be used to get the user's input.
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isObscure = true; // Declare _isObscure variable
+
+  // The signIn() method is used to sign in the user using the email and password entered in the textfields.
+  // The method uses the signInWithEmailAndPassword() method from the FirebaseAuth class to sign in the user.
+  // If the sign-in is successful, the user is navigated to the next screen.
+  // If the sign-in fails, an error dialog is shown using AwesomeDialog.
+  // The error dialog shows a different message depending on the error code returned by the FirebaseAuthException.
 
   void signIn() async {
     String emailText = _emailController.text.trim();
@@ -39,8 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
           email: emailText,
           password: passwordText,
         );
-
-        // If sign-in is successful, you can navigate to the next screen or perform other actions.
       } on FirebaseAuthException catch (e) {
         String errorMessage = '';
 
@@ -55,7 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         // Show error dialog using AwesomeDialog
-        // ignore: use_build_context_synchronously
+        // The signIn() function also handles errors that may occur while signing in the user.
+        // If an error occurs, then the function shows an AwesomeDialog dialog box with the error message.
+
         AwesomeDialog(
           context: context,
           dialogType: DialogType.error,

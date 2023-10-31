@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// The first few lines of code import the necessary libraries.
+// These libraries provide the functionality needed to interact with the Firestore database, authenticate users, and create the UI for the signup screen.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +16,7 @@ class SignupScreen extends StatefulWidget {
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
+// Next, the code declares variables for the email, password, and confirm password fields. These fields will be used to collect the user's input.
 class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -19,11 +24,12 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isObscure = true;
   bool _isConfirmPasswordObscure = true;
 
+  // This function is responsible for creating a new user account.
   Future signUp() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
     String confirmPassword = _confirmpasswordController.text.trim();
-
+    // It first validates the user's input to ensure that it is valid.
     if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       AwesomeDialog(
         context: context,
@@ -37,6 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
+    // If the input is valid, then the function creates a new user account in the Firestore database.
     if (passConfirmed()) {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
@@ -91,6 +98,8 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
+  // This function is responsible for validating the user's input.
+  // It checks to see if the password and confirm password fields match. If they do, then the function returns true. Otherwise, it returns false.
   bool passConfirmed() {
     if (_passwordController.text.trim() ==
         _confirmpasswordController.text.trim()) {
@@ -109,6 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return false;
   }
 
+// The next two functions are responsible for navigating to the login screen and signup screen, respectively.
   void openSignupScreen() {
     Navigator.of(context).pushReplacementNamed('signupScreen');
   }
@@ -322,13 +332,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                         signUp();
                                       },
                                       height: 50,
-                                      // margin: EdgeInsets.symmetric(horizontal: 50),
                                       color: Colors.orange[900],
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(50),
                                       ),
-                                      // decoration: BoxDecoration(
-                                      // ),
                                       child: Center(
                                         child: Text(
                                           "Sign up",

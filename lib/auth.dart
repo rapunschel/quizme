@@ -21,7 +21,3 @@ class Auth extends StatelessWidget {
     ));
   }
 }
-// google sign in
-
-
-

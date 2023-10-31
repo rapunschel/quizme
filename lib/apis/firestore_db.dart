@@ -51,8 +51,6 @@ class FirestoreDB {
         }).toList(),
       };
 
-/*       print("Här är quizdata:");
-      print(quizData); */
       // Add the quiz data to Firestore
       await _firestore.collection('quizzes').doc(quiz.id).set(quizData);
     } catch (error) {

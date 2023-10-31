@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     quizzes = quizHandler.quizzes;
     return Scaffold(
       appBar: const QuizmeAppBar(
-        title: "My quizzes",
+        title: "Quizme",
       ),
       floatingActionButton: createQuizFloatingButton(context, quizHandler),
       body: loadScreenContents(),
