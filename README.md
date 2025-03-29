@@ -3,7 +3,7 @@ Group project for the course "Programming Mobile Apps in Flutter - TIG333" (GU).
 
 **Quizme** is an app where you can create quizzes and play them. Firebase is used as the database. The app was written in Flutter.
 
-Due to limited development time, the app was left mostly unfinished. See **Future Work** for the planned MVP product. See **Gallery** for current progress.
+Due to limited development time, the app was left mostly unfinished. See [**Future Work**](#future-work) for the planned MVP product. See [**Gallery**](#gallery) for current progress.
 
 ## Functionalities
 - Register account. **Broken login**.
